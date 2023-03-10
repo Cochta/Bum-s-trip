@@ -539,7 +539,9 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4853666102157658102, guid: 2b6cbd51a66a9bf42987f6097d2ea2a4, type: 3}
       propertyPath: m_text
-      value: Play
+      value: 'Unlocks
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 4853666103349594694, guid: 2b6cbd51a66a9bf42987f6097d2ea2a4, type: 3}
       propertyPath: m_Pivot.x

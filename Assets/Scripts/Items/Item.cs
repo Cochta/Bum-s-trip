@@ -25,14 +25,16 @@ public abstract class Item : MonoBehaviour
         Legendary
     }
 
-    public int _health = 0;
-    public int _attack = 0;
-    public int _defense = 0;
-    public int _dodge = 0;
-    public int _crit = 0;
-    public int _speed = 0;
+    public int Health = 0;
+    public int Damage = 0;
+    public int Defense = 0;
+    public int Speed = 0; // initiative
+    public int MoveDistance = 0; // nb of tiles it can move
+    public int ActionPoints = 0;
 
-    public string _description = null;
+
+    public string Name = null;
+    public string Description = null;
 
     public Rarity _rarity = Rarity.Common;
     public Parts _part = Parts.None;
@@ -43,8 +45,18 @@ public abstract class Item : MonoBehaviour
 
     protected virtual void OnAttack()
     {
-        
-    }
 
-    protected abstract void OnTakeHit();
+    }
+    protected virtual void OnTakeHit()
+    {
+
+    }
+    protected virtual void Ability() //prend la case en argument
+    {
+
+    }
+    protected virtual void Passiv()
+    {
+
+    }
 }

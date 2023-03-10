@@ -44,13 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd113eb354f6e44fbacf887b17dc647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 0
-  _attack: 2
-  _defense: -2
-  _dodge: 0
-  _crit: 0
-  _speed: 1
-  _description: Ave le carton
+  Health: 1
+  Attack: 2
+  Defense: -1
+  Dodge: 0
+  Crit: 0
+  Speed: 1
+  Name: 
+  Description: 
   _rarity: 0
   _part: 0
   _sprite: {fileID: 21300000, guid: b7a5e14d605fe124793fca1f151d7323, type: 3}
