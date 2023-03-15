@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public Entity _entity;
+    public GameObject _entity;
 
     public Vector2 _position;
 
@@ -16,14 +16,6 @@ public class Tile : MonoBehaviour
 
     private Color _originColor;
 
-
-    public void Display()
-    {
-        if (_entity != null)
-        {
-            _entitySR.sprite = _entity._sprite;
-        }
-    }
     public void Init(bool isOffset)
     {
         _backgroundSR.color = isOffset ? _colorEven : _colorOdd;

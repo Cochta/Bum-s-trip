@@ -1,46 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class Bat : Entity
 {
-    private Dictionary<Vector2, Tile> grid;
-
-    private void Update()
+    List<Vector2> targets;
+    protected override void Awake()
     {
-        if (PlayerNearby() != null)
-        {
-            Debug.Log("Attack");
-        }
+        GetGrid();
+        tile = GetTile();
+        SetTargets();
     }
-    public override void Start()
+    private void SetTargets()
     {
-        Debug.Log("Peniche");
-    }
-    protected override void PerformAction()
-    {
-        for (int i = 0; i < ActionPoints; i++)
-        {
-            grid = GetGrid();
-            if (PlayerNearby() != null)
-            {
-                Attack(PlayerNearby()._entity, Damage);
-            }
-            else
-            {
-                Move();
-            }
-
-        }
-    }
-    protected override void Move()
-    {
-        base.Move();
-    }
-    private Tile PlayerNearby()
-    {
-        List<Vector2> targets = new List<Vector2>();
+        targets = new List<Vector2>();
         targets.Add(new Vector2(1, 1));
         targets.Add(new Vector2(1, 0));
         targets.Add(new Vector2(1, -1));
@@ -49,56 +24,106 @@ public class Bat : Entity
         targets.Add(new Vector2(-1, 1));
         targets.Add(new Vector2(0, 1));
         targets.Add(new Vector2(0, -1));
+    }
 
+    public override void PerformAction()
+    {
+        StartCoroutine(ActionList());
+    }
+
+    private IEnumerator ActionList()
+    {
+
+        for (int i = 0; i < ActionPoints; i++)
+        {
+            yield return new WaitForSeconds(1);
+            if (PlayerNearby() != null)
+            {
+                Attack(PlayerNearby(), Damage);
+                //Debug.Log("bat taper");
+            }
+            else
+            {
+                Move();
+            }
+        }
+
+    }
+
+    protected override void Move()
+    {
+        var pPos = Player.GetComponent<Entity>().tile._position;
+        var myPos = tile._position;
+        float y = 0;
+        float x = 0;
+        bool diagonale = Mathf.Abs(myPos.y - pPos.y) == Mathf.Abs(myPos.x - pPos.x);
+
+        Debug.Log(myPos.y + " " + pPos.y + " | " + myPos.x + " " + pPos.x);
+        if (myPos.y > pPos.y)
+        {
+            y = myPos.y - 1;
+            x = myPos.x;
+            if (diagonale && (myPos.x > pPos.x))
+            {
+                x = myPos.x - 1;
+            }
+            else if (diagonale && (myPos.x < pPos.x))
+            {
+                x = myPos.x + 1;
+            }
+        }
+        else if (myPos.y < pPos.y)
+        {
+            y = myPos.y + 1;
+            x = myPos.x;
+            if (diagonale && (myPos.x > pPos.x))
+            {
+                x = myPos.x - 1;
+            }
+            else if (diagonale && (myPos.x < pPos.x))
+            {
+                x = myPos.x + 1;
+            }
+        }
+        else if (myPos.y == pPos.y)
+        {
+            if (myPos.x > pPos.x)
+            {
+                y = myPos.y;
+                x = myPos.x - 1;
+            }
+            else if (myPos.x < pPos.x)
+            {
+                y = myPos.y;
+                x = myPos.x + 1;
+            }
+        }
+
+        var newPos = new Vector2(x, y);
+
+        if (grid[newPos]._entity.GetComponentInChildren<Entity>() == null)
+        {
+            transform.parent = grid[newPos]._entity.transform;
+            transform.position = transform.parent.position;
+            tile._position = newPos;
+        }
+
+        //Debug.Log(tile._position + " | " + p._position + " | " + y);
+    }
+
+    private Player PlayerNearby()
+    {
         foreach (var target in targets)
         {
-            if (grid[target]._entity.tag == "Player")
+            Tile value;
+            if (grid.TryGetValue(tile._position + target, out value))
             {
-                Debug.Log(grid[target]._entity.tag);
-                return grid[target];
+                if (grid[tile._position + target].GetComponentInChildren<Player>() != null)
+                {
+                    return grid[tile._position + target].GetComponentInChildren<Player>();
+                }
             }
         }
         return null;
-        //if (grid[new Vector2(tile._position.x + 1, tile._position.y + 1)]._entity != null &&
-        //    grid[new Vector2(tile._position.x + 1, tile._position.y + 1)]._entity.tag == "Player")
-        //{
-        //    return grid[new Vector2(tile._position.x + 1, tile._position.y + 1)];
-        //}
-        //else if (grid[new Vector2(tile._position.x + 1, tile._position.y)]._entity != null &&
-        //    grid[new Vector2(tile._position.x + 1, tile._position.y)]._entity.tag == "Player")
-        //{
-        //    return grid[new Vector2(tile._position.x + 1, tile._position.y)];
-        //}
-        //else if (grid[new Vector2(tile._position.x + 1, tile._position.y - 1)]._entity != null &&
-        //    grid[new Vector2(tile._position.x + 1, tile._position.y - 1)]._entity.tag == "Player")
-        //{
-        //    return grid[new Vector2(tile._position.x + 1, tile._position.y - 1)];
-        //}
-        //else if (grid[new Vector2(tile._position.x - 1, tile._position.y - 1)]._entity != null &&
-        //    grid[new Vector2(tile._position.x - 1, tile._position.y - 1)]._entity.tag == "Player")
-        //{
-        //    return grid[new Vector2(tile._position.x - 1, tile._position.y - 1)];
-        //}
-        //else if (grid[new Vector2(tile._position.x - 1, tile._position.y)]._entity != null &&
-        //    grid[new Vector2(tile._position.x - 1, tile._position.y)]._entity.tag == "Player")
-        //{
-        //    return grid[new Vector2(tile._position.x - 1, tile._position.y)];
-        //}
-        //else if (grid[new Vector2(tile._position.x - 1, tile._position.y + 1)]._entity != null &&
-        //    grid[new Vector2(tile._position.x - 1, tile._position.y + 1)]._entity.tag == "Player")
-        //{
-        //    return grid[new Vector2(tile._position.x, tile._position.y + 1)];
-        //}
-        //else if (grid[new Vector2(tile._position.x, tile._position.y - 1)]._entity != null &&
-        //    grid[new Vector2(tile._position.x, tile._position.y - 1)]._entity.tag == "Player")
-        //{
-        //    return grid[new Vector2(tile._position.x, tile._position.y - 1)];
-        //}
-        //else if (grid[new Vector2(tile._position.x, tile._position.y + 1)]._entity != null &&
-        //    grid[new Vector2(tile._position.x, tile._position.y + 1)]._entity.tag == "Player")
-        //{
-        //    return grid[new Vector2(tile._position.x, tile._position.y + 1)];
-        //}
-        //else { return null; }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -10,20 +11,7 @@ public class Grid : MonoBehaviour
 
     public Dictionary<Vector2, Tile> _tiles;
 
-    public List<Entity> entities;
-
-    public Entity Player;
-
-    private void Start()
-    {
-        GenerateGrid();
-        GetTile(2, 0)._entity = Player;
-        GetTile(1, 4)._entity = entities[0];
-        GetTile(3, 4)._entity = entities[1];
-        GetTile(2, 1)._entity = entities[2];
-        Display();
-    }
-    private void GenerateGrid()
+    public void GenerateGrid()
     {
         Debug.Log("grid");
         _tiles = new Dictionary<Vector2, Tile>();
@@ -43,13 +31,6 @@ public class Grid : MonoBehaviour
             }
         }
         transform.position = new Vector2(-2, -2);
-    }
-    public void Display()
-    {
-        foreach (var tile in _tiles)
-        {
-            tile.Value.Display();
-        }
     }
 
     public Tile GetTile(Vector2 pos)

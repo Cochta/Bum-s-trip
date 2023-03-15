@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Entity : MonoBehaviour
@@ -12,15 +13,22 @@ public abstract class Entity : MonoBehaviour
     public int MoveDistance = 0; // nb of tiles it can move
     public int ActionPoints = 0;
 
-    public Tile tile = null;
+    public Tile tile;
+    public GameObject Player;
+    public Dictionary<Vector2, Tile> grid;
 
     public string Name = null;
 
     public Sprite _sprite;
 
-    public abstract void Start();
+    public bool Isdead = false;
 
-    protected virtual void PerformAction()
+    protected virtual void Awake()
+    {
+
+    }
+
+    public virtual void PerformAction()
     {
 
     }
@@ -37,8 +45,14 @@ public abstract class Entity : MonoBehaviour
     {
         CurentHealth -= Damage - Defense;
     }
-    protected Dictionary<Vector2, Tile> GetGrid()
+    protected void GetGrid()
     {
-        return GetComponentInParent<Grid>()._tiles;
+        grid = transform.parent.parent.GetComponentInParent<Grid>()._tiles;
+    }
+
+    protected Tile GetTile()
+    {
+        return transform.parent.GetComponentInParent<Tile>();
+
     }
 }

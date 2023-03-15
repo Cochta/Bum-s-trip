@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,16 +8,10 @@ public class Player : Entity
 {
     public Stuff Stuff;
     public List<Item> Items;
-    // Start is called before the first frame update
-    public override void Start()
-    {
-        Debug.Log("Peniche");
-    }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Awake()
     {
-
+        tile = GetTile();
     }
 
     private void Init()

@@ -441,8 +441,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1980615994}
   - component: {fileID: 1980615993}
+  - component: {fileID: 1980615995}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: Battle
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -463,11 +464,6 @@ MonoBehaviour:
   _width: 5
   _height: 7
   _tilePrefab: {fileID: 4748424814330208773, guid: 4f7a98a38e18e6f499661539ce7ac8b1, type: 3}
-  entities:
-  - {fileID: 7594397549036804242, guid: d0a80d7c51f8f894998e183410c19dc4, type: 3}
-  - {fileID: 7594397549036804242, guid: d0a80d7c51f8f894998e183410c19dc4, type: 3}
-  - {fileID: 7594397549036804242, guid: d0a80d7c51f8f894998e183410c19dc4, type: 3}
-  Player: {fileID: 8347469024931506962, guid: d308f9712d6556940810413765501a86, type: 3}
 --- !u!4 &1980615994
 Transform:
   m_ObjectHideFlags: 0
@@ -483,6 +479,23 @@ Transform:
   m_Father: {fileID: 1333412602}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1980615995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980615992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f575a3390e8a546aec70aad8e47ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerPrefab: {fileID: 6074351760511051609, guid: d308f9712d6556940810413765501a86, type: 3}
+  EnemyLayout: {fileID: 2107309344247627312, guid: e5c11ec30d8058d4b9617ecdd95a5bd8, type: 3}
+  Enemies: []
+  Player: {fileID: 0}
+  GameState: 0
 --- !u!1001 &797416877805062092
 PrefabInstance:
   m_ObjectHideFlags: 0
