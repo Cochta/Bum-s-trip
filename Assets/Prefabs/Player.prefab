@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6819561285886064743}
   - component: {fileID: 5479705094374128100}
-  m_Layer: 0
-  m_Name: Slip
+  m_Layer: 1
+  m_Name: Clodo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: b7ebbd7f5b643f14582d7281b7a7f5db, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dc9da92edc148a94eb4e171bc98280c5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4517207141835089523}
   - component: {fileID: 8347469024931506962}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -129,15 +129,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97098015d2f3a174bbb134c746029181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurentHealth: 0
-  MaxHealth: 0
-  Damage: 0
-  Defense: 0
-  Speed: 0
-  MoveDistance: 0
-  ActionPoints: 0
+  CurentHealth: 3
+  MaxHealth: 3
+  Damage: 2
+  Defense: 1
+  Luck: 1
+  MoveDistance: 2
+  ActionPoints: 2
   tile: {fileID: 0}
-  Name: 
-  _sprite: {fileID: 21300000, guid: b7ebbd7f5b643f14582d7281b7a7f5db, type: 3}
+  Name: Player
+  Isdead: 0
   Stuff: {fileID: 0}
   Items: []
+  LeftActions: 0
+  _display: {fileID: 0}
+  BM: {fileID: 0}

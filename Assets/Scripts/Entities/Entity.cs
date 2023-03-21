@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public abstract class Entity : MonoBehaviour
 {
@@ -9,12 +10,12 @@ public abstract class Entity : MonoBehaviour
     public int MaxHealth = 0;
     public int Damage = 0;
     public int Defense = 0;
-    public int Speed = 0; // initiative
+    public int Luck = 0;
     public int MoveDistance = 0; // nb of tiles it can move
     public int ActionPoints = 0;
 
     public Tile tile;
-    public GameObject Player;
+    public Player Player;
     public Dictionary<Vector2, Tile> grid;
 
     public string Name = null;
@@ -22,6 +23,9 @@ public abstract class Entity : MonoBehaviour
     public Sprite _sprite;
 
     public bool Isdead = false;
+
+    [SerializeField] private SpriteRenderer _deadSR;
+    [SerializeField] private Sprite _deadSprite;
 
     protected virtual void Awake()
     {
@@ -37,13 +41,18 @@ public abstract class Entity : MonoBehaviour
     {
 
     }
-    protected virtual void Attack(Entity entity, int Damage)
+    protected virtual void Attack(Player player, int Damage)
     {
-        entity.TakeDamage(Damage);
+        player.TakeDamage(Damage);
     }
-    protected virtual void TakeDamage(int Damage)
+    public virtual void TakeDamage(int Damage)
     {
         CurentHealth -= Damage - Defense;
+        if (CurentHealth <= 0)
+        {
+            Isdead = true;
+            _deadSR.sprite = _deadSprite;
+        }
     }
     protected void GetGrid()
     {
@@ -53,6 +62,18 @@ public abstract class Entity : MonoBehaviour
     protected Tile GetTile()
     {
         return transform.parent.GetComponentInParent<Tile>();
-
     }
+
+    //protected virtual void OnMouseEnter()
+    //{
+    //    var display = transform.parent.parent.GetComponentInParent<EntityDisplay>();
+    //    display._stats.SetActive(true);
+    //    display.Display.OnDisplayEntity(this);
+    //}
+
+    //protected virtual void OnMouseExit()
+    //{
+    //    var display = transform.parent.parent.GetComponentInParent<EntityDisplay>();
+    //    display._stats.SetActive(false);
+    //}
 }

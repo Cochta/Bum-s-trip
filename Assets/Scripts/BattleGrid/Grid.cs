@@ -13,7 +13,6 @@ public class Grid : MonoBehaviour
 
     public void GenerateGrid()
     {
-        Debug.Log("grid");
         _tiles = new Dictionary<Vector2, Tile>();
         for (int x = 0; x < _width; x++)
         {
@@ -46,4 +45,11 @@ public class Grid : MonoBehaviour
         return GetTile(new Vector2(x, y));
     }
 
+    public void CancelHighlight()
+    {
+        foreach (var tile in _tiles)
+        {
+            tile.Value.CanceHighlight();
+        }
+    }
 }

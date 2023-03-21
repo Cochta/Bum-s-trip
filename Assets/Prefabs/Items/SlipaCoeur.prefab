@@ -45,12 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 0
-  Attack: 0
+  Damage: 0
   Defense: -2
-  Dodge: 3
-  Crit: -5
   Speed: 0
-  Name: 
+  MoveDistance: 0
+  ActionPoints: 0
+  Name: Underwear ?
   Description: 
   _rarity: 2
   _part: 8

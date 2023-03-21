@@ -28,7 +28,7 @@ public abstract class Item : MonoBehaviour
     public int Health = 0;
     public int Damage = 0;
     public int Defense = 0;
-    public int Speed = 0; // initiative
+    public int Luck = 0;
     public int MoveDistance = 0; // nb of tiles it can move
     public int ActionPoints = 0;
 
@@ -40,6 +40,8 @@ public abstract class Item : MonoBehaviour
     public Parts _part = Parts.None;
 
     public Sprite _sprite;
+
+    public Ability ability = null;
 
 
 

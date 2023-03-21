@@ -2,27 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class DisplayStats : MonoBehaviour
 {
-
-
+    [SerializeField] private GameObject _name;
+    [SerializeField] private GameObject _description;
     [SerializeField] private GameObject _healthStat;
     [SerializeField] private GameObject _attackStat;
     [SerializeField] private GameObject _defenseStat;
-    [SerializeField] private GameObject _speedStat;
-    [SerializeField] private GameObject _dodgeStat;
-    [SerializeField] private GameObject _critStat;
+    [SerializeField] private GameObject _luckStat;
+    [SerializeField] private GameObject _MoveStat;
+    [SerializeField] private GameObject _actionPointStat;
 
-    // Start is called before the first frame update
-    public void OnDisplay(Item item)
+    public void OnDisplayItem(Item item)
     {
         _healthStat.SetActive(true);
         _attackStat.SetActive(true);
         _defenseStat.SetActive(true);
-        _speedStat.SetActive(true);
-        _dodgeStat.SetActive(true);
-        _critStat.SetActive(true);
+        _luckStat.SetActive(true);
+        _MoveStat.SetActive(true);
+        _actionPointStat.SetActive(true);
+
+        _name.GetComponent<TextMeshPro>().text = item.Name;
 
         if (item.Health != 0)
             _healthStat.GetComponentInChildren<TextMeshPro>().text = item.Health.ToString("+0;-#");
@@ -36,22 +38,36 @@ public class DisplayStats : MonoBehaviour
             _defenseStat.GetComponentInChildren<TextMeshPro>().text = item.Defense.ToString("+0;-#");
         else
             _defenseStat.SetActive(false);
-        if (item.Speed != 0)
-            _speedStat.GetComponentInChildren<TextMeshPro>().text = item.Speed.ToString("+0;-#");
+        if (item.Luck != 0)
+            _luckStat.GetComponentInChildren<TextMeshPro>().text = item.Luck.ToString("+0;-#");
         else
-            _speedStat.SetActive(false);
+            _luckStat.SetActive(false);
         if (item.MoveDistance != 0)
-            _dodgeStat.GetComponentInChildren<TextMeshPro>().text = item.MoveDistance.ToString("+0;-#");
+            _MoveStat.GetComponentInChildren<TextMeshPro>().text = item.MoveDistance.ToString("+0;-#");
         else
-            _dodgeStat.SetActive(false);
+            _MoveStat.SetActive(false);
         if (item.ActionPoints != 0)
-            _critStat.GetComponentInChildren<TextMeshPro>().text = item.ActionPoints.ToString("+0;-#");
+            _actionPointStat.GetComponentInChildren<TextMeshPro>().text = item.ActionPoints.ToString("+0;-#");
         else
-            _critStat.SetActive(false);
+            _actionPointStat.SetActive(false);
+    }
+    public void OnDisplayEntity(Entity entity)
+    {
+        _healthStat.SetActive(true);
+        _attackStat.SetActive(true);
+        _defenseStat.SetActive(true);
+        _luckStat.SetActive(true);
+        _MoveStat.SetActive(true);
+        _actionPointStat.SetActive(true);
 
+        _name.GetComponent<TextMeshPro>().text = entity.Name;
 
-
-
+        _healthStat.GetComponentInChildren<TextMeshPro>().text = entity.CurentHealth + "/" + entity.MaxHealth;
+        _attackStat.GetComponentInChildren<TextMeshPro>().text = entity.Damage.ToString();
+        _defenseStat.GetComponentInChildren<TextMeshPro>().text = entity.Defense.ToString();
+        _luckStat.GetComponentInChildren<TextMeshPro>().text = entity.Luck.ToString();
+        _MoveStat.GetComponentInChildren<TextMeshPro>().text = entity.MoveDistance.ToString();
+        _actionPointStat.GetComponentInChildren<TextMeshPro>().text = entity.ActionPoints.ToString();
 
     }
 }

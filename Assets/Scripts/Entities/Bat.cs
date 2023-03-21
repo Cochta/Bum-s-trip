@@ -28,7 +28,8 @@ public class Bat : Entity
 
     public override void PerformAction()
     {
-        StartCoroutine(ActionList());
+        if (!Isdead)
+            StartCoroutine(ActionList());
     }
 
     private IEnumerator ActionList()
@@ -52,13 +53,12 @@ public class Bat : Entity
 
     protected override void Move()
     {
-        var pPos = Player.GetComponent<Entity>().tile._position;
+        var pPos = Player.GetComponent<Player>().tile._position;
         var myPos = tile._position;
         float y = 0;
         float x = 0;
         bool diagonale = Mathf.Abs(myPos.y - pPos.y) == Mathf.Abs(myPos.x - pPos.x);
 
-        Debug.Log(myPos.y + " " + pPos.y + " | " + myPos.x + " " + pPos.x);
         if (myPos.y > pPos.y)
         {
             y = myPos.y - 1;
@@ -105,10 +105,9 @@ public class Bat : Entity
         {
             transform.parent = grid[newPos]._entity.transform;
             transform.position = transform.parent.position;
-            tile._position = newPos;
+            tile = grid[newPos];
         }
-
-        //Debug.Log(tile._position + " | " + p._position + " | " + y);
+        tile = GetTile();
     }
 
     private Player PlayerNearby()
