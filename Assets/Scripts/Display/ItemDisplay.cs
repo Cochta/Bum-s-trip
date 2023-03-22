@@ -22,8 +22,6 @@ public class ItemDisplay : MonoBehaviour
     [SerializeField]
     private GameObject _stats;
 
-    private bool IsOvering = false;
-
     private void Update()
     {
         if (_item != null)
@@ -47,24 +45,18 @@ public class ItemDisplay : MonoBehaviour
             _border.sprite = _borderLegendary;
     }
 
-    private void OnMouseOver()
+    private void OnMouseEnter()
     {
-        if (_stats != null && _item != null && !IsOvering)
+        if (_stats != null && _item != null)
         {
-            IsOvering = true;
             _stats.SetActive(true);
-            _stats.GetComponent<DisplayStats>().OnDisplay(_item);
+            _stats.GetComponent<DisplayStats>().OnDisplayItem(_item);
             //_description.text = _item._description;
         }
     }
 
     private void OnMouseExit()
     {
-        if (IsOvering)
-        {
-            _stats.SetActive(false);
-            IsOvering = false;
-        }
-
+        _stats.SetActive(false);
     }
 }

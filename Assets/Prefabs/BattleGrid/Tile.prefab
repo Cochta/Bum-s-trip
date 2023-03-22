@@ -100,13 +100,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45041e1fd0267984db6afe8c1ab4c179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _col: {fileID: 0}
   _entity: {fileID: 3634572047086070828}
   _position: {x: 0, y: 0}
   _entitySR: {fileID: 0}
   _backgroundSR: {fileID: 8890391761188893142}
   _colorOdd: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   _colorEven: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
-  _colorHighlight: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+  _colorHighlight: {r: 0.495283, g: 1, b: 0.98240143, a: 0.6392157}
 --- !u!61 &8788240626755732823
 BoxCollider2D:
   m_ObjectHideFlags: 0

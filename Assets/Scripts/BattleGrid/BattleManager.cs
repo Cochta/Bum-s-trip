@@ -24,9 +24,13 @@ public class BattleManager : MonoBehaviour
     public EnemyLayout EnemyLayout;
 
     public List<GameObject> Enemies;
-    public GameObject Player;
+    public Player Player;
 
     public GameStates GameState = GameStates.None;
+
+    [SerializeField] private Stuff _stuff;
+    [SerializeField] private PlayerDisplay _display;
+    public MovePoolManager Pool;
 
     void Start()
     {
@@ -40,12 +44,14 @@ public class BattleManager : MonoBehaviour
     public void Battle()
     {
         ChangeState(GameStates.PlayerTurn);
-        ChangeState(GameStates.EnemiesTurn);
     }
 
     public void SpawnPlayer()
     {
-        Player = Instantiate(PlayerPrefab, _grid.GetTile(2, 3)._entity.transform);
+        Player = Instantiate(PlayerPrefab, _grid.GetTile(2, 3)._entity.transform).GetComponent<Player>();
+        Player.Init(_stuff, _display);
+        Pool.Player = Player;
+        Player.BM = this;
     }
 
     public void SpawnEnemies()
@@ -73,15 +79,22 @@ public class BattleManager : MonoBehaviour
                 SpawnEnemies();
                 break;
             case GameStates.PlayerTurn:
-                //PlayerPrefab.taper
-                Debug.Log("player taper");
+                foreach (var ability in Pool.Abilities)
+                {
+                    ability._col.enabled = true;
+                }
                 break;
             case GameStates.EnemiesTurn:
+                foreach (var ability in Pool.Abilities)
+                {
+                    ability._col.enabled = false;
+                    ability.IsSelected = false;
+                }
                 foreach (var enemy in Enemies)
                 {
-
                     enemy.GetComponent<Entity>().PerformAction();
                 }
+                ChangeState(GameStates.PlayerTurn);
                 break;
             case GameStates.None:
                 break;
