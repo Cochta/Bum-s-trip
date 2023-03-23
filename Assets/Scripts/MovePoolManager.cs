@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MovePoolManager : MonoBehaviour
 {
-    public Player Player;
+    public PlayerInBattle Player;
 
     public List<Ability> Abilities;
 

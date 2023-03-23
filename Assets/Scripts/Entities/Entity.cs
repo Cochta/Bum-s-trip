@@ -15,7 +15,7 @@ public abstract class Entity : MonoBehaviour
     public int ActionPoints = 0;
 
     public Tile tile;
-    public Player Player;
+    public PlayerInBattle Player;
     public Dictionary<Vector2, Tile> grid;
 
     public string Name = null;
@@ -24,8 +24,12 @@ public abstract class Entity : MonoBehaviour
 
     public bool Isdead = false;
 
+    public bool HasFinishedTurn = false;
+
     [SerializeField] private SpriteRenderer _deadSR;
     [SerializeField] private Sprite _deadSprite;
+
+    public bool IsTurn = false;
 
     protected virtual void Awake()
     {
@@ -41,9 +45,9 @@ public abstract class Entity : MonoBehaviour
     {
 
     }
-    protected virtual void Attack(Player player, int Damage)
+    protected virtual void Attack(PlayerInBattle player, int Damage)
     {
-        player.TakeDamage(Damage);
+        PlayerData.Instance.TakeDamage(Damage);
     }
     public virtual void TakeDamage(int Damage)
     {

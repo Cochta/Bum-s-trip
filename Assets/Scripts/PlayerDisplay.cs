@@ -13,7 +13,7 @@ public class PlayerDisplay : MonoBehaviour
     [SerializeField] private GameObject _luckStat;
     [SerializeField] private GameObject _MoveStat;
     [SerializeField] private GameObject _actionPointStat;
-    public void OnDisplayPlayer(Player player)
+    public void OnDisplayPlayer()
     {
         _healthStat.SetActive(true);
         _attackStat.SetActive(true);
@@ -22,14 +22,12 @@ public class PlayerDisplay : MonoBehaviour
         _MoveStat.SetActive(true);
         _actionPointStat.SetActive(true);
 
-        _name.GetComponent<TextMeshPro>().text = player.Name;
-
-        _healthStat.GetComponentInChildren<TextMeshPro>().text = player.CurentHealth + "/" + player.MaxHealth;
-        _attackStat.GetComponentInChildren<TextMeshPro>().text = player.Damage.ToString();
-        _defenseStat.GetComponentInChildren<TextMeshPro>().text = player.Defense.ToString();
-        _luckStat.GetComponentInChildren<TextMeshPro>().text = player.Luck.ToString();
-        _MoveStat.GetComponentInChildren<TextMeshPro>().text = player.MoveDistance.ToString();
-        _actionPointStat.GetComponentInChildren<TextMeshPro>().text = player.ActionPoints.ToString();
+        _healthStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.CurrentHealth + "/" + PlayerData.Instance.MaxHealth;
+        _attackStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.Damage.ToString();
+        _defenseStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.Defense.ToString();
+        _luckStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.Luck.ToString();
+        _MoveStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.MoveDistance.ToString();
+        _actionPointStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.ActionPoints.ToString();
 
     }
 }

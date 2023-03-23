@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Overlays;
 using UnityEngine;
+using static BattleManager;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class BattleManager : MonoBehaviour
 {
     public enum GameStates
     {
-        GenerateGrid,
-        SpawnPlayer,
-        SpawnEnemies,
+        Initialisation,
         PlayerTurn,
         EnemiesTurn,
+        EndGame,
         None
     }
 
@@ -24,22 +24,43 @@ public class BattleManager : MonoBehaviour
     public EnemyLayout EnemyLayout;
 
     public List<GameObject> Enemies;
-    public Player Player;
+    public PlayerInBattle Player;
 
     public GameStates GameState = GameStates.None;
 
     [SerializeField] private Stuff _stuff;
-    [SerializeField] private PlayerDisplay _display;
     public MovePoolManager Pool;
 
     void Start()
     {
-        _grid = GetComponent<Grid>();
-        ChangeState(GameStates.GenerateGrid);
-        ChangeState(GameStates.SpawnPlayer);
-        ChangeState(GameStates.SpawnEnemies);
+        ChangeState(GameStates.Initialisation);
         Battle();
     }
+    private void Update()
+    {
+        if (GameState == GameStates.PlayerTurn)
+        {
+            if (!Player.IsPlayerTurn)
+            {
+                PlayerData.Instance.UpdateData();
+                ChangeState(GameStates.EnemiesTurn);
+            }
+        }
+        int enemytoplay = 0;
+        if (GameState == GameStates.EnemiesTurn)
+        {
+            foreach (var enemy in Enemies)
+            {
+                if (!enemy.GetComponent<Entity>().IsTurn || enemy.GetComponent<Entity>().Isdead)
+                    enemytoplay++;
+            }
+            if (enemytoplay == Enemies.Count)
+            {
+                ChangeState(GameStates.PlayerTurn);
+            }
+        }
+    }
+
 
     public void Battle()
     {
@@ -48,10 +69,8 @@ public class BattleManager : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        Player = Instantiate(PlayerPrefab, _grid.GetTile(2, 3)._entity.transform).GetComponent<Player>();
-        Player.Init(_stuff, _display);
+        Player = Instantiate(PlayerPrefab, _grid.GetTile(2, 1)._entity.transform).GetComponent<PlayerInBattle>();
         Pool.Player = Player;
-        Player.BM = this;
     }
 
     public void SpawnEnemies()
@@ -69,37 +88,49 @@ public class BattleManager : MonoBehaviour
 
         switch (newState)
         {
-            case GameStates.GenerateGrid:
+            case GameStates.Initialisation:
+                _grid = GetComponent<Grid>();
                 _grid.GenerateGrid();
-                break;
-            case GameStates.SpawnPlayer:
                 SpawnPlayer();
-                break;
-            case GameStates.SpawnEnemies:
                 SpawnEnemies();
                 break;
             case GameStates.PlayerTurn:
-                foreach (var ability in Pool.Abilities)
-                {
-                    ability._col.enabled = true;
-                }
+                Player.IsPlayerTurn = true;
+                EnableAbilities();
                 break;
             case GameStates.EnemiesTurn:
-                foreach (var ability in Pool.Abilities)
-                {
-                    ability._col.enabled = false;
-                    ability.IsSelected = false;
-                }
-                foreach (var enemy in Enemies)
-                {
-                    enemy.GetComponent<Entity>().PerformAction();
-                }
-                ChangeState(GameStates.PlayerTurn);
+                DisableAbilities();
+                StartCoroutine(EnemiesTurn());
                 break;
             case GameStates.None:
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+        }
+    }
+    private IEnumerator EnemiesTurn()
+    {
+        foreach (var enemy in Enemies)
+        {
+            enemy.GetComponent<Entity>().IsTurn = true;
+            enemy.GetComponent<Entity>().PerformAction();
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    private void EnableAbilities()
+    {
+        foreach (var ability in Pool.Abilities)
+        {
+            ability._col.enabled = true;
+        }
+    }
+    private void DisableAbilities()
+    {
+        foreach (var ability in Pool.Abilities)
+        {
+            ability._col.enabled = false;
+            ability.IsSelected = false;
         }
     }
 }

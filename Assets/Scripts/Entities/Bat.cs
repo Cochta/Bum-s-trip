@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
 public class Bat : Entity
@@ -29,97 +30,100 @@ public class Bat : Entity
     public override void PerformAction()
     {
         if (!Isdead)
-            StartCoroutine(ActionList());
-    }
-
-    private IEnumerator ActionList()
-    {
-
-        for (int i = 0; i < ActionPoints; i++)
         {
-            yield return new WaitForSeconds(1);
-            if (PlayerNearby() != null)
+            for (int i = 0; i < ActionPoints; i++)
             {
-                Attack(PlayerNearby(), Damage);
-                //Debug.Log("bat taper");
-            }
-            else
-            {
-                Move();
+                if (PlayerNearby() != null)
+                {
+                    Attack(PlayerNearby(), Damage);
+                    StartCoroutine(MoveToPositionThenReturn(transform, Player.transform.position, 0.5f));
+                    //Debug.Log("bat taper");
+                }
+                else
+                {
+                    Move();
+                }
             }
         }
-
     }
-
     protected override void Move()
     {
-        var pPos = Player.GetComponent<Player>().tile._position;
-        var myPos = tile._position;
-        float y = 0;
-        float x = 0;
-        bool diagonale = Mathf.Abs(myPos.y - pPos.y) == Mathf.Abs(myPos.x - pPos.x);
+        var playerTile = Player.GetComponent<PlayerInBattle>().tile._position;
+        var myTile = tile._position;
+        Vector2 newPos = Vector2.zero;
 
-        if (myPos.y > pPos.y)
+        if (myTile.y > playerTile.y)
         {
-            y = myPos.y - 1;
-            x = myPos.x;
-            if (diagonale && (myPos.x > pPos.x))
+            newPos = new Vector2(myTile.x, myTile.y - 1);
+            if (Mathf.Abs(myTile.y - playerTile.y) == Mathf.Abs(myTile.x - playerTile.x))
             {
-                x = myPos.x - 1;
-            }
-            else if (diagonale && (myPos.x < pPos.x))
-            {
-                x = myPos.x + 1;
+                newPos.x = myTile.x > playerTile.x ? myTile.x - 1 : myTile.x + 1;
             }
         }
-        else if (myPos.y < pPos.y)
+        else if (myTile.y < playerTile.y)
         {
-            y = myPos.y + 1;
-            x = myPos.x;
-            if (diagonale && (myPos.x > pPos.x))
+            newPos = new Vector2(myTile.x, myTile.y + 1);
+            if (Mathf.Abs(myTile.y - playerTile.y) == Mathf.Abs(myTile.x - playerTile.x))
             {
-                x = myPos.x - 1;
-            }
-            else if (diagonale && (myPos.x < pPos.x))
-            {
-                x = myPos.x + 1;
+                newPos.x = myTile.x > playerTile.x ? myTile.x - 1 : myTile.x + 1;
             }
         }
-        else if (myPos.y == pPos.y)
+        else if (myTile.y == playerTile.y)
         {
-            if (myPos.x > pPos.x)
-            {
-                y = myPos.y;
-                x = myPos.x - 1;
-            }
-            else if (myPos.x < pPos.x)
-            {
-                y = myPos.y;
-                x = myPos.x + 1;
-            }
+            newPos = new Vector2(myTile.x < playerTile.x ? myTile.x + 1 : myTile.x - 1, myTile.y);
         }
-
-        var newPos = new Vector2(x, y);
 
         if (grid[newPos]._entity.GetComponentInChildren<Entity>() == null)
         {
             transform.parent = grid[newPos]._entity.transform;
-            transform.position = transform.parent.position;
             tile = grid[newPos];
         }
+        StartCoroutine(MoveToPosition(transform, transform.parent.position, 0.5f));
         tile = GetTile();
+        HasFinishedTurn = true;
+    }
+    public IEnumerator MoveToPosition(Transform transform, Vector3 position, float timeToMove)
+    {
+        var currentPos = transform.position;
+        var t = 0f;
+        while (t < 1)
+        {
+            t += Time.deltaTime / timeToMove;
+            transform.position = Vector3.Lerp(currentPos, position, t);
+            yield return null;
+        }
+        IsTurn = false;
+    }
+    public IEnumerator MoveToPositionThenReturn(Transform transform, Vector3 position, float timeToMove)
+    {
+        var currentPos = transform.position;
+        var t = 0f;
+        while (t < 1)
+        {
+            t += Time.deltaTime / (timeToMove / 2);
+            transform.position = Vector3.Lerp(currentPos, position, t);
+            yield return null;
+        }
+        t = 0f;
+        while (t < 1)
+        {
+            t += Time.deltaTime / (timeToMove / 2);
+            transform.position = Vector3.Lerp(position, currentPos, t);
+            yield return null;
+        }
+        IsTurn = false;
     }
 
-    private Player PlayerNearby()
+    private PlayerInBattle PlayerNearby()
     {
         foreach (var target in targets)
         {
             Tile value;
             if (grid.TryGetValue(tile._position + target, out value))
             {
-                if (grid[tile._position + target].GetComponentInChildren<Player>() != null)
+                if (grid[tile._position + target].GetComponentInChildren<PlayerInBattle>() != null)
                 {
-                    return grid[tile._position + target].GetComponentInChildren<Player>();
+                    return grid[tile._position + target].GetComponentInChildren<PlayerInBattle>();
                 }
             }
         }

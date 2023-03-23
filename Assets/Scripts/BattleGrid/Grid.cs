@@ -44,6 +44,7 @@ public class Grid : MonoBehaviour
     {
         return GetTile(new Vector2(x, y));
     }
+    public bool HasTile(Vector2 pos) { return _tiles.ContainsKey(pos); }
 
     public void CancelHighlight()
     {

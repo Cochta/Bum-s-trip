@@ -23,7 +23,7 @@ public class Ability : MonoBehaviour
         IsSelected = false;
         tile.GetComponentInParent<Grid>().CancelHighlight();
 
-        _PoolManager.Player.ActionPoints -= 1;
+        PlayerData.Instance.ActionPoints -= 1;
     }
 
     protected virtual void OnMouseEnter()
@@ -31,9 +31,9 @@ public class Ability : MonoBehaviour
         Tile value;
         foreach (var target in Targets)
         {
-            if (_PoolManager.Player.grid.TryGetValue(_PoolManager.Player.tile._position + target, out value))
+            if (_PoolManager.Player.grid._tiles.ContainsKey(_PoolManager.Player.tile._position + target))
             {
-                _PoolManager.Player.grid[_PoolManager.Player.tile._position + target].HighLight(HighlightColor);
+                _PoolManager.Player.grid._tiles[_PoolManager.Player.tile._position + target].HighLight(HighlightColor);
             }
         }
     }
@@ -54,7 +54,7 @@ public class Ability : MonoBehaviour
     {
         if (!IsSelected)
         {
-            foreach (var tile in _PoolManager.Player.grid)
+            foreach (var tile in _PoolManager.Player.grid._tiles)
             {
                 tile.Value.CanceHighlight();
             }
