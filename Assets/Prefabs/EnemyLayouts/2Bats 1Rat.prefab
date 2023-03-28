@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6698093819571012464}
   - component: {fileID: 2107309344247627312}
   m_Layer: 0
-  m_Name: 3Bats
+  m_Name: 2Bats 1Rat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Enemies:
   - {fileID: 515362624524675704, guid: d0a80d7c51f8f894998e183410c19dc4, type: 3}
-  - {fileID: 515362624524675704, guid: d0a80d7c51f8f894998e183410c19dc4, type: 3}
+  - {fileID: 515362624524675704, guid: a7227493a0ea1c44794ef61e93f62827, type: 3}
   - {fileID: 515362624524675704, guid: d0a80d7c51f8f894998e183410c19dc4, type: 3}
   Positions:
   - {x: 3, y: 4}
-  - {x: 5, y: 4}
+  - {x: 5, y: 5}
   - {x: 7, y: 4}

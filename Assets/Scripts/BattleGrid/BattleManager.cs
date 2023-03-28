@@ -14,7 +14,6 @@ public class BattleManager : MonoBehaviour
         Initialisation,
         PlayerTurn,
         EnemiesTurn,
-        EndGame,
         None
     }
 
@@ -34,7 +33,6 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         ChangeState(GameStates.Initialisation);
-        Battle();
     }
     private void Update()
     {
@@ -46,30 +44,28 @@ public class BattleManager : MonoBehaviour
                 ChangeState(GameStates.EnemiesTurn);
             }
         }
-        int enemytoplay = 0;
-        if (GameState == GameStates.EnemiesTurn)
+        else if (GameState == GameStates.EnemiesTurn)
         {
+            // Check if there are any enemies left to play
+            int enemiesLeftToPlay = 0;
             foreach (var enemy in Enemies)
             {
-                if (!enemy.GetComponent<Entity>().IsTurn || enemy.GetComponent<Entity>().Isdead)
-                    enemytoplay++;
+                if (enemy.GetComponent<Entity>().IsTurn && !enemy.GetComponent<Entity>().IsDead)
+                {
+                    enemiesLeftToPlay++;
+                }
             }
-            if (enemytoplay == Enemies.Count)
+            if (enemiesLeftToPlay == 0)
             {
+                // If there are no enemies left to play, change state to PlayerTurn
                 ChangeState(GameStates.PlayerTurn);
             }
         }
     }
 
-
-    public void Battle()
-    {
-        ChangeState(GameStates.PlayerTurn);
-    }
-
     public void SpawnPlayer()
     {
-        Player = Instantiate(PlayerPrefab, _grid.GetTile(2, 1)._entity.transform).GetComponent<PlayerInBattle>();
+        Player = Instantiate(PlayerPrefab, _grid.GetTile(5, 1)._entity.transform).GetComponent<PlayerInBattle>();
         Pool.Player = Player;
     }
 
@@ -81,7 +77,6 @@ public class BattleManager : MonoBehaviour
             Enemies[i].GetComponent<Entity>().Player = Player;
         }
     }
-
     public void ChangeState(GameStates newState)
     {
         GameState = newState;
@@ -93,14 +88,14 @@ public class BattleManager : MonoBehaviour
                 _grid.GenerateGrid();
                 SpawnPlayer();
                 SpawnEnemies();
+                ChangeState(GameStates.PlayerTurn);
                 break;
             case GameStates.PlayerTurn:
                 Player.IsPlayerTurn = true;
-                EnableAbilities();
                 break;
             case GameStates.EnemiesTurn:
-                DisableAbilities();
-                StartCoroutine(EnemiesTurn());
+                Player.IsPlayerTurn = false;
+                StartCoroutine(EnemyTurnCoroutine());
                 break;
             case GameStates.None:
                 break;
@@ -108,29 +103,18 @@ public class BattleManager : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
     }
-    private IEnumerator EnemiesTurn()
+
+    private IEnumerator EnemyTurnCoroutine()
     {
         foreach (var enemy in Enemies)
         {
-            enemy.GetComponent<Entity>().IsTurn = true;
-            enemy.GetComponent<Entity>().PerformAction();
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
+            Entity entity = enemy.GetComponent<Entity>();
+            entity.IsTurn = true;
+            entity.PerformAction();
 
-    private void EnableAbilities()
-    {
-        foreach (var ability in Pool.Abilities)
-        {
-            ability._col.enabled = true;
-        }
-    }
-    private void DisableAbilities()
-    {
-        foreach (var ability in Pool.Abilities)
-        {
-            ability._col.enabled = false;
-            ability.IsSelected = false;
+            yield return new WaitUntil(() => !entity.IsTurn);
+
+            yield return new WaitForSeconds(0.5f);
         }
     }
 }

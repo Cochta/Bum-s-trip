@@ -23,6 +23,13 @@ public class PlayerInBattle : MonoBehaviour
         GetGrid();
         tile = GetTile();
     }
+
+    void Update()
+    {
+        if (IsPlayerTurn) PlayerData.Instance.EnableAbilities();
+        else PlayerData.Instance.DisableAbilities();
+
+    }
     private void GetGrid()
     {
         grid = transform.parent.parent.GetComponentInParent<Grid>();

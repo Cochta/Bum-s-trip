@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4412153979188975944}
   - component: {fileID: 7335923536002135546}
+  - component: {fileID: 3424710324791204746}
   m_Layer: 0
   m_Name: Node
   m_TagString: Untagged
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -84,3 +85,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3424710324791204746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841880854755935145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649748477f8522844a19580051865093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 0
+  Depth: 0
+  _spriteStart: {fileID: 21300000, guid: 60b113e10a1e16246be4986dbf76b1c1, type: 3}
+  _spriteEnemy: {fileID: 21300000, guid: 4c7ab020b1161c04fa9c1337ef8adbfb, type: 3}
+  _spriteShop: {fileID: 21300000, guid: b6671830abe9fce4087a74f7df0234a6, type: 3}
+  _spriteTreasure: {fileID: 21300000, guid: 30b4d43e6945bc8469169be78339b16b, type: 3}
+  _spriteEvent: {fileID: 21300000, guid: d36525bfefe0ceb48b20a0d38fe55e2e, type: 3}
+  _spriteBoss: {fileID: 21300000, guid: 9d7e94c2259dc3643bfc664691cb6264, type: 3}
+  _sR: {fileID: 7335923536002135546}

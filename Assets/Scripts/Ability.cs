@@ -28,7 +28,6 @@ public class Ability : MonoBehaviour
 
     protected virtual void OnMouseEnter()
     {
-        Tile value;
         foreach (var target in Targets)
         {
             if (_PoolManager.Player.grid._tiles.ContainsKey(_PoolManager.Player.tile._position + target))
@@ -59,5 +58,35 @@ public class Ability : MonoBehaviour
                 tile.Value.CanceHighlight();
             }
         }
+    }
+    protected IEnumerable<Vector2> GetNeighbors(Vector2 tile)
+    {
+        yield return tile + Vector2.up;
+        yield return tile + Vector2.down;
+        yield return tile + Vector2.left;
+        yield return tile + Vector2.right;
+    }
+
+    protected IEnumerable<Vector2> GetTilesInRange(IEnumerable<Vector2> tiles, Vector2 center, int range)
+    {
+        foreach (var tile in tiles)
+        {
+            if (Vector2.Distance(tile, center) <= range)
+            {
+                yield return tile;
+            }
+        }
+    }
+    protected bool IsPositionAvailable(Vector2 position)
+    {
+        var grid = _PoolManager.Player.grid;
+        if (grid.HasTile(new Vector2(position.x, position.y)))
+        {
+            if (grid._tiles[position]._entity.GetComponentInChildren<Entity>() == null)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

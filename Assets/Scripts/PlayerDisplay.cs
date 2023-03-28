@@ -13,6 +13,8 @@ public class PlayerDisplay : MonoBehaviour
     [SerializeField] private GameObject _luckStat;
     [SerializeField] private GameObject _MoveStat;
     [SerializeField] private GameObject _actionPointStat;
+
+    public MovePoolManager Pool;
     public void OnDisplayPlayer()
     {
         _healthStat.SetActive(true);

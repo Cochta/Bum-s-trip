@@ -28,6 +28,8 @@ public class PlayerData : MonoBehaviour
 
     public void UpdateData()
     {
+        int oldHealth = MaxHealth;
+
         MaxHealth = 5;
         Damage = 2;
         Defense = 1;
@@ -53,8 +55,6 @@ public class PlayerData : MonoBehaviour
         if (Stuff.Trinket != null)
             items.Add(Stuff.Trinket);
 
-        int oldHealth = MaxHealth;
-
         foreach (var item in items)
         {
             MaxHealth += item.Health;
@@ -64,6 +64,7 @@ public class PlayerData : MonoBehaviour
             MoveDistance += item.MoveDistance;
             ActionPoints += item.ActionPoints;
         }
+
         int difference = Math.Abs(MaxHealth - oldHealth);
         if (difference > 0)
         {
@@ -85,5 +86,20 @@ public class PlayerData : MonoBehaviour
     {
         CurrentHealth -= Damage - Instance.Defense;
         UpdateData();
+    }
+    public void EnableAbilities()
+    {
+        foreach (var ability in _display.Pool.Abilities)
+        {
+            ability._col.enabled = true;
+        }
+    }
+    public void DisableAbilities()
+    {
+        foreach (var ability in _display.Pool.Abilities)
+        {
+            ability._col.enabled = false;
+            ability.IsSelected = false;
+        }
     }
 }

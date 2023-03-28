@@ -29,7 +29,7 @@ public class Grid : MonoBehaviour
                 _tiles[new Vector2(x, y)] = tile;
             }
         }
-        transform.position = new Vector2(-2, -2);
+        transform.position = new Vector2(-5, -2.5f);
     }
 
     public Tile GetTile(Vector2 pos)
