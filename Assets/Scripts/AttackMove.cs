@@ -30,6 +30,7 @@ public class AttackMove : Ability
         {
             StartCoroutine(MoveToPositionThenReturn(_PoolManager.Player.transform, tile.transform.position, 0.5f));
             tile._entity.GetComponentInChildren<Entity>().TakeDamage(PlayerData.Instance.Damage);
+            PlayerData.Instance.ActionPoints -= 1;
         }
         base.PerformAction(tile);
     }

@@ -62,6 +62,8 @@ public class MovePlayer : Ability
         StartCoroutine(MoveToPosition(p.transform, tile._entity.transform.position, 0.5f));
         p.tile = tile;
 
+        PlayerData.Instance.ActionPoints -= 1;
+
         base.PerformAction(tile);
     }
     public IEnumerator MoveToPosition(Transform transform, Vector3 position, float timeToMove)

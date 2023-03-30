@@ -22,8 +22,6 @@ public class Ability : MonoBehaviour
     {
         IsSelected = false;
         tile.GetComponentInParent<Grid>().CancelHighlight();
-
-        PlayerData.Instance.ActionPoints -= 1;
     }
 
     protected virtual void OnMouseEnter()

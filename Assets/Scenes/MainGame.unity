@@ -446,7 +446,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1980615992, guid: 39216952be360194abd8c1ef5aadda4a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1980615993, guid: 39216952be360194abd8c1ef5aadda4a, type: 3}
       propertyPath: _width
@@ -777,33 +777,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map
       objectReference: {fileID: 0}
-    - target: {fileID: 2508780572689171773, guid: cb2b6ef25f7a4fc40b13fe1a8397d739, type: 3}
-      propertyPath: MaxDepth
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2508780572689171773, guid: cb2b6ef25f7a4fc40b13fe1a8397d739, type: 3}
-      propertyPath: NumNodes
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2508780572689171773, guid: cb2b6ef25f7a4fc40b13fe1a8397d739, type: 3}
-      propertyPath: MaxNodesPerDepth
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3736383792204582508, guid: cb2b6ef25f7a4fc40b13fe1a8397d739, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.25
-      objectReference: {fileID: 0}
     - target: {fileID: 4692389973140792140, guid: cb2b6ef25f7a4fc40b13fe1a8397d739, type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4692389973140792140, guid: cb2b6ef25f7a4fc40b13fe1a8397d739, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4692389973140792140, guid: cb2b6ef25f7a4fc40b13fe1a8397d739, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.8
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4692389973140792140, guid: cb2b6ef25f7a4fc40b13fe1a8397d739, type: 3}
       propertyPath: m_LocalPosition.z

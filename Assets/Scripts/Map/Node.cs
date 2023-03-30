@@ -16,6 +16,9 @@ public class Node : MonoBehaviour
 
     public NodeTypes Type;
     public int Depth;
+    public List<Node> Childs = new List<Node>();
+
+    public List<Node> AccessibleNodes = new List<Node>();
 
     [SerializeField] private Sprite _spriteStart;
     [SerializeField] private Sprite _spriteEnemy;
@@ -25,6 +28,29 @@ public class Node : MonoBehaviour
     [SerializeField] private Sprite _spriteBoss;
 
     [SerializeField] private SpriteRenderer _sR;
+
+    public Node(NodeTypes type, int depth)
+    {
+        Type = type;
+        Depth = depth;
+    }
+
+    public void AddNode(int depth, int depthMax, List<int> nodeNumbers, int currentNodeNumber, Node Parent)
+    {
+        depth++;
+
+        if (depth >= depthMax) return; // BossNode
+
+
+        if (currentNodeNumber < nodeNumbers[depth])
+        {
+            Node newNode = new(NodeTypes.Enemy, depth);
+            Childs.Add(newNode);
+            currentNodeNumber++;
+            newNode.AddNode(depth, depthMax, nodeNumbers, currentNodeNumber, this);
+            Debug.Log(Depth + " | " + Type);
+        }
+    }
 
     public void DefineSprite()
     {

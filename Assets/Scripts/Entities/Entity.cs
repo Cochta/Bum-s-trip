@@ -63,13 +63,11 @@ public abstract class Entity : MonoBehaviour
         {
             Attack();
             StartCoroutine(MoveToPositionThenReturn(transform, Player.transform.position, 0.5f));
-            return;
         }
-
-        StartCoroutine(MoveToPlayer());
+        else
+            StartCoroutine(FollowPathToPlayer());
     }
-
-    protected IEnumerator MoveToPlayer()
+    protected IEnumerator FollowPathToPlayer()
     {
         List<Tile> path = AStarSearch(tile, Player.tile, grid);
         path.RemoveAt(path.Count - 1);
@@ -78,7 +76,6 @@ public abstract class Entity : MonoBehaviour
             if (i + 1 > path.Count - 1) break;
 
             path[i + 1].HighLight(Color.blue);
-
         }
 
         for (int i = 0; i < MoveDistance; i++)
@@ -86,29 +83,64 @@ public abstract class Entity : MonoBehaviour
             if (i + 1 > path.Count - 1) break;
 
             Vector3 targetPosition = path[i + 1].transform.position;
+            Vector3 currentPos = transform.position;
+            float t = 0f;
+
+            while (t < 1f)
+            {
+                t += Time.deltaTime / 0.5f;
+                transform.position = Vector3.Lerp(currentPos, targetPosition, t);
+                yield return null;
+            }
+
             transform.parent = path[i + 1]._entity.transform;
-            yield return StartCoroutine(MoveToPosition(targetPosition, 0.5f));
-
             tile = GetTile();
+
         }
-
-    }
-
-    public IEnumerator MoveToPosition(Vector3 position, float timeToMove)
-    {
-        Vector3 currentPos = transform.position;
-        float t = 0f;
-
-        while (t < 1f)
-        {
-            t += Time.deltaTime / timeToMove;
-            transform.position = Vector3.Lerp(currentPos, position, t);
-            yield return null;
-        }
-
-        IsTurn = false;
         Player.grid.CancelHighlight();
+        IsTurn = false;
     }
+
+    //protected IEnumerator MoveToPlayer()
+    //{
+    //    List<Tile> path = AStarSearch(tile, Player.tile, grid);
+    //    path.RemoveAt(path.Count - 1);
+    //    for (int i = 0; i < MoveDistance; i++)
+    //    {
+    //        if (i + 1 > path.Count - 1) break;
+
+    //        path[i + 1].HighLight(Color.blue);
+
+    //    }
+
+    //    for (int i = 0; i < MoveDistance; i++)
+    //    {
+    //        if (i + 1 > path.Count - 1) break;
+
+    //        Vector3 targetPosition = path[i + 1].transform.position;
+    //        transform.parent = path[i + 1]._entity.transform;
+    //        yield return StartCoroutine(MoveToPosition(targetPosition, 0.5f));
+
+    //        tile = GetTile();
+    //    }
+
+    //}
+
+    //public IEnumerator MoveToPosition(Vector3 position, float timeToMove) // doit changer en follow path
+    //{
+    //    Vector3 currentPos = transform.position;
+    //    float t = 0f;
+
+    //    while (t < 1f)
+    //    {
+    //        t += Time.deltaTime / timeToMove;
+    //        transform.position = Vector3.Lerp(currentPos, position, t);
+    //        yield return null;
+    //    }
+
+    //    IsTurn = false;
+    //    Player.grid.CancelHighlight();
+    //}
 
     public IEnumerator MoveToPositionThenReturn(Transform transform, Vector3 position, float timeToMove)
     {

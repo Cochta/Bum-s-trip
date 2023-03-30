@@ -8,6 +8,10 @@ public class PlayerData : MonoBehaviour
     private static PlayerData _instance;
     public static PlayerData Instance { get { return _instance; } }
 
+    public Node Node { get => _node; set => _node = value; }
+
+    private Node _node;
+
     [NonSerialized] public int CurrentHealth;
     [NonSerialized] public int MaxHealth;
     [NonSerialized] public int Damage;
@@ -20,7 +24,7 @@ public class PlayerData : MonoBehaviour
 
     [SerializeField] private PlayerDisplay _display;
 
-    private void Start()
+    private void Awake()
     {
         _instance = this;
         UpdateData();

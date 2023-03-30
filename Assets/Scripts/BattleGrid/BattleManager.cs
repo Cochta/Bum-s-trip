@@ -32,6 +32,7 @@ public class BattleManager : MonoBehaviour
 
     void Start()
     {
+        PlayerData.Instance.UpdateData();
         ChangeState(GameStates.Initialisation);
     }
     private void Update()
@@ -91,10 +92,13 @@ public class BattleManager : MonoBehaviour
                 ChangeState(GameStates.PlayerTurn);
                 break;
             case GameStates.PlayerTurn:
+                PlayerData.Instance.EnableAbilities();
                 Player.IsPlayerTurn = true;
                 break;
             case GameStates.EnemiesTurn:
+                PlayerData.Instance.DisableAbilities();
                 Player.IsPlayerTurn = false;
+                StopCoroutine(EnemyTurnCoroutine());
                 StartCoroutine(EnemyTurnCoroutine());
                 break;
             case GameStates.None:
@@ -108,8 +112,11 @@ public class BattleManager : MonoBehaviour
     {
         foreach (var enemy in Enemies)
         {
+            enemy.GetComponent<Entity>().IsTurn = true;
+        }
+        foreach (var enemy in Enemies)
+        {
             Entity entity = enemy.GetComponent<Entity>();
-            entity.IsTurn = true;
             entity.PerformAction();
 
             yield return new WaitUntil(() => !entity.IsTurn);
