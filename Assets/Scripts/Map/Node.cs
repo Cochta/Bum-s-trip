@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Node : MonoBehaviour
@@ -14,11 +15,10 @@ public class Node : MonoBehaviour
         Boss
     }
 
-    public NodeTypes Type;
-    public int Depth;
-    public List<Node> Childs = new List<Node>();
-
+    private NodeTypes _type;
+    private int _depth;
     public List<Node> AccessibleNodes = new List<Node>();
+    public List<MapArrow> Arrows = new List<MapArrow>();
 
     [SerializeField] private Sprite _spriteStart;
     [SerializeField] private Sprite _spriteEnemy;
@@ -28,29 +28,12 @@ public class Node : MonoBehaviour
     [SerializeField] private Sprite _spriteBoss;
 
     [SerializeField] private SpriteRenderer _sR;
+    [SerializeField] private SpriteRenderer _sRActive;
+    [SerializeField] private SpriteRenderer _sRBackground;
+    [SerializeField] private BoxCollider2D _col;
 
-    public Node(NodeTypes type, int depth)
-    {
-        Type = type;
-        Depth = depth;
-    }
-
-    public void AddNode(int depth, int depthMax, List<int> nodeNumbers, int currentNodeNumber, Node Parent)
-    {
-        depth++;
-
-        if (depth >= depthMax) return; // BossNode
-
-
-        if (currentNodeNumber < nodeNumbers[depth])
-        {
-            Node newNode = new(NodeTypes.Enemy, depth);
-            Childs.Add(newNode);
-            currentNodeNumber++;
-            newNode.AddNode(depth, depthMax, nodeNumbers, currentNodeNumber, this);
-            Debug.Log(Depth + " | " + Type);
-        }
-    }
+    public NodeTypes Type { get => _type; set => _type = value; }
+    public int Depth { get => _depth; set => _depth = value; }
 
     public void DefineSprite()
     {
@@ -68,5 +51,39 @@ public class Node : MonoBehaviour
             _sR.sprite = _spriteStart;
     }
 
+    public void Enabled(bool enabled)
+    {
+        _sRActive.enabled = enabled;
+        _col.enabled = enabled;
+        _sRBackground.enabled = false;
+    }
 
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            PlayerData.Instance.Node = this;
+            if (Type == NodeTypes.Enemy)
+                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToBattle);
+            else if (Type == NodeTypes.Shop)
+                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToShop);
+            else if (Type == NodeTypes.Treasure)
+                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToTreasure);
+            else if (Type == NodeTypes.Event)
+                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToEvent);
+            else if (Type == NodeTypes.Boss)
+                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToBoss);
+
+        }
+    }
+
+    private void OnMouseEnter()
+    {
+        _sRBackground.enabled = true;
+    }
+
+    private void OnMouseExit()
+    {
+        _sRBackground.enabled = false;
+    }
 }

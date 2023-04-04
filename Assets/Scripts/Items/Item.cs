@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,17 +19,22 @@ public abstract class Item : MonoBehaviour
     }
     public enum Rarity
     {
-        Common,
-        UnCommon,
-        Rare,
-        Epic,
-        Legendary
+        Common = 1,
+        UnCommon = 2,
+        Rare = 3,
+        Epic = 4,
+        Legendary = 5
     }
 
-    public int Health = 0;
-    public int Damage = 0;
-    public int Defense = 0;
-    public int Luck = 0;
+    [SerializeField] private int _health = 0;
+    [SerializeField] private int _damage = 0;
+    [SerializeField] private int _defense = 0;
+    [SerializeField] private int _luck = 0;
+
+    [NonSerialized] public int Health = 0;
+    [NonSerialized] public int Damage = 0;
+    [NonSerialized] public int Defense = 0;
+    [NonSerialized] public int Luck = 0;
     public int MoveDistance = 0; // nb of tiles it can move
     public int ActionPoints = 0;
 
@@ -43,7 +49,13 @@ public abstract class Item : MonoBehaviour
 
     public Ability ability = null;
 
-
+    public void SetStats()
+    {
+        Health = _health * (int)_rarity;
+        Damage = _damage * (int)_rarity;
+        Defense = _defense * (int)_rarity;
+        Luck = _luck * (int)_rarity;
+    }
 
     protected virtual void OnAttack()
     {

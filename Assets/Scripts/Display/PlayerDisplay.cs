@@ -13,6 +13,7 @@ public class PlayerDisplay : MonoBehaviour
     [SerializeField] private GameObject _luckStat;
     [SerializeField] private GameObject _MoveStat;
     [SerializeField] private GameObject _actionPointStat;
+    [SerializeField] private GameObject _coinsStat;
 
     public MovePoolManager Pool;
     public void OnDisplayPlayer()
@@ -30,6 +31,7 @@ public class PlayerDisplay : MonoBehaviour
         _luckStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.Luck.ToString();
         _MoveStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.MoveDistance.ToString();
         _actionPointStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.ActionPoints.ToString();
+        _coinsStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.Coins.ToString();
 
     }
 }

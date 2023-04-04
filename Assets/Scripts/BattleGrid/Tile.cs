@@ -52,7 +52,7 @@ public class Tile : MonoBehaviour
                 selectedAbility.PerformAction(this);
             }
             GetComponentInParent<Grid>().CancelHighlight();
-            OnMouseEnter();
+            OnMouseExit();
         }
     }
 
@@ -63,7 +63,7 @@ public class Tile : MonoBehaviour
         var display = transform.parent.GetComponent<EntityDisplay>();
         if (_entity.GetComponentInChildren<Entity>() != null)
         {
-            display._stats.SetActive(true);
+            display.Stats.SetActive(true);
             display.Display.OnDisplayEntity(_entity.GetComponentInChildren<Entity>());
         }
 
@@ -71,7 +71,7 @@ public class Tile : MonoBehaviour
     private void OnMouseExit()
     {
         _backgroundSR.color = _baseColor;
-        transform.parent.GetComponent<EntityDisplay>()._stats.SetActive(false);
+        transform.parent.GetComponent<EntityDisplay>().Stats.SetActive(false);
     }
 
     public void CanceHighlight()

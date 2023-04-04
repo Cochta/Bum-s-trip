@@ -5,5 +5,5 @@ using UnityEngine;
 public class EntityDisplay : MonoBehaviour
 {
     [SerializeField] public DisplayStats Display;
-    [SerializeField] public GameObject _stats;
+    [SerializeField] public GameObject Stats;
 }

@@ -19,8 +19,13 @@ public class ItemDisplay : MonoBehaviour
     [SerializeField] private Sprite _borderEpic;
     [SerializeField] private Sprite _borderLegendary;
 
-    [SerializeField]
-    private GameObject _stats;
+    public GameObject Stats;
+    [SerializeField] private SpriteRenderer _backGroundSR;
+
+    public bool IsLoot = false;
+    public int Cost = 0;
+
+    public Stuff Stuff;
 
     private void Update()
     {
@@ -47,16 +52,29 @@ public class ItemDisplay : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (_stats != null && _item != null)
+        _backGroundSR.enabled = true;
+        if (Stats != null && _item != null)
         {
-            _stats.SetActive(true);
-            _stats.GetComponent<DisplayStats>().OnDisplayItem(_item);
+            Stats.SetActive(true);
+            Stats.GetComponent<DisplayStats>().OnDisplayItem(_item);
             //_description.text = _item._description;
+        }
+    }
+
+    private void OnMouseOver()
+    {
+        if (IsLoot && Input.GetMouseButtonDown(0) && PlayerData.Instance.Coins >= Cost)
+        {
+            Stuff.AddItem(_item);
+            PlayerData.Instance.Coins -= Cost;
+            PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToMap);
+            OnMouseExit();
         }
     }
 
     private void OnMouseExit()
     {
-        _stats.SetActive(false);
+        Stats.SetActive(false);
+        _backGroundSR.enabled = false;
     }
 }

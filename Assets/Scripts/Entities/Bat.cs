@@ -14,7 +14,6 @@ public class Bat : Entity
     protected override void SetAttackTargets()
     {
         base.SetAttackTargets();
-        Debug.Log("penis");
         var targets = attackTargets;
         var newList = new List<Vector2>();
         foreach (var target1 in targets)

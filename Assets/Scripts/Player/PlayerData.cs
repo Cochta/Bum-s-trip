@@ -8,9 +8,27 @@ public class PlayerData : MonoBehaviour
     private static PlayerData _instance;
     public static PlayerData Instance { get { return _instance; } }
 
-    public Node Node { get => _node; set => _node = value; }
+    public enum GameStates
+    {
+        EnterNewLevel,
+        ToMap,
+        ToBattle,
+        ToShop,
+        ToEvent,
+        ToTreasure,
+        ToBoss
+    }
+
+    private GameStates _state;
+    public GameStates State { get => _state; set => _state = value; }
+
 
     private Node _node;
+    public Node Node { get => _node; set => _node = value; }
+
+    private int _coins = 3;
+    public int Coins { get => _coins; set => _coins = value; }
+
 
     [NonSerialized] public int CurrentHealth;
     [NonSerialized] public int MaxHealth;
@@ -24,10 +42,18 @@ public class PlayerData : MonoBehaviour
 
     [SerializeField] private PlayerDisplay _display;
 
+    [SerializeField] private BattleManager _battleManager;
+    [SerializeField] private Map _map;
+    [SerializeField] private LootGenerator _loot;
+
+    public int Level = 0;
+
     private void Awake()
     {
         _instance = this;
         UpdateData();
+        ChangeGameState(GameStates.EnterNewLevel);
+        _battleManager.ChangeState(BattleManager.GameStates.Initialisation);
     }
 
     public void UpdateData()
@@ -104,6 +130,42 @@ public class PlayerData : MonoBehaviour
         {
             ability._col.enabled = false;
             ability.IsSelected = false;
+        }
+    }
+
+    public void ChangeGameState(GameStates newState)
+    {
+        _state = newState;
+        _map.gameObject.SetActive(false);
+        _battleManager.gameObject.SetActive(false);
+        _loot.gameObject.SetActive(false);
+        switch (_state)
+        {
+            case GameStates.EnterNewLevel:
+                _map.GenerateMap();
+                ChangeGameState(GameStates.ToMap);
+                Level++;
+                break;
+            case GameStates.ToMap:
+                _map.gameObject.SetActive(true);
+                _map.SetPath();
+                break;
+            case GameStates.ToBattle:
+                _battleManager.gameObject.SetActive(true);
+                _battleManager.ChangeState(BattleManager.GameStates.StartBattle);
+                break;
+            case GameStates.ToShop:
+                _loot.gameObject.SetActive(true);
+                _loot.GenerateLoot();
+                break;
+            case GameStates.ToEvent:
+                break;
+            case GameStates.ToTreasure:
+                _loot.gameObject.SetActive(true);
+                _loot.GenerateLoot();
+                break;
+            case GameStates.ToBoss:
+                break;
         }
     }
 }
