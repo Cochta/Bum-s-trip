@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5912815491032109974}
   - component: {fileID: -2640352597294959040}
   m_Layer: 0
-  m_Name: CartonSword
+  m_Name: BeerBottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,14 +45,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 0
-  _damage: 1
+  _damage: 0
   _defense: 0
   _luck: 0
   MoveDistance: 0
-  ActionPoints: 0
-  Name: Carton Sword
-  Description: 
-  _rarity: 2
-  _part: 0
-  _sprite: {fileID: 21300000, guid: b7a5e14d605fe124793fca1f151d7323, type: 3}
+  ActionPoints: 1
+  Name: Beer bottle
+  Description: ahhh
+  _rarity: 1
+  _part: 7
+  _sprite: {fileID: 21300000, guid: e2d8f334621d41a45aee2622330eef11, type: 3}
   ability: {fileID: 0}

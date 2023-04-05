@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5912815491032109974}
   - component: {fileID: -2640352597294959040}
   m_Layer: 0
-  m_Name: CartonSword
+  m_Name: BrokenSword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,15 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd113eb354f6e44fbacf887b17dc647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 0
-  _damage: 1
+  _health: -1
+  _damage: 2
   _defense: 0
   _luck: 0
   MoveDistance: 0
   ActionPoints: 0
-  Name: Carton Sword
+  Name: Broken Sword
   Description: 
   _rarity: 2
   _part: 0
-  _sprite: {fileID: 21300000, guid: b7a5e14d605fe124793fca1f151d7323, type: 3}
+  _sprite: {fileID: 21300000, guid: a770973c7fc39ed4a9f1e48893875914, type: 3}
   ability: {fileID: 0}

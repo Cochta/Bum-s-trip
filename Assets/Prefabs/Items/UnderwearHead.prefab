@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5912815491032109974}
-  - component: {fileID: -2640352597294959040}
+  - component: {fileID: 8334224763442820873}
   m_Layer: 0
-  m_Name: CartonSword
+  m_Name: UnderwearHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-2640352597294959040
+--- !u!114 &8334224763442820873
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,18 +41,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 7127176907180997429}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcd113eb354f6e44fbacf887b17dc647, type: 3}
+  m_Script: {fileID: 11500000, guid: 9bfc9e5dde0924b4c860a855c6cc89a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 0
-  _damage: 1
-  _defense: 0
-  _luck: 0
+  _damage: 0
+  _defense: -1
+  _luck: 2
   MoveDistance: 0
   ActionPoints: 0
-  Name: Carton Sword
+  Name: Underwear ?
   Description: 
   _rarity: 2
-  _part: 0
-  _sprite: {fileID: 21300000, guid: b7a5e14d605fe124793fca1f151d7323, type: 3}
+  _part: 2
+  _sprite: {fileID: 21300000, guid: 46696d43dadd7aa49953b15f28d02305, type: 3}
   ability: {fileID: 0}
