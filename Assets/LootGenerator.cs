@@ -16,77 +16,73 @@ public class LootGenerator : MonoBehaviour
 
     public void GenerateLoot()
     {
-        if (_itemHoldersList.Any())
+        // Remove existing item holders
+        foreach (var itemHolder in _itemHoldersList)
         {
-            foreach (var itemHolder in _itemHoldersList)
-            {
-                Destroy(itemHolder);
-            }
+            Destroy(itemHolder);
         }
+        _itemHoldersList.Clear();
 
-        bool isShop = false;
-        int nbItems = 1;
+        // Calculate the number of items and item level based on the current state and node type
+        bool isShop = PlayerData.Instance.Node.Type == PlayerData.GameStates.ToShop;
+        int nbItems = isShop ? 3 : (PlayerData.Instance.State == PlayerData.GameStates.ToBattle ? 1 : 3);
         int itemLevel = PlayerData.Instance.Level;
-
-        if (PlayerData.Instance.Node.Type == Node.NodeTypes.Enemy)
-            nbItems = 1;
-        else if (PlayerData.Instance.Node.Type == Node.NodeTypes.Treasure)
-            nbItems = 3;
-        else if (PlayerData.Instance.Node.Type == Node.NodeTypes.Shop)
-        {
-            nbItems = 3;
-            isShop = true;
-        }
-        else if (PlayerData.Instance.Node.Type == Node.NodeTypes.Boss)
+        if (PlayerData.Instance.Node.Type == PlayerData.GameStates.ToBoss)
         {
             nbItems = 1;
             itemLevel++;
         }
 
-
-        float totalWidth = nbItems * 2f;
-        float startX = -totalWidth / 2f + 1f;
-
-        List<Item> itemList = new List<Item>(_itemPool.Items);
-        _itemHoldersList = new List<GameObject>();
-
+        // Generate item holders
+        float startX = -nbItems + 1f;
         for (int i = 0; i < nbItems; i++)
         {
-
-            var randomItem = _rnd.Next(0, itemList.Count);
-            var randomLevel = _rnd.Next(0, 101);
-
+            // Instantiate item holder prefab
             var obj = Instantiate(_itemHolderPrefab, transform);
             _itemHoldersList.Add(obj);
+            obj.transform.localPosition = new Vector3(startX + i * 2f, 0.3f, 0f);
+
+            // Set item display properties
             var display = obj.GetComponent<ItemDisplay>();
             display.Stuff = _stuff;
-            display._item = itemList[randomItem];
-            itemList.RemoveAt(randomItem);
             display.Stats = _displayStats;
             display.IsLoot = true;
 
+            // Select random item from the pool
+            var itemList = new List<Item>(_itemPool.Items);
+            var randomItem = _rnd.Next(0, itemList.Count);
+            display._item = itemList[randomItem];
+            itemList.RemoveAt(randomItem);
 
+            // Set item rarity based on the item level and luck
+            var randomLevel = _rnd.Next(0, 101);
             if (randomLevel >= 0 && randomLevel <= 5 && itemLevel > (int)Item.Rarity.Common)
+            {
                 display._item._rarity = (Item.Rarity)(itemLevel - 1);
+            }
             else if (randomLevel >= 100 - PlayerData.Instance.Luck && randomLevel <= 100 &&
                      itemLevel < (int)Item.Rarity.Legendary)
+            {
                 display._item._rarity = (Item.Rarity)(itemLevel + 1);
+            }
             else
+            {
                 display._item._rarity = (Item.Rarity)itemLevel;
+            }
 
+            // Set item stats and add to the display list
             display._item.SetStats();
-
-            obj.transform.localPosition = new Vector3(startX + i * 2f, 0.3f, 0f);
         }
 
+        // If it's a shop, set the rarity of each item holder
         if (isShop)
         {
             SetShopItem(_itemHoldersList[0], itemLevel > (int)Item.Rarity.Common ? (Item.Rarity)itemLevel - 1 : (Item.Rarity)itemLevel);
             SetShopItem(_itemHoldersList[1], (Item.Rarity)itemLevel);
             SetShopItem(_itemHoldersList[2], itemLevel < (int)Item.Rarity.Legendary ? (Item.Rarity)itemLevel + 1 : (Item.Rarity)itemLevel);
         }
-
     }
+
     void SetShopItem(GameObject itemHolder, Item.Rarity rarity)
     {
         var itemDiplay = itemHolder.GetComponent<ItemDisplay>();
@@ -99,12 +95,12 @@ public class LootGenerator : MonoBehaviour
 
     private int SetCost(Item item)
     {
-        if ((int)item._rarity < PlayerData.Instance.Level)
-            return 7;
-        else if ((int)item._rarity > PlayerData.Instance.Level)
-            return 30;
+        int itemRarityLevel = (int)item._rarity;
+        int playerLevel = PlayerData.Instance.Level;
 
-        return 15;
+        if (itemRarityLevel < playerLevel) return 7;
+        else if (itemRarityLevel > playerLevel) return 30;
+        else return 15;
     }
 
 }

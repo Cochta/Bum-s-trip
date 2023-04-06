@@ -16,7 +16,8 @@ public class PlayerData : MonoBehaviour
         ToShop,
         ToEvent,
         ToTreasure,
-        ToBoss
+        ToBoss,
+        None
     }
 
     private GameStates _state;
@@ -39,8 +40,10 @@ public class PlayerData : MonoBehaviour
     [NonSerialized] public int ActionPoints;
 
     public Stuff Stuff;
+    public List<Item> Items;
 
     [SerializeField] private PlayerDisplay _display;
+    [SerializeField] private MovePoolManager _movePoolManager;
 
     [SerializeField] private BattleManager _battleManager;
     [SerializeField] private Map _map;
@@ -67,25 +70,25 @@ public class PlayerData : MonoBehaviour
         MoveDistance = 2;
         ActionPoints = 2;
 
-        List<Item> items = new List<Item>();
+        Items = new List<Item>();
         if (Stuff.Weapon != null)
-            items.Add(Stuff.Weapon);
+            Items.Add(Stuff.Weapon);
         if (Stuff.Shield != null)
-            items.Add(Stuff.Shield);
+            Items.Add(Stuff.Shield);
         if (Stuff.Head != null)
-            items.Add(Stuff.Head);
+            Items.Add(Stuff.Head);
         if (Stuff.Torso != null)
-            items.Add(Stuff.Torso);
+            Items.Add(Stuff.Torso);
         if (Stuff.Hands != null)
-            items.Add(Stuff.Hands);
+            Items.Add(Stuff.Hands);
         if (Stuff.Legs != null)
-            items.Add(Stuff.Legs);
+            Items.Add(Stuff.Legs);
         if (Stuff.Feets != null)
-            items.Add(Stuff.Feets);
+            Items.Add(Stuff.Feets);
         if (Stuff.Trinket != null)
-            items.Add(Stuff.Trinket);
+            Items.Add(Stuff.Trinket);
 
-        foreach (var item in items)
+        foreach (var item in Items)
         {
             MaxHealth += item.Health;
             Damage += item.Damage;
@@ -121,15 +124,22 @@ public class PlayerData : MonoBehaviour
     {
         foreach (var ability in _display.Pool.Abilities)
         {
-            ability._col.enabled = true;
+            ability.Enable();
         }
     }
     public void DisableAbilities()
     {
         foreach (var ability in _display.Pool.Abilities)
         {
-            ability._col.enabled = false;
+            ability.Disable();
             ability.IsSelected = false;
+        }
+    }
+    public void DecrementCooldown()
+    {
+        foreach (var ability in _display.Pool.Abilities)
+        {
+            ability.RemainingCooldown -= 1;
         }
     }
 
@@ -152,6 +162,7 @@ public class PlayerData : MonoBehaviour
                 break;
             case GameStates.ToBattle:
                 _battleManager.gameObject.SetActive(true);
+                _movePoolManager.SetAbilities();
                 _battleManager.ChangeState(BattleManager.GameStates.StartBattle);
                 break;
             case GameStates.ToShop:

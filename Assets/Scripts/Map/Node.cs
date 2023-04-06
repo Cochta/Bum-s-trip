@@ -5,18 +5,7 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    public enum NodeTypes
-    {
-        Start,
-        Enemy,
-        Shop,
-        Treasure,
-        Event,
-        Boss
-    }
-
-    private NodeTypes _type;
-    private int _depth;
+    private PlayerData.GameStates _type;
     public List<Node> AccessibleNodes = new List<Node>();
     public List<MapArrow> Arrows = new List<MapArrow>();
 
@@ -32,22 +21,22 @@ public class Node : MonoBehaviour
     [SerializeField] private SpriteRenderer _sRBackground;
     [SerializeField] private BoxCollider2D _col;
 
-    public NodeTypes Type { get => _type; set => _type = value; }
-    public int Depth { get => _depth; set => _depth = value; }
+    public PlayerData.GameStates Type { get => _type; set => _type = value; }
+    public int Depth { get; set; }
 
     public void DefineSprite()
     {
-        if (Type == NodeTypes.Boss)
+        if (Type == PlayerData.GameStates.ToBoss)
             _sR.sprite = _spriteBoss;
-        else if (Type == NodeTypes.Enemy)
+        else if (Type == PlayerData.GameStates.ToBattle)
             _sR.sprite = _spriteEnemy;
-        else if (Type == NodeTypes.Event)
+        else if (Type == PlayerData.GameStates.ToEvent)
             _sR.sprite = _spriteEvent;
-        else if (Type == NodeTypes.Shop)
+        else if (Type == PlayerData.GameStates.ToShop)
             _sR.sprite = _spriteShop;
-        else if (Type == NodeTypes.Treasure)
+        else if (Type == PlayerData.GameStates.ToTreasure)
             _sR.sprite = _spriteTreasure;
-        else if (Type == NodeTypes.Start)
+        else
             _sR.sprite = _spriteStart;
     }
 
@@ -58,30 +47,15 @@ public class Node : MonoBehaviour
         _sRBackground.enabled = false;
     }
 
-    private void OnMouseOver()
+    private void OnMouseDown()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            PlayerData.Instance.Node = this;
-            if (Type == NodeTypes.Enemy)
-                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToBattle);
-            else if (Type == NodeTypes.Shop)
-                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToShop);
-            else if (Type == NodeTypes.Treasure)
-                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToTreasure);
-            else if (Type == NodeTypes.Event)
-                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToEvent);
-            else if (Type == NodeTypes.Boss)
-                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToBoss);
-
-        }
+        PlayerData.Instance.Node = this;
+        PlayerData.Instance.ChangeGameState(this.Type);
     }
-
     private void OnMouseEnter()
     {
         _sRBackground.enabled = true;
     }
-
     private void OnMouseExit()
     {
         _sRBackground.enabled = false;

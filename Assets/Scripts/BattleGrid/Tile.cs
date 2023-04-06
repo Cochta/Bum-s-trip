@@ -32,28 +32,26 @@ public class Tile : MonoBehaviour
         _backgroundSR.color = color;
     }
 
-    private void OnMouseOver()
+    private void OnMouseDown()
     {
-        if (Input.GetMouseButtonDown(0))
+        Ability selectedAbility = null;
+        BattleManager bm = transform.parent.GetComponent<BattleManager>();
+        foreach (var ability in bm.Pool.Abilities)
         {
-            Ability selectedAbility = null;
-            BattleManager bm = transform.parent.GetComponent<BattleManager>();
-            foreach (var ability in bm.Pool.Abilities)
+            if (ability.IsSelected)
             {
-                if (ability.IsSelected)
-                {
-                    selectedAbility = ability;
-                }
+                selectedAbility = ability;
+            }
 
-                ability.IsSelected = false;
-            }
-            if (selectedAbility != null && selectedAbility.Targets.Contains(_position - bm.Player.tile._position))
-            {
-                selectedAbility.PerformAction(this);
-            }
-            GetComponentInParent<Grid>().CancelHighlight();
-            OnMouseExit();
+            ability.IsSelected = false;
+            ability.IsOtherSelected = false;
         }
+        if (selectedAbility != null && selectedAbility.Targets.Contains(_position - bm.Player.tile._position))
+        {
+            selectedAbility.PerformAction(this);
+        }
+        GetComponentInParent<Grid>().CancelHighlight();
+        OnMouseExit();
     }
 
     private void OnMouseEnter()

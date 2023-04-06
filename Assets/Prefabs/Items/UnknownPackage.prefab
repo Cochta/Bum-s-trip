@@ -48,11 +48,12 @@ MonoBehaviour:
   _damage: 0
   _defense: 0
   _luck: 0
-  MoveDistance: 0
-  ActionPoints: 0
-  Name: Unknown package
-  Description: What's inside ?
+  _moveDistance: 0
+  _actionPoints: 0
+  _name: 
+  _description: 
+  _hasAbility: 0
   _rarity: 1
   _part: 7
-  _sprite: {fileID: 21300000, guid: ad23465f2669f7e4788b181003cd36ec, type: 3}
+  sprite: {fileID: 21300000, guid: ad23465f2669f7e4788b181003cd36ec, type: 3}
   ability: {fileID: 0}

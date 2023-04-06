@@ -130,21 +130,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1847c6eaaa5d0840874498699320f24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurentHealth: 3
-  MaxHealth: 3
-  Damage: 1
-  Defense: 1
-  Luck: 0
-  MoveDistance: 2
-  ActionPoints: 1
-  tile: {fileID: 0}
-  Player: {fileID: 0}
-  Name: Bat
-  _sprite: {fileID: 21300000, guid: 79fb36b60acdc4648892c8396d5e2c99, type: 3}
-  Isdead: 0
+  _name: Bat
+  _description: 
+  _curentHealth: 3
+  _maxHealth: 3
+  _damage: 1
+  _defense: 1
+  _luck: 0
+  _moveDistance: 2
+  _actionPoints: 1
   _deadSR: {fileID: 442961231302686158}
   _deadSprite: {fileID: 21300000, guid: 4f4ad3dc130b2684c9896a4536e1a0a2, type: 3}
-  IsTurn: 0
 --- !u!1 &6761538589622477064
 GameObject:
   m_ObjectHideFlags: 0

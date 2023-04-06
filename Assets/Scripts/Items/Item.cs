@@ -30,24 +30,30 @@ public abstract class Item : MonoBehaviour
     [SerializeField] private int _damage = 0;
     [SerializeField] private int _defense = 0;
     [SerializeField] private int _luck = 0;
-
-    [NonSerialized] public int Health = 0;
-    [NonSerialized] public int Damage = 0;
-    [NonSerialized] public int Defense = 0;
-    [NonSerialized] public int Luck = 0;
-    public int MoveDistance = 0; // nb of tiles it can move
-    public int ActionPoints = 0;
-
-
-    public string Name = null;
-    public string Description = null;
+    [SerializeField] private int _moveDistance = 0; // nb of tiles PLAYER can move
+    [SerializeField] private int _actionPoints = 0;
+    [SerializeField] private string _name = null;
+    [SerializeField] private string _description = null;
+    [SerializeField] private bool _hasAbility = false;
 
     public Rarity _rarity = Rarity.Common;
     public Parts _part = Parts.None;
 
-    public Sprite _sprite;
+    [SerializeField] private Sprite sprite;
 
-    public Ability ability = null;
+    public GameObject ability = null;
+
+
+    public int Health { get => _health; set => _health = value; }
+    public int Damage { get => _damage; set => _damage = value; }
+    public int Defense { get => _defense; set => _defense = value; }
+    public int Luck { get => _luck; set => _luck = value; }
+    public int MoveDistance { get => _moveDistance; set => _moveDistance = value; }
+    public int ActionPoints { get => _actionPoints; set => _actionPoints = value; }
+    public string Name { get => _name; set => _name = value; }
+    public string Description { get => _description; set => _description = value; }
+    public Sprite Sprite { get => sprite; set => sprite = value; }
+    public bool HasAbility { get => _hasAbility; set => _hasAbility = value; }
 
     public void SetStats()
     {
@@ -62,10 +68,6 @@ public abstract class Item : MonoBehaviour
 
     }
     protected virtual void OnTakeHit()
-    {
-
-    }
-    protected virtual void Ability() //prend la case en argument
     {
 
     }

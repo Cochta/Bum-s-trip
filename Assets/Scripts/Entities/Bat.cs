@@ -7,14 +7,14 @@ public class Bat : Entity
     protected override void Awake()
     {
         GetGrid();
-        tile = GetTile();
+        Tile = GetTile();
         SetAttackTargets();
     }
 
     protected override void SetAttackTargets()
     {
         base.SetAttackTargets();
-        var targets = attackTargets;
+        var targets = _attackTargets;
         var newList = new List<Vector2>();
         foreach (var target1 in targets)
         {
@@ -30,7 +30,6 @@ public class Bat : Entity
         newList.Remove(new(-2, 2));
         newList.Remove(new(-2, -2));
 
-        attackTargets.AddRange(newList);
-
+        _attackTargets.AddRange(newList);
     }
 }

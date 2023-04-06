@@ -12,13 +12,13 @@ public class MovePlayer : Ability
 {
     protected override void Awake()
     {
-        HighlightColor = Color.blue;
+        _highlightColor = Color.blue;
         base.Awake();
     }
     protected override void OnMouseEnter()
     {
         Targets = new List<Vector2>();
-        var playerPos = _PoolManager.Player.tile._position;
+        var playerPos = _poolManager.Player.tile._position;
 
         var visited = new HashSet<Vector2>();
         var queue = new Queue<Vector2>();
@@ -57,7 +57,7 @@ public class MovePlayer : Ability
 
     public override void PerformAction(Tile tile)
     {
-        PlayerInBattle p = _PoolManager.Player;
+        PlayerInBattle p = _poolManager.Player;
         p.transform.parent = tile._entity.transform;
         StartCoroutine(MoveToPosition(p.transform, tile._entity.transform.position, 0.5f));
         p.tile = tile;
@@ -78,7 +78,7 @@ public class MovePlayer : Ability
         }
         if (PlayerData.Instance.ActionPoints <= 0)
         {
-            _PoolManager.Player.IsPlayerTurn = false;
+            _poolManager.Player.IsPlayerTurn = false;
         }
     }
 }

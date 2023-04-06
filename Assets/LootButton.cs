@@ -12,14 +12,10 @@ public class LootButton : MonoBehaviour
         _sr = GetComponent<SpriteRenderer>();
     }
 
-    private void OnMouseOver()
+    private void OnMouseDown()
     {
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToMap);
-            OnMouseExit();
-        }
+        PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToMap);
+        OnMouseExit();
     }
 
     private void OnMouseEnter()
