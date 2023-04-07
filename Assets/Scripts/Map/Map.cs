@@ -10,9 +10,9 @@ using static Node;
 
 public class Map : MonoBehaviour
 {
-    private int MaxDepth = 5;
-    private int MaxNodesPerDepth = 4;
-    private int MinNodesPerDepth = 2;
+    private int _maxDepth = 5;
+    private int _maxNodesPerDepth = 4;
+    private int _minNodesPerDepth = 2;
 
     [SerializeField] private GameObject NodesLocationMap;
 
@@ -26,20 +26,20 @@ public class Map : MonoBehaviour
 
     public void GenerateMap()
     {
-        List<Node.NodeTypes> specialNodes = new List<Node.NodeTypes>() { Node.NodeTypes.Treasure, Node.NodeTypes.Event, Node.NodeTypes.Shop };
-        int nonAvaillableDeth = _rnd.Next(1, MaxDepth);
+        List<PlayerData.GameStates> specialNodes = new List<PlayerData.GameStates>() { PlayerData.GameStates.ToTreasure, PlayerData.GameStates.ToEvent, PlayerData.GameStates.ToShop };
+        int nonAvaillableDeth = _rnd.Next(1, _maxDepth);
 
         // Add start node
-        AddNode(Node.NodeTypes.Start, 0);
+        AddNode(PlayerData.GameStates.None, 0);
 
-        for (int i = 1; i < MaxDepth; i++)
+        for (int i = 1; i < _maxDepth; i++)
         {
-            int nbNodes = _rnd.Next(MinNodesPerDepth, MaxNodesPerDepth + 1);
+            int nbNodes = _rnd.Next(_minNodesPerDepth, _maxNodesPerDepth + 1);
             int nonEnemyNode = _rnd.Next(0, nbNodes); // choose a random node to not be an enemy
 
             for (int j = 0; j < nbNodes; j++)
             {
-                Node.NodeTypes type = Node.NodeTypes.Enemy;
+                PlayerData.GameStates type = PlayerData.GameStates.ToBattle;
                 if (i != nonAvaillableDeth)
                 {
                     if (j == nonEnemyNode)
@@ -53,7 +53,7 @@ public class Map : MonoBehaviour
             }
         }
         // Add boss node
-        AddNode(Node.NodeTypes.Boss, MaxDepth);
+        AddNode(PlayerData.GameStates.ToBoss, _maxDepth);
 
         LinkNodes();
 
@@ -63,7 +63,7 @@ public class Map : MonoBehaviour
 
         SetPath();
     }
-    private void AddNode(Node.NodeTypes type, int depth)
+    private void AddNode(PlayerData.GameStates type, int depth)
     {
         // Instantiate node prefab and set type and depth
         GameObject nodeObj = Instantiate(NodePrefab, NodesLocationMap.transform);
@@ -81,7 +81,7 @@ public class Map : MonoBehaviour
     }
     private void LinkNodes()
     {
-        for (int i = 0; i < MaxDepth; i++)
+        for (int i = 0; i < _maxDepth; i++)
         {
             List<Node> nodesOnThisDepth = new List<Node>();
             foreach (var node in _nodes)
@@ -91,81 +91,69 @@ public class Map : MonoBehaviour
             foreach (var node in _nodes)
                 if (node.Depth == i + 1) nodesOnUpperDepth.Add(node);
 
-            if (nodesOnThisDepth.Count == 1)
+            int nbThisNodes = nodesOnThisDepth.Count;
+            int nbUpNodes = nodesOnUpperDepth.Count;
+
+            if (nbThisNodes == 1)
             {
                 foreach (Node node in nodesOnUpperDepth)
                 {
                     nodesOnThisDepth[0].AccessibleNodes.Add(node);
                 }
             }
-            else if (nodesOnUpperDepth.Count == 1)
+            else if (nbUpNodes == 1)
             {
                 foreach (Node node in nodesOnThisDepth)
                 {
                     node.AccessibleNodes.Add(nodesOnUpperDepth[0]);
                 }
             }
-            else if (nodesOnThisDepth.Count == 2 && nodesOnUpperDepth.Count == 2)
+            else if (nbThisNodes == nbUpNodes)
             {
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[1]);
+                for (int j = 0; j < nbThisNodes; j++)
+                {
+                    nodesOnThisDepth[j].AccessibleNodes.Add(nodesOnUpperDepth[j]);
+                }
             }
-            else if (nodesOnThisDepth.Count == 2 && nodesOnUpperDepth.Count == 3)
+            else if (nbThisNodes + 1 == nbUpNodes) // 2 to 3 && 3 to 4
             {
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[2]);
+                for (int j = 0; j < nbThisNodes; j++)
+                {
+                    nodesOnThisDepth[j].AccessibleNodes.Add(nodesOnUpperDepth[j]);
+                    nodesOnThisDepth[j].AccessibleNodes.Add(nodesOnUpperDepth[j + 1]);
+                }
+
             }
-            else if (nodesOnThisDepth.Count == 3 && nodesOnUpperDepth.Count == 2)
+            else if (nbThisNodes == nbUpNodes + 1) // 3 to 2 && 4 to 3
             {
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-                nodesOnThisDepth[2].AccessibleNodes.Add(nodesOnUpperDepth[1]);
+                for (int j = 0; j < nbThisNodes; j++)
+                {
+                    if (j > 0)
+                        nodesOnThisDepth[j].AccessibleNodes.Add(nodesOnUpperDepth[j - 1]);
+                    if (j < nbUpNodes)
+                        nodesOnThisDepth[j].AccessibleNodes.Add(nodesOnUpperDepth[j]);
+                }
+
             }
-            else if (nodesOnThisDepth.Count == 3 && nodesOnUpperDepth.Count == 3)
+            else if (nbThisNodes + 2 == nbUpNodes) // 2 to 4
             {
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-                nodesOnThisDepth[2].AccessibleNodes.Add(nodesOnUpperDepth[2]);
+                int k = 0;
+                for (int j = 0; j < nbThisNodes; j++)
+                {
+                    nodesOnThisDepth[j].AccessibleNodes.Add(nodesOnUpperDepth[k]);
+                    nodesOnThisDepth[j].AccessibleNodes.Add(nodesOnUpperDepth[k + 1]);
+                    k += 2;
+                }
             }
-            else if (nodesOnThisDepth.Count == 4 && nodesOnUpperDepth.Count == 2)
+            else if (nbThisNodes == nbUpNodes + 2) // 4 to 2
             {
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[2].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-                nodesOnThisDepth[3].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-            }
-            else if (nodesOnThisDepth.Count == 4 && nodesOnUpperDepth.Count == 3)
-            {
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-                nodesOnThisDepth[2].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-                nodesOnThisDepth[2].AccessibleNodes.Add(nodesOnUpperDepth[2]);
-                nodesOnThisDepth[3].AccessibleNodes.Add(nodesOnUpperDepth[2]);
-            }
-            else if (nodesOnThisDepth.Count == 2 && nodesOnUpperDepth.Count == 4)
-            {
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[2]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[3]);
-            }
-            else if (nodesOnThisDepth.Count == 3 && nodesOnUpperDepth.Count == 4)
-            {
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[2]);
-                nodesOnThisDepth[2].AccessibleNodes.Add(nodesOnUpperDepth[3]);
-            }
-            else if (nodesOnThisDepth.Count == 4 && nodesOnUpperDepth.Count == 4)
-            {
-                nodesOnThisDepth[0].AccessibleNodes.Add(nodesOnUpperDepth[0]);
-                nodesOnThisDepth[1].AccessibleNodes.Add(nodesOnUpperDepth[1]);
-                nodesOnThisDepth[2].AccessibleNodes.Add(nodesOnUpperDepth[2]);
-                nodesOnThisDepth[3].AccessibleNodes.Add(nodesOnUpperDepth[3]);
+                int k = 0;
+                for (int j = 0; j < nbThisNodes; j++)
+                {
+                    if (j % 2 == 0 && j > 0)
+                        k += 1;
+                    nodesOnThisDepth[j].AccessibleNodes.Add(nodesOnUpperDepth[k]);
+                }
             }
         }
     }
@@ -174,7 +162,7 @@ public class Map : MonoBehaviour
         var BasePadding = 0.6f;
         var PaddingIncrement = 0.3f;
 
-        for (int i = 0; i <= MaxDepth; i++)
+        for (int i = 0; i <= _maxDepth; i++)
         {
             var nodesInLevel = _nodes.Where(n => n.Depth == i).ToList();
             var levelWidth = nodesInLevel.Count * (BasePadding + PaddingIncrement) - PaddingIncrement;
@@ -213,7 +201,6 @@ public class Map : MonoBehaviour
         {
             arrow.SetColor(Color.white);
         }
-
         foreach (var node in _nodes)
         {
             node.Enabled(false);

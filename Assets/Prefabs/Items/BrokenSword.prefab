@@ -48,11 +48,12 @@ MonoBehaviour:
   _damage: 2
   _defense: 0
   _luck: 0
-  MoveDistance: 0
-  ActionPoints: 0
-  Name: Broken Sword
-  Description: 
+  _moveDistance: 0
+  _actionPoints: 0
+  _name: 
+  _description: 
+  _hasAbility: 0
   _rarity: 2
   _part: 0
-  _sprite: {fileID: 21300000, guid: a770973c7fc39ed4a9f1e48893875914, type: 3}
+  sprite: {fileID: 21300000, guid: a770973c7fc39ed4a9f1e48893875914, type: 3}
   ability: {fileID: 0}

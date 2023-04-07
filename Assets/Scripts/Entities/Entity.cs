@@ -7,42 +7,48 @@ using static UnityEngine.GraphicsBuffer;
 
 public abstract class Entity : MonoBehaviour
 {
-    public int CurentHealth = 0;
-    public int MaxHealth = 0;
-    public int Damage = 0;
-    public int Defense = 0;
-    public int Luck = 0;
-    public int MoveDistance = 0; // nb of tiles it can move
-    public int ActionPoints = 0;
 
-    public Tile tile;
-    public PlayerInBattle Player;
-    public Dictionary<Vector2, Tile> grid;
-
-    public string Name = null;
-
-    public Sprite _sprite;
-
-    public bool IsDead = false;
+    [SerializeField] private string _name = null;
+    [SerializeField] private string _description = null;
+    [SerializeField] private int _curentHealth = 0;
+    [SerializeField] private int _maxHealth = 0;
+    [SerializeField] private int _damage = 0;
+    [SerializeField] private int _defense = 0;
+    [SerializeField] private int _luck = 0;
+    [SerializeField] private int _moveDistance = 0;
+    [SerializeField] private int _actionPoints = 0;
 
     [SerializeField] private SpriteRenderer _deadSR;
     [SerializeField] private Sprite _deadSprite;
 
-    public bool IsTurn = false;
+    protected List<Vector2> _attackTargets;
 
-    protected List<Vector2> attackTargets;
-    public bool HasFinishedTurn = false;
+    public string Name { get => _name; set => _name = value; }
+    public string Description { get => _description; set => _description = value; }
+    public bool IsTurn { get; set; }
+    public bool IsDead { get; set; }
+    public Tile Tile { get; set; }
+    public PlayerInBattle Player { get; set; }
+    public Dictionary<Vector2, Tile> Grid { get; set; }
+    public Sprite Sprite { get; set; }
+
+    public int CurentHealth { get => _curentHealth; set => _curentHealth = value; }
+    public int MaxHealth { get => _maxHealth; set => _maxHealth = value; }
+    public int Damage { get => _damage; set => _damage = value; }
+    public int Defense { get => _defense; set => _defense = value; }
+    public int Luck { get => _luck; set => _luck = value; }
+    public int MoveDistance { get => _moveDistance; set => _moveDistance = value; }
+    public int ActionPoints { get => _actionPoints; set => _actionPoints = value; }
 
     protected virtual void Awake()
     {
         GetGrid();
-        tile = GetTile();
+        Tile = GetTile();
         SetAttackTargets();
     }
-
     protected virtual void SetAttackTargets()
     {
-        attackTargets = new List<Vector2>
+        _attackTargets = new List<Vector2>
         {
             Vector2.down,
             Vector2.up,
@@ -50,7 +56,6 @@ public abstract class Entity : MonoBehaviour
             Vector2.left
         };
     }
-
     public virtual void PerformAction()
     {
         if (IsDead)
@@ -69,7 +74,7 @@ public abstract class Entity : MonoBehaviour
     }
     protected IEnumerator FollowPathToPlayer()
     {
-        List<Tile> path = AStarSearch(tile, Player.tile, grid);
+        List<Tile> path = AStarSearch(Tile, Player.tile, Grid);
         path.RemoveAt(path.Count - 1);
         for (int i = 0; i < MoveDistance; i++)
         {
@@ -94,60 +99,18 @@ public abstract class Entity : MonoBehaviour
             }
 
             transform.parent = path[i + 1]._entity.transform;
-            tile = GetTile();
+            Tile = GetTile();
 
         }
         Player.grid.CancelHighlight();
         IsTurn = false;
     }
-
-    //protected IEnumerator MoveToPlayer()
-    //{
-    //    List<Tile> path = AStarSearch(tile, Player.tile, grid);
-    //    path.RemoveAt(path.Count - 1);
-    //    for (int i = 0; i < MoveDistance; i++)
-    //    {
-    //        if (i + 1 > path.Count - 1) break;
-
-    //        path[i + 1].HighLight(Color.blue);
-
-    //    }
-
-    //    for (int i = 0; i < MoveDistance; i++)
-    //    {
-    //        if (i + 1 > path.Count - 1) break;
-
-    //        Vector3 targetPosition = path[i + 1].transform.position;
-    //        transform.parent = path[i + 1]._entity.transform;
-    //        yield return StartCoroutine(MoveToPosition(targetPosition, 0.5f));
-
-    //        tile = GetTile();
-    //    }
-
-    //}
-
-    //public IEnumerator MoveToPosition(Vector3 position, float timeToMove) // doit changer en follow path
-    //{
-    //    Vector3 currentPos = transform.position;
-    //    float t = 0f;
-
-    //    while (t < 1f)
-    //    {
-    //        t += Time.deltaTime / timeToMove;
-    //        transform.position = Vector3.Lerp(currentPos, position, t);
-    //        yield return null;
-    //    }
-
-    //    IsTurn = false;
-    //    Player.grid.CancelHighlight();
-    //}
-
     public IEnumerator MoveToPositionThenReturn(Transform transform, Vector3 position, float timeToMove)
     {
-        foreach (var target in attackTargets)
+        foreach (var target in _attackTargets)
         {
-            if (grid.ContainsKey(tile._position + target))
-                grid[tile._position + target].HighLight(Color.red);
+            if (Grid.ContainsKey(Tile._position + target))
+                Grid[Tile._position + target].HighLight(Color.red);
         }
 
         var currentPos = transform.position;
@@ -170,14 +133,13 @@ public abstract class Entity : MonoBehaviour
         IsTurn = false;
         Player.grid.CancelHighlight();
     }
-
     private bool PlayerInAttackRange()
     {
-        foreach (var target in attackTargets)
+        foreach (var target in _attackTargets)
         {
-            if (grid.ContainsKey(tile._position + target))
+            if (Grid.ContainsKey(Tile._position + target))
             {
-                if (grid[tile._position + target].GetComponentInChildren<PlayerInBattle>() != null)
+                if (Grid[Tile._position + target].GetComponentInChildren<PlayerInBattle>() != null)
                 {
                     return true;
                 }
@@ -186,17 +148,14 @@ public abstract class Entity : MonoBehaviour
 
         return false;
     }
-
     protected void GetGrid()
     {
-        grid = transform.parent.parent.GetComponentInParent<Grid>()._tiles;
+        Grid = transform.parent.parent.GetComponentInParent<Grid>()._tiles;
     }
-
     protected Tile GetTile()
     {
         return transform.parent.GetComponentInParent<Tile>();
     }
-
     public static List<Tile> AStarSearch(Tile start, Tile goal, Dictionary<Vector2, Tile> grid)
     {
         List<Tile> path = new List<Tile>();
@@ -260,12 +219,10 @@ public abstract class Entity : MonoBehaviour
 
         return null;
     }
-
     private static float Heuristic(Tile a, Tile b)
     {
         return Mathf.Abs(a._position.x - b._position.x) + Mathf.Abs(a._position.y - b._position.y);
     }
-
     private static List<Tile> GetNeighbors(Tile tile, Dictionary<Vector2, Tile> grid)
     {
         List<Tile> neighbors = new List<Tile>();
@@ -283,12 +240,10 @@ public abstract class Entity : MonoBehaviour
 
         return neighbors;
     }
-
     protected virtual void Attack()
     {
         PlayerData.Instance.TakeDamage(Damage);
     }
-
     public virtual void TakeDamage(int Damage)
     {
         CurentHealth -= Damage - Defense;

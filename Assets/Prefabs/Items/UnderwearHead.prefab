@@ -48,11 +48,12 @@ MonoBehaviour:
   _damage: 0
   _defense: -1
   _luck: 2
-  MoveDistance: 0
-  ActionPoints: 0
-  Name: Underwear ?
-  Description: 
+  _moveDistance: 0
+  _actionPoints: 0
+  _name: 
+  _description: 
+  _hasAbility: 0
   _rarity: 2
   _part: 2
-  _sprite: {fileID: 21300000, guid: 46696d43dadd7aa49953b15f28d02305, type: 3}
+  sprite: {fileID: 21300000, guid: 46696d43dadd7aa49953b15f28d02305, type: 3}
   ability: {fileID: 0}

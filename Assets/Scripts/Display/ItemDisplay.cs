@@ -32,7 +32,7 @@ public class ItemDisplay : MonoBehaviour
         if (_item != null)
         {
             DisplayBorder();
-            _itemSprite.sprite = _item._sprite;
+            _itemSprite.sprite = _item.Sprite;
         }
     }
 
@@ -61,9 +61,9 @@ public class ItemDisplay : MonoBehaviour
         }
     }
 
-    private void OnMouseOver()
+    private void OnMouseDown()
     {
-        if (IsLoot && Input.GetMouseButtonDown(0) && PlayerData.Instance.Coins >= Cost)
+        if (PlayerData.Instance.Coins >= Cost)
         {
             Stuff.AddItem(_item);
             PlayerData.Instance.Coins -= Cost;

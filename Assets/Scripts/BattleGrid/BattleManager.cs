@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Overlays;
 using UnityEngine;
@@ -35,55 +36,51 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsBattle)
+        if (!IsBattle)
         {
-            int deadEnemies = 0;
-            foreach (var enemy in Enemies)
-            {
-                if (enemy.GetComponent<Entity>().IsDead)
-                {
-                    deadEnemies++;
-                }
-            }
+            return;
+        }
 
-            if (deadEnemies == Enemies.Count)
+        int deadEnemies = 0;
+        foreach (var enemy in Enemies)
+        {
+            if (enemy.GetComponent<Entity>().IsDead)
             {
-                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToTreasure);
-                foreach (var enemy in Enemies)
-                {
-                    Destroy(enemy);
-                }
-                IsBattle = false;
-                gameObject.GetComponent<EntityDisplay>().Stats.SetActive(false);
-            }
-
-            if (GameState == GameStates.PlayerTurn)
-            {
-                if (!Player.IsPlayerTurn)
-                {
-                    PlayerData.Instance.UpdateData();
-                    ChangeState(GameStates.EnemiesTurn);
-                }
-            }
-            else if (GameState == GameStates.EnemiesTurn)
-            {
-                // Check if there are any enemies left to play
-                int enemiesLeftToPlay = 0;
-                foreach (var enemy in Enemies)
-                {
-                    if (enemy.GetComponent<Entity>().IsTurn && !enemy.GetComponent<Entity>().IsDead)
-                    {
-                        enemiesLeftToPlay++;
-                    }
-                }
-
-                if (enemiesLeftToPlay == 0)
-                {
-                    // If there are no enemies left to play, change state to PlayerTurn
-                    ChangeState(GameStates.PlayerTurn);
-                }
+                deadEnemies++;
             }
         }
+
+        if (deadEnemies == Enemies.Count)
+        {
+            EndBattle();
+            return;
+        }
+
+        if (GameState == GameStates.PlayerTurn && !Player.IsPlayerTurn)
+        {
+            PlayerData.Instance.UpdateData();
+            ChangeState(GameStates.EnemiesTurn);
+        }
+        else if (GameState == GameStates.EnemiesTurn)
+        {
+            int enemiesLeftToPlay = Enemies.Count(e => e.GetComponent<Entity>().IsTurn && !e.GetComponent<Entity>().IsDead);
+            if (enemiesLeftToPlay == 0)
+            {
+                ChangeState(GameStates.PlayerTurn);
+            }
+        }
+    }
+
+    private void EndBattle()
+    {
+        PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToTreasure);
+        foreach (var enemy in Enemies)
+        {
+            Destroy(enemy);
+        }
+        IsBattle = false;
+        gameObject.GetComponent<EntityDisplay>().Stats.SetActive(false);
+        Pool.ClearMovepool();
     }
 
     public void SpawnPlayer()
@@ -126,6 +123,7 @@ public class BattleManager : MonoBehaviour
                 ChangeState(GameStates.PlayerTurn);
                 break;
             case GameStates.PlayerTurn:
+                PlayerData.Instance.DecrementCooldown();
                 PlayerData.Instance.EnableAbilities();
                 Player.IsPlayerTurn = true;
                 break;
