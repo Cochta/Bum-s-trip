@@ -2,11 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Overlays;
 using UnityEngine;
-using static BattleManager;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class BattleManager : MonoBehaviour
 {
@@ -22,7 +18,6 @@ public class BattleManager : MonoBehaviour
     private Grid _grid;
 
     public GameObject PlayerPrefab;
-    public EnemyLayout EnemyLayout;
 
     public List<GameObject> Enemies;
     public PlayerInBattle Player;
@@ -31,6 +26,8 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField] private Stuff _stuff;
     public MovePoolManager Pool;
+
+    [SerializeField] private EnemyPool _enemyPool;
 
     private bool IsBattle = false;
 
@@ -71,7 +68,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void EndBattle()
+    public void EndBattle() //normally private but for generator tests public
     {
         PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToTreasure);
         foreach (var enemy in Enemies)
@@ -97,10 +94,12 @@ public class BattleManager : MonoBehaviour
     }
     public void SpawnEnemies()
     {
+        System.Random rnd = new System.Random();
+        EnemyLayout layout = _enemyPool.PoolCave[rnd.Next(0, _enemyPool.PoolCave.Count())];
         Enemies = new List<GameObject>();
-        for (int i = 0; i < EnemyLayout.Enemies.Count; i++)
+        for (int i = 0; i < layout.Enemies.Count; i++)
         {
-            Enemies.Add(Instantiate(EnemyLayout.Enemies[i], _grid.GetTile(EnemyLayout.Positions[i])._entity.transform));
+            Enemies.Add(Instantiate(layout.Enemies[i], _grid.GetTile(layout.Positions[i])._entity.transform));
             Enemies[i].GetComponent<Entity>().Player = Player;
         }
     }
@@ -149,7 +148,7 @@ public class BattleManager : MonoBehaviour
         foreach (var enemy in Enemies)
         {
             Entity entity = enemy.GetComponent<Entity>();
-            entity.PerformAction();
+            StartCoroutine(entity.PerformAction());
 
             yield return new WaitUntil(() => !entity.IsTurn);
 

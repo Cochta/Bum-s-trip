@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
-using static UnityEngine.GraphicsBuffer;
 
 public abstract class Entity : MonoBehaviour
 {
@@ -16,12 +13,15 @@ public abstract class Entity : MonoBehaviour
     [SerializeField] private int _defense = 0;
     [SerializeField] private int _luck = 0;
     [SerializeField] private int _moveDistance = 0;
-    [SerializeField] private int _actionPoints = 0;
+    [SerializeField] private int _baseActionPoints = 0;
+    protected int _currentActionPoints;
 
     [SerializeField] private SpriteRenderer _deadSR;
     [SerializeField] private Sprite _deadSprite;
 
     protected List<Vector2> _attackTargets;
+
+    [SerializeField] protected int _attackRange;
 
     public string Name { get => _name; set => _name = value; }
     public string Description { get => _description; set => _description = value; }
@@ -38,43 +38,42 @@ public abstract class Entity : MonoBehaviour
     public int Defense { get => _defense; set => _defense = value; }
     public int Luck { get => _luck; set => _luck = value; }
     public int MoveDistance { get => _moveDistance; set => _moveDistance = value; }
-    public int ActionPoints { get => _actionPoints; set => _actionPoints = value; }
+    public int BaseActionPoints { get => _baseActionPoints; set => _baseActionPoints = value; }
 
     protected virtual void Awake()
     {
         GetGrid();
         Tile = GetTile();
-        SetAttackTargets();
     }
-    protected virtual void SetAttackTargets()
+    public virtual IEnumerator PerformAction()
     {
-        _attackTargets = new List<Vector2>
-        {
-            Vector2.down,
-            Vector2.up,
-            Vector2.right,
-            Vector2.left
-        };
-    }
-    public virtual void PerformAction()
-    {
+        _attackTargets = SetTargets(_attackRange);
+        _currentActionPoints = BaseActionPoints;
+
         if (IsDead)
         {
             IsTurn = false;
-            return;
-        }
-
-        if (PlayerInAttackRange())
-        {
-            Attack();
-            StartCoroutine(MoveToPositionThenReturn(transform, Player.transform.position, 0.5f));
         }
         else
-            StartCoroutine(FollowPathToPlayer());
+        {
+            for (int i = 0; i < BaseActionPoints; i++)
+            {
+                int wait = _currentActionPoints;
+                if (PlayerInAttackRange())
+                {
+                    Attack();
+                    StartCoroutine(MoveToPositionThenReturn(transform, Player.transform.position, 0.5f));
+
+                }
+                else
+                    StartCoroutine(FollowPath(AStarSearch(Tile, Player.tile, Grid)));
+
+                yield return new WaitUntil(() => _currentActionPoints == wait - 1);
+            }
+        }
     }
-    protected IEnumerator FollowPathToPlayer()
+    protected IEnumerator FollowPath(List<Tile> path)
     {
-        List<Tile> path = AStarSearch(Tile, Player.tile, Grid);
         path.RemoveAt(path.Count - 1);
         for (int i = 0; i < MoveDistance; i++)
         {
@@ -102,8 +101,7 @@ public abstract class Entity : MonoBehaviour
             Tile = GetTile();
 
         }
-        Player.grid.CancelHighlight();
-        IsTurn = false;
+        EndAction();
     }
     public IEnumerator MoveToPositionThenReturn(Transform transform, Vector3 position, float timeToMove)
     {
@@ -130,10 +128,9 @@ public abstract class Entity : MonoBehaviour
             yield return null;
         }
 
-        IsTurn = false;
-        Player.grid.CancelHighlight();
+        EndAction();
     }
-    private bool PlayerInAttackRange()
+    protected bool PlayerInAttackRange()
     {
         foreach (var target in _attackTargets)
         {
@@ -252,5 +249,89 @@ public abstract class Entity : MonoBehaviour
             IsDead = true;
             _deadSR.sprite = _deadSprite;
         }
+    }
+    protected void EndAction()
+    {
+        Player.grid.CancelHighlight();
+        _currentActionPoints--;
+        if (_currentActionPoints <= 0)
+            IsTurn = false;
+    }
+    public static List<Tile> Flee(Tile start, Tile danger, Dictionary<Vector2, Tile> grid)
+    {
+        Vector2 startVec = start._position;
+        Vector2 dangerVec = danger._position;
+        Vector2 fleeDirection = startVec - dangerVec;
+
+        Tile targetTile = null;
+        float maxDistance = 0;
+
+        foreach (Tile tile in grid.Values)
+        {
+            Vector2 tileVec = tile._position;
+            float distance = Vector2.Dot(tileVec - dangerVec, fleeDirection);
+
+            if (distance > maxDistance)
+            {
+                maxDistance = distance;
+                targetTile = tile;
+            }
+        }
+        return AStarSearch(start, targetTile, grid);
+    }
+    protected IEnumerable<Vector2> GetNeighborTiles(Vector2 tile)
+    {
+        yield return tile + Vector2.up;
+        yield return tile + Vector2.down;
+        yield return tile + Vector2.left;
+        yield return tile + Vector2.right;
+    }
+    protected IEnumerable<Vector2> GetTilesInRange(IEnumerable<Vector2> tiles, Vector2 center, int range)
+    {
+        foreach (var tile in tiles)
+        {
+            if (Vector2.Distance(tile, center) <= range)
+            {
+                yield return tile;
+            }
+        }
+    }
+    protected virtual List<Vector2> SetTargets(int range)
+    {
+        List<Vector2> targets = new List<Vector2>();
+        var pos = Tile._position;
+
+        var visited = new HashSet<Vector2>();
+        var queue = new Queue<Vector2>();
+        var distances = new Dictionary<Vector2, int> { { pos, 0 } };
+
+        queue.Enqueue(pos);
+        visited.Add(pos);
+
+        while (queue.Count > 0)
+        {
+            var currentTile = queue.Dequeue();
+            var currentDistance = distances[currentTile];
+
+            foreach (var neighborTile in GetNeighborTiles(currentTile))
+            {
+                if (visited.Contains(neighborTile)) continue;
+                var neighborDistance = currentDistance + 1;
+
+                if (neighborDistance > range) break;
+
+                //if (!IsPositionAvailable(neighborTile)) continue;
+
+                visited.Add(neighborTile);
+                distances[neighborTile] = neighborDistance;
+                queue.Enqueue(neighborTile);
+            }
+        }
+
+        foreach (var targetTile in GetTilesInRange(distances.Keys, pos, range))
+        {
+            targets.Add(targetTile - pos);
+        }
+        return targets;
     }
 }

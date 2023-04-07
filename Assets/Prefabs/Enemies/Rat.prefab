@@ -138,9 +138,10 @@ MonoBehaviour:
   _defense: 0
   _luck: 0
   _moveDistance: 3
-  _actionPoints: 1
+  _baseActionPoints: 1
   _deadSR: {fileID: 442961231302686158}
   _deadSprite: {fileID: 21300000, guid: 4f4ad3dc130b2684c9896a4536e1a0a2, type: 3}
+  _attackRange: 1
 --- !u!1 &6761538589622477064
 GameObject:
   m_ObjectHideFlags: 0

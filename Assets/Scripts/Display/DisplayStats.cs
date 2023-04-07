@@ -67,7 +67,7 @@ public class DisplayStats : MonoBehaviour
         _defenseStat.GetComponentInChildren<TextMeshPro>().text = entity.Defense.ToString();
         _luckStat.GetComponentInChildren<TextMeshPro>().text = entity.Luck.ToString();
         _MoveStat.GetComponentInChildren<TextMeshPro>().text = entity.MoveDistance.ToString();
-        _actionPointStat.GetComponentInChildren<TextMeshPro>().text = entity.ActionPoints.ToString();
+        _actionPointStat.GetComponentInChildren<TextMeshPro>().text = entity.BaseActionPoints.ToString();
 
     }
 }

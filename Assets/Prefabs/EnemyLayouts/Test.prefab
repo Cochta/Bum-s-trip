@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6698093819571012464}
   - component: {fileID: 2107309344247627312}
   m_Layer: 0
-  m_Name: 1BatForTest
+  m_Name: Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enemies:
-  - {fileID: 515362624524675704, guid: d0a80d7c51f8f894998e183410c19dc4, type: 3}
+  - {fileID: 515362624524675704, guid: 79c74ae37eef2044a96b7dc66264e70b, type: 3}
   Positions:
-  - {x: 5, y: 2}
+  - {x: 3, y: 4}

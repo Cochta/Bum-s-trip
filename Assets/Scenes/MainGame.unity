@@ -452,9 +452,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1160458879}
     - target: {fileID: 2686991280687853041, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
+      propertyPath: _enemyPool
+      value: 
+      objectReference: {fileID: 11400000, guid: ffbdcbca49f9eef44b1b285897c8cf7f, type: 2}
+    - target: {fileID: 2686991280687853041, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
       propertyPath: EnemyLayout
       value: 
-      objectReference: {fileID: 2107309344247627312, guid: e5c11ec30d8058d4b9617ecdd95a5bd8, type: 3}
+      objectReference: {fileID: 2107309344247627312, guid: 2fe363c84852362488e20f3cc59c2535, type: 3}
     - target: {fileID: 2686991280687853042, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
       propertyPath: m_Name
       value: Battle
