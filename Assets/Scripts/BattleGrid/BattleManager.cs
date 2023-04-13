@@ -18,8 +18,10 @@ public class BattleManager : MonoBehaviour
     private Grid _grid;
 
     public GameObject PlayerPrefab;
+    [SerializeField] private GameObject _rockPrefab;
 
     public List<GameObject> Enemies;
+    private List<GameObject> Terrains = new List<GameObject>();
     public PlayerInBattle Player;
 
     public GameStates GameState = GameStates.None;
@@ -28,6 +30,7 @@ public class BattleManager : MonoBehaviour
     public MovePoolManager Pool;
 
     [SerializeField] private EnemyPool _enemyPool;
+    [SerializeField] private TerrainPool _terrainPool;
 
     private bool IsBattle = false;
 
@@ -73,8 +76,21 @@ public class BattleManager : MonoBehaviour
         PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToTreasure);
         foreach (var enemy in Enemies)
         {
+            foreach (var entity in enemy.GetComponent<Entity>().SpawnedEntities)
+            {
+                Destroy(entity);
+            }
             Destroy(enemy);
         }
+        if (Terrains.Count > 0)
+        {
+            foreach (var terrain in Terrains)
+            {
+                Destroy(terrain);
+            }
+        }
+        Terrains = new List<GameObject>();
+
         IsBattle = false;
         gameObject.GetComponent<EntityDisplay>().Stats.SetActive(false);
         Pool.ClearMovepool();
@@ -82,7 +98,7 @@ public class BattleManager : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        Player = Instantiate(PlayerPrefab, _grid.GetTile(5, 1)._entity.transform).GetComponent<PlayerInBattle>();
+        Player = Instantiate(PlayerPrefab, _grid.GetTile(5, 1).Entity.transform).GetComponent<PlayerInBattle>();
         Pool.Player = Player;
     }
 
@@ -99,8 +115,18 @@ public class BattleManager : MonoBehaviour
         Enemies = new List<GameObject>();
         for (int i = 0; i < layout.Enemies.Count; i++)
         {
-            Enemies.Add(Instantiate(layout.Enemies[i], _grid.GetTile(layout.Positions[i])._entity.transform));
+            Enemies.Add(Instantiate(layout.Enemies[i], _grid.GetTile(layout.Positions[i]).Entity.transform));
             Enemies[i].GetComponent<Entity>().Player = Player;
+        }
+    }
+    public void SpawnTerrain()
+    {
+        System.Random rnd = new System.Random();
+        TerrainLayout layout = _terrainPool.Terrains[rnd.Next(0, _terrainPool.Terrains.Count())];
+        Terrains = new List<GameObject>();
+        for (int i = 0; i < layout.Positions.Count; i++)
+        {
+            Terrains.Add(Instantiate(_rockPrefab, _grid.GetTile(layout.Positions[i]).Terrain.transform));
         }
     }
     public void ChangeState(GameStates newState)
@@ -122,6 +148,8 @@ public class BattleManager : MonoBehaviour
                 ChangeState(GameStates.PlayerTurn);
                 break;
             case GameStates.PlayerTurn:
+                PlayerData.Instance.ResetActions();
+                PlayerData.Instance.UpdateData();
                 PlayerData.Instance.DecrementCooldown();
                 PlayerData.Instance.EnableAbilities();
                 Player.IsPlayerTurn = true;
@@ -138,7 +166,6 @@ public class BattleManager : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
     }
-
     private IEnumerator EnemyTurnCoroutine()
     {
         foreach (var enemy in Enemies)

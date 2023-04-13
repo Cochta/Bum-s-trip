@@ -38,10 +38,13 @@ public class PlayerData : MonoBehaviour
     [NonSerialized] public int Luck;
     [NonSerialized] public int MoveDistance; // nb of tiles it can move
     [NonSerialized] public int ActionPoints;
+    [NonSerialized] public int ActionsRemaining; // nb of tiles it can move
 
     public Stuff Stuff;
     public List<Item> Items;
 
+    [SerializeField] private PlayerDeath _playerDeath;
+    [SerializeField] private LoadingScreen _loadingScreen;
     [SerializeField] private PlayerDisplay _display;
     [SerializeField] private MovePoolManager _movePoolManager;
 
@@ -58,14 +61,13 @@ public class PlayerData : MonoBehaviour
         ChangeGameState(GameStates.EnterNewLevel);
         _battleManager.ChangeState(BattleManager.GameStates.Initialisation);
     }
-
     public void UpdateData()
     {
         int oldHealth = MaxHealth;
 
         MaxHealth = 5;
-        Damage = 5;
-        Defense = 1;
+        Damage = 2;
+        Defense = 0;
         Luck = 0;
         MoveDistance = 2;
         ActionPoints = 2;
@@ -108,7 +110,13 @@ public class PlayerData : MonoBehaviour
             }
         };
 
+        if (CurrentHealth <= 0)
+            StartCoroutine(_playerDeath.Die(5));
         _display.OnDisplayPlayer();
+    }
+    public void ResetActions()
+    {
+        ActionsRemaining = ActionPoints;
     }
     public void Attack(Entity entity, int Damage)
     {
@@ -117,9 +125,22 @@ public class PlayerData : MonoBehaviour
     }
     public void TakeDamage(int Damage)
     {
-        CurrentHealth -= Damage - Instance.Defense;
+        if (Damage > Defense) CurrentHealth -= Damage - Instance.Defense;
         UpdateData();
     }
+    public void TakeDirectDamage(int Damage)
+    {
+        CurrentHealth -= Damage;
+        UpdateData();
+    }
+    public void Heal(int health)
+    {
+        CurrentHealth += health;
+        if (CurrentHealth > MaxHealth)
+            CurrentHealth = MaxHealth;
+        UpdateData();
+    }
+
     public void EnableAbilities()
     {
         foreach (var ability in _display.Pool.Abilities)
@@ -152,6 +173,7 @@ public class PlayerData : MonoBehaviour
         switch (_state)
         {
             case GameStates.EnterNewLevel:
+                StartCoroutine(_loadingScreen.Load(1f));
                 _map.GenerateMap();
                 ChangeGameState(GameStates.ToMap);
                 Level++;

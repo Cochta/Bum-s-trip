@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class Entity : MonoBehaviour
 {
-
     [SerializeField] private string _name = null;
     [SerializeField] private string _description = null;
     [SerializeField] private int _curentHealth = 0;
@@ -22,6 +21,8 @@ public abstract class Entity : MonoBehaviour
     protected List<Vector2> _attackTargets;
 
     [SerializeField] protected int _attackRange;
+
+    public List<GameObject> SpawnedEntities = new List<GameObject>();
 
     public string Name { get => _name; set => _name = value; }
     public string Description { get => _description; set => _description = value; }
@@ -97,7 +98,7 @@ public abstract class Entity : MonoBehaviour
                 yield return null;
             }
 
-            transform.parent = path[i + 1]._entity.transform;
+            transform.parent = path[i + 1].Entity.transform;
             Tile = GetTile();
 
         }
@@ -107,8 +108,8 @@ public abstract class Entity : MonoBehaviour
     {
         foreach (var target in _attackTargets)
         {
-            if (Grid.ContainsKey(Tile._position + target))
-                Grid[Tile._position + target].HighLight(Color.red);
+            if (Grid.ContainsKey(Tile.Position + target))
+                Grid[Tile.Position + target].HighLight(Color.red);
         }
 
         var currentPos = transform.position;
@@ -134,9 +135,9 @@ public abstract class Entity : MonoBehaviour
     {
         foreach (var target in _attackTargets)
         {
-            if (Grid.ContainsKey(Tile._position + target))
+            if (Grid.ContainsKey(Tile.Position + target))
             {
-                if (Grid[Tile._position + target].GetComponentInChildren<PlayerInBattle>() != null)
+                if (Grid[Tile.Position + target].GetComponentInChildren<PlayerInBattle>() != null)
                 {
                     return true;
                 }
@@ -218,7 +219,7 @@ public abstract class Entity : MonoBehaviour
     }
     private static float Heuristic(Tile a, Tile b)
     {
-        return Mathf.Abs(a._position.x - b._position.x) + Mathf.Abs(a._position.y - b._position.y);
+        return Mathf.Abs(a.Position.x - b.Position.x) + Mathf.Abs(a.Position.y - b.Position.y);
     }
     private static List<Tile> GetNeighbors(Tile tile, Dictionary<Vector2, Tile> grid)
     {
@@ -226,11 +227,11 @@ public abstract class Entity : MonoBehaviour
 
         foreach (var direction in new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right })
         {
-            var neighborPos = tile._position + direction;
+            var neighborPos = tile.Position + direction;
             if (grid.ContainsKey(neighborPos))
             {
                 var neighbor = grid[neighborPos];
-                if (neighbor._entity.GetComponentInChildren<Entity>() == null)
+                if (neighbor.Entity.GetComponentInChildren<Entity>() == null)
                     neighbors.Add(neighbor);
             }
         }
@@ -243,7 +244,10 @@ public abstract class Entity : MonoBehaviour
     }
     public virtual void TakeDamage(int Damage)
     {
-        CurentHealth -= Damage - Defense;
+        if (Damage > Defense)
+            CurentHealth -= Damage - Defense;
+        else
+            CurentHealth -= 1;
         if (CurentHealth <= 0)
         {
             IsDead = true;
@@ -259,8 +263,8 @@ public abstract class Entity : MonoBehaviour
     }
     public static List<Tile> Flee(Tile start, Tile danger, Dictionary<Vector2, Tile> grid)
     {
-        Vector2 startVec = start._position;
-        Vector2 dangerVec = danger._position;
+        Vector2 startVec = start.Position;
+        Vector2 dangerVec = danger.Position;
         Vector2 fleeDirection = startVec - dangerVec;
 
         Tile targetTile = null;
@@ -268,7 +272,7 @@ public abstract class Entity : MonoBehaviour
 
         foreach (Tile tile in grid.Values)
         {
-            Vector2 tileVec = tile._position;
+            Vector2 tileVec = tile.Position;
             float distance = Vector2.Dot(tileVec - dangerVec, fleeDirection);
 
             if (distance > maxDistance)
@@ -299,7 +303,7 @@ public abstract class Entity : MonoBehaviour
     protected virtual List<Vector2> SetTargets(int range)
     {
         List<Vector2> targets = new List<Vector2>();
-        var pos = Tile._position;
+        var pos = Tile.Position;
 
         var visited = new HashSet<Vector2>();
         var queue = new Queue<Vector2>();

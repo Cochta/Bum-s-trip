@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 845649883868515287}
   - component: {fileID: 957141618273639639}
   - component: {fileID: 8838976132675152624}
-  - component: {fileID: -1547938625878955480}
+  - component: {fileID: 5702367300057802282}
   m_Layer: 0
-  m_Name: Slice
+  m_Name: Munch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: b7a5e14d605fe124793fca1f151d7323, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ad23465f2669f7e4788b181003cd36ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -113,7 +113,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-1547938625878955480
+--- !u!114 &5702367300057802282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,10 +122,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1065251557316539802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e06584e42b49a80408aa8b4842b49195, type: 3}
+  m_Script: {fileID: 11500000, guid: 39dcfe276865e894c82bebd46aefd49f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseCooldown: 2
+  Name: Munch
+  Description: 
+  _baseCooldown: 3
 --- !u!1 &9149446496580364773
 GameObject:
   m_ObjectHideFlags: 0

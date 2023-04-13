@@ -4,11 +4,10 @@ public class Tile : MonoBehaviour
 {
     public BoxCollider2D _col;
 
-    public GameObject _entity;
+    public GameObject Entity;
+    public GameObject Terrain;
 
-    public Vector2 _position;
-
-    [SerializeField] private SpriteRenderer _entitySR;
+    public Vector2 Position;
     [SerializeField] private SpriteRenderer _backgroundSR;
     [SerializeField] private Color _colorOdd;
     [SerializeField] private Color _colorEven;
@@ -43,7 +42,7 @@ public class Tile : MonoBehaviour
             ability.IsSelected = false;
             ability.IsOtherSelected = false;
         }
-        if (selectedAbility != null && selectedAbility.Targets.Contains(_position - bm.Player.tile._position))
+        if (selectedAbility != null && selectedAbility.Targets.Contains(Position - bm.Player.tile.Position))
         {
             selectedAbility.PerformAction(this);
         }
@@ -56,10 +55,10 @@ public class Tile : MonoBehaviour
         _baseColor = _backgroundSR.color;
         _backgroundSR.color = _colorHighlight;
         var display = transform.parent.GetComponent<EntityDisplay>();
-        if (_entity.GetComponentInChildren<Entity>() != null)
+        if (Entity.GetComponentInChildren<Entity>() != null)
         {
             display.Stats.SetActive(true);
-            display.Display.OnDisplayEntity(_entity.GetComponentInChildren<Entity>());
+            display.Display.OnDisplayEntity(Entity.GetComponentInChildren<Entity>());
         }
 
     }

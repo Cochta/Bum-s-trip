@@ -30,7 +30,10 @@ public class PlayerDisplay : MonoBehaviour
         _defenseStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.Defense.ToString();
         _luckStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.Luck.ToString();
         _MoveStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.MoveDistance.ToString();
-        _actionPointStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.ActionPoints.ToString();
+        if (PlayerData.Instance.State == PlayerData.GameStates.ToBattle)
+            _actionPointStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.ActionsRemaining.ToString();
+        else
+            _actionPointStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.ActionPoints.ToString();
         _coinsStat.GetComponentInChildren<TextMeshPro>().text = PlayerData.Instance.Coins.ToString();
 
     }

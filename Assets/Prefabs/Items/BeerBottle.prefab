@@ -44,16 +44,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd113eb354f6e44fbacf887b17dc647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: -2
-  _damage: -1
+  _health: 0
+  _damage: 0
   _defense: 0
   _luck: 0
   _moveDistance: 0
-  _actionPoints: 1
-  _name: 
-  _description: 
+  _actionPoints: 0
+  _name: Beer bottle
+  _description: Sip
   _hasAbility: 0
   _rarity: 1
   _part: 7
   sprite: {fileID: 21300000, guid: e2d8f334621d41a45aee2622330eef11, type: 3}
-  ability: {fileID: 0}
+  ability: {fileID: 1065251557316539802, guid: e7b3c2c26afd2e54d892cd2ba8ae4bf4, type: 3}

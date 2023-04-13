@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee34eb089a979964494d9b53641f2a01, type: 3}
+  m_Name: TerrainPool
+  m_EditorClassIdentifier: 
+  Terrains:
+  - {fileID: -8373035708499206140, guid: defc0a1f0cd66b64abc8ed9c82217e5e, type: 3}
+  - {fileID: -8373035708499206140, guid: 234ce86fd5e931d4a940a916739b25e3, type: 3}

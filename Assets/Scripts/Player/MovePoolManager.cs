@@ -9,6 +9,7 @@ public class MovePoolManager : MonoBehaviour
     public List<GameObject> AbilitiesPrefab;
     private List<GameObject> _instantiatedObjects;
 
+    [SerializeField] public EntityDisplay Display;
     [SerializeField] private GameObject _move;
     [SerializeField] private GameObject _attack;
 

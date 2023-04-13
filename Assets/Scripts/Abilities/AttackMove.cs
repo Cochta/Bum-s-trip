@@ -11,6 +11,7 @@ public class AttackMove : Ability
     }
     protected override void OnMouseEnter()
     {
+        Description = "Deal " + PlayerData.Instance.Damage + " damages !";
         Targets = new List<Vector2>();
         Targets.Add(new Vector2(1, 1));
         Targets.Add(new Vector2(1, 0));
@@ -26,11 +27,11 @@ public class AttackMove : Ability
 
     public override void PerformAction(Tile tile)
     {
-        if (tile._entity.GetComponentInChildren<Entity>() != null)
+        if (tile.Entity.GetComponentInChildren<Entity>() != null)
         {
             StartCoroutine(MoveToPositionThenReturn(_poolManager.Player.transform, tile.transform.position, 0.5f));
-            tile._entity.GetComponentInChildren<Entity>().TakeDamage(PlayerData.Instance.Damage);
-            PlayerData.Instance.ActionPoints -= 1;
+            tile.Entity.GetComponentInChildren<Entity>().TakeDamage(PlayerData.Instance.Damage);
+            PlayerData.Instance.ActionsRemaining -= 1;
         }
         base.PerformAction(tile);
     }
@@ -52,7 +53,7 @@ public class AttackMove : Ability
             transform.position = Vector3.Lerp(position, currentPos, t);
             yield return null;
         }
-        if (PlayerData.Instance.ActionPoints <= 0)
+        if (PlayerData.Instance.ActionsRemaining <= 0)
         {
             _poolManager.Player.IsPlayerTurn = false;
         }

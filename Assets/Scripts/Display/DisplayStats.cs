@@ -15,6 +15,18 @@ public class DisplayStats : MonoBehaviour
     [SerializeField] private GameObject _MoveStat;
     [SerializeField] private GameObject _actionPointStat;
 
+    public void OnDisplayAbility(Ability ability)
+    {
+        _healthStat.SetActive(false);
+        _attackStat.SetActive(false);
+        _defenseStat.SetActive(false);
+        _luckStat.SetActive(false);
+        _MoveStat.SetActive(false);
+        _actionPointStat.SetActive(false);
+
+        _name.GetComponent<TextMeshPro>().text = ability.Name;
+        _description.GetComponent<TextMeshPro>().text = ability.Description;
+    }
     public void OnDisplayItem(Item item)
     {
         _healthStat.SetActive(true);
@@ -25,6 +37,7 @@ public class DisplayStats : MonoBehaviour
         _actionPointStat.SetActive(true);
 
         _name.GetComponent<TextMeshPro>().text = item.Name;
+        _description.GetComponent<TextMeshPro>().text = item.Description;
 
         if (item.Health != 0)
             _healthStat.GetComponentInChildren<TextMeshPro>().text = item.Health.ToString("+0;-#");

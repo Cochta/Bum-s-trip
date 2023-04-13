@@ -17,7 +17,7 @@ public class Grid : MonoBehaviour
             {
                 Tile tile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
                 tile.name = $"Tile{x}{y}";
-                tile._position = new Vector2(x, y);
+                tile.Position = new Vector2(x, y);
                 tile.transform.parent = transform;
 
                 bool isOffset = (x % 2 == 0 && y % 2 != 0) || (y % 2 == 0 && x % 2 != 0);

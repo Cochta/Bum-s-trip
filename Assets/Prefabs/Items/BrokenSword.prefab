@@ -50,7 +50,7 @@ MonoBehaviour:
   _luck: 0
   _moveDistance: 0
   _actionPoints: 0
-  _name: 
+  _name: Broken sword
   _description: 
   _hasAbility: 0
   _rarity: 2

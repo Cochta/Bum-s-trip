@@ -12,9 +12,9 @@ public class Spider : Entity
     {
         foreach (var target in _safeZoneTargets)
         {
-            if (Grid.ContainsKey(Tile._position + target))
+            if (Grid.ContainsKey(Tile.Position + target))
             {
-                if (Grid[Tile._position + target].GetComponentInChildren<PlayerInBattle>() != null)
+                if (Grid[Tile.Position + target].GetComponentInChildren<PlayerInBattle>() != null)
                 {
                     return true;
                 }
@@ -60,12 +60,12 @@ public class Spider : Entity
     }
     public IEnumerator ShootAtPlayer(float timeToShoot)
     {
-        var web = Instantiate(_webPrefab, Player.tile.transform);
+        var web = Instantiate(_webPrefab, Player.tile.Terrain.transform);
 
         foreach (var target in _attackTargets)
         {
-            if (Grid.ContainsKey(Tile._position + target))
-                Grid[Tile._position + target].HighLight(Color.red);
+            if (Grid.ContainsKey(Tile.Position + target))
+                Grid[Tile.Position + target].HighLight(Color.red);
         }
 
         var currentPos = transform.position;
@@ -76,7 +76,7 @@ public class Spider : Entity
             web.transform.position = Vector3.Lerp(currentPos, Player.tile.transform.position, t);
             yield return null;
         }
-
+        SpawnedEntities.Add(web);
         EndAction();
     }
 }

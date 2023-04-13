@@ -50,8 +50,8 @@ MonoBehaviour:
   _luck: 0
   _moveDistance: 0
   _actionPoints: 0
-  _name: 
-  _description: 
+  _name: Wooden sword
+  _description: Strike
   _hasAbility: 0
   _rarity: 1
   _part: 0

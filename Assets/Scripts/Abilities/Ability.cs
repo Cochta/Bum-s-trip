@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class Ability : MonoBehaviour
 {
-    [SerializeField] private int _baseCooldown;
+    public string Name;
+    public string Description;
+
+    [SerializeField] protected int _baseCooldown;
     private int _remainingCooldown = 0;
 
     protected MovePoolManager _poolManager;
@@ -36,14 +39,18 @@ public class Ability : MonoBehaviour
         RemainingCooldown = _baseCooldown;
         if (RemainingCooldown > 0)
             Disable();
+        PlayerData.Instance.UpdateData();
     }
     protected virtual void OnMouseEnter()
     {
+        _poolManager.Display.Stats.SetActive(true);
+        _poolManager.Display.Display.OnDisplayAbility(this);
+
         if (IsOtherSelected) return;
 
         foreach (var target in Targets)
         {
-            var position = _poolManager.Player.tile._position + target;
+            var position = _poolManager.Player.tile.Position + target;
             if (_poolManager.Player.grid._tiles.TryGetValue(position, out var tile))
             {
                 tile.HighLight(_highlightColor);
@@ -67,6 +74,7 @@ public class Ability : MonoBehaviour
     }
     protected virtual void OnMouseExit()
     {
+        _poolManager.Display.Stats.SetActive(false);
         if (!IsSelected && !IsOtherSelected)
         {
             CancelTileHighlights();
@@ -101,7 +109,7 @@ public class Ability : MonoBehaviour
         var grid = _poolManager.Player.grid;
         if (grid.HasTile(new Vector2(position.x, position.y)))
         {
-            if (grid._tiles[position]._entity.GetComponentInChildren<Entity>() == null)
+            if (grid._tiles[position].Entity.GetComponentInChildren<Entity>() == null)
             {
                 return true;
             }

@@ -17,8 +17,9 @@ public class MovePlayer : Ability
     }
     protected override void OnMouseEnter()
     {
+        Description = "Moves " + PlayerData.Instance.MoveDistance + " tiles !";
         Targets = new List<Vector2>();
-        var playerPos = _poolManager.Player.tile._position;
+        var playerPos = _poolManager.Player.tile.Position;
 
         var visited = new HashSet<Vector2>();
         var queue = new Queue<Vector2>();
@@ -56,13 +57,12 @@ public class MovePlayer : Ability
     }
 
     public override void PerformAction(Tile tile)
-    {
+    {   
+        PlayerData.Instance.ActionsRemaining -= 1;
         PlayerInBattle p = _poolManager.Player;
-        p.transform.parent = tile._entity.transform;
-        StartCoroutine(MoveToPosition(p.transform, tile._entity.transform.position, 0.5f));
+        p.transform.parent = tile.Entity.transform;
+        StartCoroutine(MoveToPosition(p.transform, tile.Entity.transform.position, 0.5f));
         p.tile = tile;
-
-        PlayerData.Instance.ActionPoints -= 1;
 
         base.PerformAction(tile);
     }
@@ -76,7 +76,7 @@ public class MovePlayer : Ability
             transform.position = Vector3.Lerp(currentPos, position, t);
             yield return null;
         }
-        if (PlayerData.Instance.ActionPoints <= 0)
+        if (PlayerData.Instance.ActionsRemaining <= 0)
         {
             _poolManager.Player.IsPlayerTurn = false;
         }
