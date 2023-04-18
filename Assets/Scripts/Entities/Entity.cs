@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public abstract class Entity : MonoBehaviour
 {
@@ -75,6 +76,7 @@ public abstract class Entity : MonoBehaviour
     }
     protected IEnumerator FollowPath(List<Tile> path)
     {
+        Debug.Log(path.Count);
         path.RemoveAt(path.Count - 1);
         for (int i = 0; i < MoveDistance; i++)
         {
@@ -231,7 +233,16 @@ public abstract class Entity : MonoBehaviour
             if (grid.ContainsKey(neighborPos))
             {
                 var neighbor = grid[neighborPos];
-                if (neighbor.Entity.GetComponentInChildren<Entity>() == null)
+
+                bool canWalk = true;
+                if (neighbor.Terrain.GetComponentInChildren<Terrain>() != null)
+                {
+                    if (!neighbor.Terrain.GetComponentInChildren<Terrain>().IsWalkable)
+                    {
+                        canWalk = false;
+                    }
+                }
+                if (neighbor.Entity.GetComponentInChildren<Entity>() == null && canWalk)
                     neighbors.Add(neighbor);
             }
         }

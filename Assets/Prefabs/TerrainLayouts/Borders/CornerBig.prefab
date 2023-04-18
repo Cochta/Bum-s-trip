@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6698093819571012464}
   - component: {fileID: -8373035708499206140}
   m_Layer: 0
-  m_Name: Test
+  m_Name: CornerBig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,6 +46,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Positions:
   - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 0}
   - {x: 10, y: 7}
+  - {x: 9, y: 7}
+  - {x: 10, y: 6}
   - {x: 0, y: 7}
+  - {x: 0, y: 6}
+  - {x: 1, y: 7}
   - {x: 10, y: 0}
+  - {x: 10, y: 1}
+  - {x: 9, y: 0}
+  - {x: 0, y: 2}
+  - {x: 1, y: 1}
+  - {x: 2, y: 0}
+  - {x: 2, y: 7}
+  - {x: 1, y: 6}
+  - {x: 0, y: 5}
+  - {x: 8, y: 7}
+  - {x: 9, y: 6}
+  - {x: 10, y: 5}
+  - {x: 10, y: 2}
+  - {x: 9, y: 1}
+  - {x: 8, y: 0}

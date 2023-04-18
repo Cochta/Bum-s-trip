@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6698093819571012464}
-  - component: {fileID: 2107309344247627312}
+  - component: {fileID: -8373035708499206140}
   m_Layer: 0
-  m_Name: 2Spider1Bat
+  m_Name: Empty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2107309344247627312
+--- !u!114 &-8373035708499206140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,14 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4688784465342259877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d10a127b816cccb4bb15ce60c724d174, type: 3}
+  m_Script: {fileID: 11500000, guid: 7dbffdcab4bba3f46953436ca86d78e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemies:
-  - {fileID: 515362624524675704, guid: 79c74ae37eef2044a96b7dc66264e70b, type: 3}
-  - {fileID: 515362624524675704, guid: d0a80d7c51f8f894998e183410c19dc4, type: 3}
-  - {fileID: 515362624524675704, guid: 79c74ae37eef2044a96b7dc66264e70b, type: 3}
-  Positions:
-  - {x: 3, y: 4}
-  - {x: 5, y: 5}
-  - {x: 7, y: 4}
+  Positions: []

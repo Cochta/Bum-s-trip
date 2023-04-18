@@ -121,12 +121,17 @@ public class BattleManager : MonoBehaviour
     }
     public void SpawnTerrain()
     {
-        System.Random rnd = new System.Random();
-        TerrainLayout layout = _terrainPool.Terrains[rnd.Next(0, _terrainPool.Terrains.Count())];
         Terrains = new List<GameObject>();
-        for (int i = 0; i < layout.Positions.Count; i++)
+        System.Random rnd = new System.Random();
+        TerrainLayout borderLayout = _terrainPool.Borders[rnd.Next(0, _terrainPool.Borders.Count())];
+        for (int i = 0; i < borderLayout.Positions.Count; i++)
         {
-            Terrains.Add(Instantiate(_rockPrefab, _grid.GetTile(layout.Positions[i]).Terrain.transform));
+            Terrains.Add(Instantiate(_rockPrefab, _grid.GetTile(borderLayout.Positions[i]).Terrain.transform));
+        }
+        TerrainLayout centerLayout = _terrainPool.Centers[rnd.Next(0, _terrainPool.Centers.Count())];
+        for (int i = 0; i < centerLayout.Positions.Count; i++)
+        {
+            Terrains.Add(Instantiate(_rockPrefab, _grid.GetTile(centerLayout.Positions[i]).Terrain.transform));
         }
     }
     public void ChangeState(GameStates newState)
@@ -144,6 +149,7 @@ public class BattleManager : MonoBehaviour
             case GameStates.StartBattle:
                 ResetPlayer();
                 SpawnEnemies();
+                SpawnTerrain();
                 IsBattle = true;
                 ChangeState(GameStates.PlayerTurn);
                 break;

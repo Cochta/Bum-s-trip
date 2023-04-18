@@ -107,9 +107,17 @@ public class Ability : MonoBehaviour
     protected bool IsPositionAvailable(Vector2 position)
     {
         var grid = _poolManager.Player.grid;
+        bool canWalk = true;
         if (grid.HasTile(new Vector2(position.x, position.y)))
         {
-            if (grid._tiles[position].Entity.GetComponentInChildren<Entity>() == null)
+            if (grid._tiles[position].Terrain.GetComponentInChildren<Terrain>() != null)
+            {
+                if (!grid._tiles[position].Terrain.GetComponentInChildren<Terrain>().IsWalkable)
+                {
+                    canWalk = false;
+                }
+            }
+            if (grid._tiles[position].Entity.GetComponentInChildren<Entity>() == null && canWalk)
             {
                 return true;
             }

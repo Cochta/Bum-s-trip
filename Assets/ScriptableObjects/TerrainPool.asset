@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee34eb089a979964494d9b53641f2a01, type: 3}
   m_Name: TerrainPool
   m_EditorClassIdentifier: 
-  Terrains:
+  Borders:
+  - {fileID: -8373035708499206140, guid: 312c39d97e6cd9c408077bf77657954f, type: 3}
+  - {fileID: -8373035708499206140, guid: a373ee7487a4d3d4b9353bb90a759c9e, type: 3}
+  - {fileID: -8373035708499206140, guid: 7b00a3aeffc9e1349abbed4cc938bd54, type: 3}
   - {fileID: -8373035708499206140, guid: defc0a1f0cd66b64abc8ed9c82217e5e, type: 3}
+  - {fileID: -8373035708499206140, guid: a07e0a6b208d23e44ab8018205109dc2, type: 3}
+  - {fileID: -8373035708499206140, guid: 26bcb56894973154fb51de8f02ec56f0, type: 3}
+  Centers:
+  - {fileID: -8373035708499206140, guid: 4188f143a9afbab4bbcd7ba513cd7615, type: 3}
+  - {fileID: -8373035708499206140, guid: ddd37f74a7767824f88df5217196ffd4, type: 3}
+  - {fileID: -8373035708499206140, guid: f40537bb16f9ec34985a20d0d9b30001, type: 3}
   - {fileID: -8373035708499206140, guid: 234ce86fd5e931d4a940a916739b25e3, type: 3}

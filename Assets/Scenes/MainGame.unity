@@ -1987,6 +1987,10 @@ PrefabInstance:
     - target: {fileID: 797416876095988043, guid: 39216952be360194abd8c1ef5aadda4a, type: 3}
       propertyPath: Weapon
       value: 
+      objectReference: {fileID: -2640352597294959040, guid: 2365d8e1e1643e7418e3437964953f99, type: 3}
+    - target: {fileID: 797416876095988043, guid: 39216952be360194abd8c1ef5aadda4a, type: 3}
+      propertyPath: Trinket
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 952487442595509928, guid: 39216952be360194abd8c1ef5aadda4a, type: 3}
       propertyPath: Move

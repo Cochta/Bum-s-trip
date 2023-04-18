@@ -50,5 +50,5 @@ MonoBehaviour:
   - {fileID: 515362624524675704, guid: a7227493a0ea1c44794ef61e93f62827, type: 3}
   Positions:
   - {x: 3, y: 4}
-  - {x: 5, y: 4}
+  - {x: 5, y: 5}
   - {x: 7, y: 4}
