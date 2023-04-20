@@ -66,8 +66,12 @@ public class ItemDisplay : MonoBehaviour
         if (PlayerData.Instance.Coins >= Cost)
         {
             Stuff.AddItem(_item);
-            PlayerData.Instance.Coins -= Cost;
-            PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToMap);
+            if (PlayerData.Instance.State == PlayerData.GameStates.ToBossLoot)
+                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.EnterNewLevel);
+            else
+                PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToMap);
+            if (Cost != 0)
+                PlayerData.Instance.LoseMoney(Cost);
             OnMouseExit();
         }
     }

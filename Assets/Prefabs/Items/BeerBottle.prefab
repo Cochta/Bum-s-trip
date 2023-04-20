@@ -53,7 +53,13 @@ MonoBehaviour:
   _name: Beer bottle
   _description: Sip
   _hasAbility: 0
-  _rarity: 1
+  _rarity: 3
   _part: 7
   sprite: {fileID: 21300000, guid: e2d8f334621d41a45aee2622330eef11, type: 3}
   ability: {fileID: 1065251557316539802, guid: e7b3c2c26afd2e54d892cd2ba8ae4bf4, type: 3}
+  Health: 0
+  Damage: 0
+  Defense: 0
+  Luck: 0
+  MoveDistance: 0
+  ActionPoints: 0

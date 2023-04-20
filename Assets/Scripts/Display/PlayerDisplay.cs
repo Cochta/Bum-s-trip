@@ -16,6 +16,31 @@ public class PlayerDisplay : MonoBehaviour
     [SerializeField] private GameObject _coinsStat;
 
     public MovePoolManager Pool;
+
+    public IEnumerator BounceHealth(Color color)
+    {
+        var prevColor = _healthStat.GetComponentInChildren<TextMeshPro>().color;
+        _healthStat.GetComponentInChildren<TextMeshPro>().color = color;
+
+        var prevScale = _healthStat.transform.localScale;
+        _healthStat.transform.localScale *= 1.2f;
+
+        yield return new WaitForSeconds(0.2f);
+        _healthStat.GetComponentInChildren<TextMeshPro>().color = prevColor;
+        _healthStat.transform.localScale = prevScale;
+    }
+    public IEnumerator BounceMoney(Color color)
+    {
+        var prevColor = _coinsStat.GetComponentInChildren<TextMeshPro>().color;
+        _coinsStat.GetComponentInChildren<TextMeshPro>().color = color;
+
+        var prevScale = _coinsStat.transform.localScale;
+        _coinsStat.transform.localScale *= 1.2f;
+
+        yield return new WaitForSeconds(0.2f);
+        _coinsStat.GetComponentInChildren<TextMeshPro>().color = prevColor;
+        _coinsStat.transform.localScale = prevScale;
+    }
     public void OnDisplayPlayer()
     {
         _healthStat.SetActive(true);

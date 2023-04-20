@@ -20,6 +20,7 @@ public class SipMove : Ability
         PlayerData.Instance.ActionsRemaining += 1;
         PlayerData.Instance.TakeDirectDamage((int)(PlayerData.Instance.MaxHealth * 0.2f));
 
+        RemainingCooldown = _baseCooldown;
         base.PerformAction(tile);
     }
 }

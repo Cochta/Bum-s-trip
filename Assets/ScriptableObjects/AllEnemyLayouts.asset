@@ -12,8 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1403e26f821f6d5439f12220dcdde4f5, type: 3}
   m_Name: AllEnemyLayouts
   m_EditorClassIdentifier: 
+  Layouts:
+  - layouts:
+    - {fileID: 2107309344247627312, guid: d1df2019214d8654c96bfc89fb9eccaf, type: 3}
+    - {fileID: 2107309344247627312, guid: 6117c9505047bdb4d9621ddc8a449107, type: 3}
+  - layouts:
+    - {fileID: 2107309344247627312, guid: 9f212b8638e427142bb5f04f1a70c301, type: 3}
+    - {fileID: 2107309344247627312, guid: 05cc68251b2ca944f8a64c622b0ff9cd, type: 3}
+    - {fileID: 2107309344247627312, guid: b18f4664bd63e9a4ea4d0b140bc344b0, type: 3}
+  - layouts:
+    - {fileID: 2107309344247627312, guid: ecb8e0d5b0765b14cb8a9316dd917c02, type: 3}
+    - {fileID: 2107309344247627312, guid: 73868e621d24c444cb8829b1f2f82289, type: 3}
+    - {fileID: 2107309344247627312, guid: 47fe4c77086365d45bb250b98e7e3a92, type: 3}
+    - {fileID: 2107309344247627312, guid: 79381137071710249867390e76b8ed8c, type: 3}
+    - {fileID: 2107309344247627312, guid: 00983c703eaf4a2469ec129862c5defe, type: 3}
+    - {fileID: 2107309344247627312, guid: e507369c2e389594aaac019f580e8aaa, type: 3}
   PoolCave:
-  - {fileID: 2107309344247627312, guid: e957768533c8c4141a2fae546963d924, type: 3}
-  - {fileID: 2107309344247627312, guid: 5ddb4c4326e4ed545b63b5cf95bf20ae, type: 3}
-  - {fileID: 2107309344247627312, guid: 9f9307f0874d42a4987bbb66df05dff9, type: 3}
-  - {fileID: 2107309344247627312, guid: d1df2019214d8654c96bfc89fb9eccaf, type: 3}
+  - {fileID: 515362624524675704, guid: d0a80d7c51f8f894998e183410c19dc4, type: 3}
+  - {fileID: 515362624524675704, guid: a7227493a0ea1c44794ef61e93f62827, type: 3}
+  - {fileID: 515362624524675704, guid: 4b433a8316310eb4a8b8f9f11dd9b95a, type: 3}
+  - {fileID: 515362624524675704, guid: 79c74ae37eef2044a96b7dc66264e70b, type: 3}
+  PoolCaveBoss:
+  - {fileID: 515362624524675704, guid: 2c385ae668be98d42ad2ca28410a8c96, type: 3}

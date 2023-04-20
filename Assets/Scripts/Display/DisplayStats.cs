@@ -74,6 +74,7 @@ public class DisplayStats : MonoBehaviour
         _actionPointStat.SetActive(true);
 
         _name.GetComponent<TextMeshPro>().text = entity.Name;
+        _description.GetComponent<TextMeshPro>().text = entity.Description;
 
         _healthStat.GetComponentInChildren<TextMeshPro>().text = entity.CurentHealth + "/" + entity.MaxHealth;
         _attackStat.GetComponentInChildren<TextMeshPro>().text = entity.Damage.ToString();

@@ -36,7 +36,6 @@ public class Ability : MonoBehaviour
     {
         IsSelected = false;
         tile.GetComponentInParent<Grid>().CancelHighlight();
-        RemainingCooldown = _baseCooldown;
         if (RemainingCooldown > 0)
             Disable();
         PlayerData.Instance.UpdateData();
@@ -150,5 +149,27 @@ public class Ability : MonoBehaviour
         }
         _col.enabled = false;
         _sr.color = Color.grey;
+    }
+    protected IEnumerator MoveToPositionThenReturn(Transform transform, Vector3 position, float timeToMove)
+    {
+        var currentPos = transform.position;
+        var t = 0f;
+        while (t < 1)
+        {
+            t += Time.deltaTime / (timeToMove / 2);
+            transform.position = Vector3.Lerp(currentPos, position, t);
+            yield return null;
+        }
+        t = 0f;
+        while (t < 1)
+        {
+            t += Time.deltaTime / (timeToMove / 2);
+            transform.position = Vector3.Lerp(position, currentPos, t);
+            yield return null;
+        }
+        if (PlayerData.Instance.ActionsRemaining <= 0)
+        {
+            _poolManager.Player.IsPlayerTurn = false;
+        }
     }
 }

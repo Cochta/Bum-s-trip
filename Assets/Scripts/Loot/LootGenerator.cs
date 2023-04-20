@@ -12,10 +12,16 @@ public class LootGenerator : MonoBehaviour
     private List<GameObject> _itemHoldersList = new List<GameObject>();
     [SerializeField] private GameObject _shopItemCostPrefab;
 
+    [SerializeField] private SpriteRenderer _backgroundSR;
+    [SerializeField] private GameObject _button;
+
     private System.Random _rnd = new System.Random();
+
+    public Item SpecificItem = null;
 
     public void GenerateLoot()
     {
+        DisplayState(true);
         // Remove existing item holders
         foreach (var itemHolder in _itemHoldersList)
         {
@@ -25,12 +31,18 @@ public class LootGenerator : MonoBehaviour
 
         // Calculate the number of items and item level based on the current state and node type
         bool isShop = PlayerData.Instance.Node.Type == PlayerData.GameStates.ToShop;
+        bool isBossLoot = PlayerData.Instance.Node.Type == PlayerData.GameStates.ToBossLoot;
         int nbItems = isShop ? 3 : (PlayerData.Instance.State == PlayerData.GameStates.ToBattle ? 1 : 3);
         int itemLevel = PlayerData.Instance.Level;
-        if (PlayerData.Instance.Node.Type == PlayerData.GameStates.ToBoss)
+        if (isBossLoot)
         {
             nbItems = 1;
             itemLevel++;
+        }
+        if (SpecificItem != null)
+        {
+            nbItems = 1;
+            DisplayState(false);
         }
 
         // Generate item holders
@@ -49,10 +61,18 @@ public class LootGenerator : MonoBehaviour
             display.IsLoot = true;
 
             // Select random item from the pool
-            var itemList = new List<Item>(_itemPool.Items);
-            var randomItem = _rnd.Next(0, itemList.Count);
-            display._item = itemList[randomItem];
-            itemList.RemoveAt(randomItem);
+            if (SpecificItem != null)
+            {
+                display._item = SpecificItem;
+            }
+            else
+            {
+                var itemList = new List<Item>(_itemPool.Items);
+                var randomItem = _rnd.Next(0, itemList.Count);
+                display._item = itemList[randomItem];
+                itemList.RemoveAt(randomItem);
+            }
+
 
             // Set item rarity based on the item level and luck
             var randomLevel = _rnd.Next(0, 101);
@@ -81,6 +101,7 @@ public class LootGenerator : MonoBehaviour
             SetShopItem(_itemHoldersList[1], (Item.Rarity)itemLevel);
             SetShopItem(_itemHoldersList[2], itemLevel < (int)Item.Rarity.Legendary ? (Item.Rarity)itemLevel + 1 : (Item.Rarity)itemLevel);
         }
+        SpecificItem = null;
     }
 
     void SetShopItem(GameObject itemHolder, Item.Rarity rarity)
@@ -102,5 +123,9 @@ public class LootGenerator : MonoBehaviour
         else if (itemRarityLevel > playerLevel) return 30;
         else return 15;
     }
-
+    public void DisplayState(bool activestate)
+    {
+        _backgroundSR.enabled = activestate;
+        _button.SetActive(activestate);
+    }
 }

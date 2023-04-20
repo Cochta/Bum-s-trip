@@ -17,6 +17,7 @@ public class PlayerData : MonoBehaviour
         ToEvent,
         ToTreasure,
         ToBoss,
+        ToBossLoot,
         None
     }
 
@@ -27,7 +28,7 @@ public class PlayerData : MonoBehaviour
     private Node _node;
     public Node Node { get => _node; set => _node = value; }
 
-    private int _coins = 3;
+    private int _coins = 0;
     public int Coins { get => _coins; set => _coins = value; }
 
 
@@ -50,13 +51,15 @@ public class PlayerData : MonoBehaviour
 
     [SerializeField] private BattleManager _battleManager;
     [SerializeField] private Map _map;
-    [SerializeField] private LootGenerator _loot;
+    public LootGenerator Loot;
+    [SerializeField] private EventGenerator _event;
 
     public int Level = 0;
 
     private void Awake()
     {
         _instance = this;
+        Stuff.Weapon.SetStats();
         UpdateData();
         ChangeGameState(GameStates.EnterNewLevel);
         _battleManager.ChangeState(BattleManager.GameStates.Initialisation);
@@ -125,13 +128,17 @@ public class PlayerData : MonoBehaviour
     }
     public void TakeDamage(int Damage)
     {
-        if (Damage > Defense) CurrentHealth -= Damage - Instance.Defense;
+        if (Damage > Defense)
+            CurrentHealth -= Damage - Instance.Defense;
         UpdateData();
+        if (Damage > Defense)
+            StartCoroutine(_display.BounceHealth(Color.red));
     }
     public void TakeDirectDamage(int Damage)
     {
         CurrentHealth -= Damage;
         UpdateData();
+        StartCoroutine(_display.BounceHealth(Color.red));
     }
     public void Heal(int health)
     {
@@ -139,6 +146,20 @@ public class PlayerData : MonoBehaviour
         if (CurrentHealth > MaxHealth)
             CurrentHealth = MaxHealth;
         UpdateData();
+        StartCoroutine(_display.BounceHealth(Color.green));
+    }
+    public void GainMoney(int coins)
+    {
+        Coins += coins;
+        UpdateData();
+        StartCoroutine(_display.BounceMoney(Color.yellow));
+    }
+    public void LoseMoney(int coins)
+    {
+        Coins -= coins;
+        UpdateData();
+        StartCoroutine(_display.BounceMoney(Color.red));
+
     }
 
     public void EnableAbilities()
@@ -169,7 +190,8 @@ public class PlayerData : MonoBehaviour
         _state = newState;
         _map.gameObject.SetActive(false);
         _battleManager.gameObject.SetActive(false);
-        _loot.gameObject.SetActive(false);
+        Loot.gameObject.SetActive(false);
+        _event.gameObject.SetActive(false);
         switch (_state)
         {
             case GameStates.EnterNewLevel:
@@ -188,16 +210,25 @@ public class PlayerData : MonoBehaviour
                 _battleManager.ChangeState(BattleManager.GameStates.StartBattle);
                 break;
             case GameStates.ToShop:
-                _loot.gameObject.SetActive(true);
-                _loot.GenerateLoot();
+                Loot.gameObject.SetActive(true);
+                Loot.GenerateLoot();
                 break;
             case GameStates.ToEvent:
+                _event.gameObject.SetActive(true);
+                _event.GenerateEvent();
                 break;
             case GameStates.ToTreasure:
-                _loot.gameObject.SetActive(true);
-                _loot.GenerateLoot();
+                Loot.gameObject.SetActive(true);
+                Loot.GenerateLoot();
                 break;
             case GameStates.ToBoss:
+                _battleManager.gameObject.SetActive(true);
+                _movePoolManager.SetAbilities();
+                _battleManager.ChangeState(BattleManager.GameStates.StartBattle);
+                break;
+            case GameStates.ToBossLoot:
+                Loot.gameObject.SetActive(true);
+                Loot.GenerateLoot();
                 break;
         }
     }

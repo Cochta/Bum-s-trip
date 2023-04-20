@@ -24,6 +24,7 @@ public class MunchMove : Ability
         else
             PlayerData.Instance.TakeDirectDamage((int)(PlayerData.Instance.MaxHealth * 0.2f));
 
+        RemainingCooldown = _baseCooldown;
         base.PerformAction(tile);
     }
 }

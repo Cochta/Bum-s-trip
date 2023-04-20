@@ -1,8 +1,6 @@
 using Mono.Cecil.Cil;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,7 +15,16 @@ public class MovePlayer : Ability
     }
     protected override void OnMouseEnter()
     {
-        Description = "Moves " + PlayerData.Instance.MoveDistance + " tiles !";
+        var movedistance = PlayerData.Instance.MoveDistance;
+        if (_poolManager.Player.tile.Terrain.GetComponentInChildren<Terrain>() != null)
+        {
+            if (_poolManager.Player.tile.Terrain.GetComponentInChildren<Web>() != null)
+            {
+                movedistance -= 1;
+            }
+        }
+
+        Description = "Moves " + movedistance + " tiles !";
         Targets = new List<Vector2>();
         var playerPos = _poolManager.Player.tile.Position;
 
@@ -38,7 +45,7 @@ public class MovePlayer : Ability
                 if (visited.Contains(neighborTile)) continue;
                 var neighborDistance = currentDistance + 1;
 
-                if (neighborDistance > PlayerData.Instance.MoveDistance) break;
+                if (neighborDistance > movedistance) break;
 
                 if (!IsPositionAvailable(neighborTile)) continue;
 
@@ -48,7 +55,7 @@ public class MovePlayer : Ability
             }
         }
 
-        foreach (var targetTile in GetTilesInRange(distances.Keys, playerPos, PlayerData.Instance.MoveDistance))
+        foreach (var targetTile in GetTilesInRange(distances.Keys, playerPos, movedistance))
         {
             Targets.Add(targetTile - playerPos);
         }
@@ -57,7 +64,7 @@ public class MovePlayer : Ability
     }
 
     public override void PerformAction(Tile tile)
-    {   
+    {
         PlayerData.Instance.ActionsRemaining -= 1;
         PlayerInBattle p = _poolManager.Player;
         p.transform.parent = tile.Entity.transform;

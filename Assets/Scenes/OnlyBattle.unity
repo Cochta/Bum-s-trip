@@ -487,12 +487,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Stuff: {fileID: 1672981642}
   Items: []
+  _playerDeath: {fileID: 0}
   _loadingScreen: {fileID: 315324463}
   _display: {fileID: 700456054}
   _movePoolManager: {fileID: 1160458879}
   _battleManager: {fileID: 1877000128}
   _map: {fileID: 2015973990}
   _loot: {fileID: 1500286326}
+  _event: {fileID: 897204181}
   Level: 0
 --- !u!4 &808976701
 Transform:
@@ -519,6 +521,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8501816204003937516, guid: b4d9cbd4ed5db1045bed04dc1181ec5b, type: 3}
   m_PrefabInstance: {fileID: 8501816204857094968}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &897204181 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7545866711510868877, guid: b4d9cbd4ed5db1045bed04dc1181ec5b, type: 3}
+  m_PrefabInstance: {fileID: 8501816204857094968}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7de31bec84c794488f09cde652396e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1064679079
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,6 +699,14 @@ PrefabInstance:
       propertyPath: EnemyLayout
       value: 
       objectReference: {fileID: 2107309344247627312, guid: e957768533c8c4141a2fae546963d924, type: 3}
+    - target: {fileID: 2686991280687853041, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
+      propertyPath: _rockPrefab
+      value: 
+      objectReference: {fileID: 3544768906774285294, guid: 8e65a6c4ee4b6ab4db28aaf9d22c1233, type: 3}
+    - target: {fileID: 2686991280687853041, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
+      propertyPath: _terrainPool
+      value: 
+      objectReference: {fileID: 11400000, guid: 8994024f53f38e245beb1d9a19ed385a, type: 2}
     - target: {fileID: 2686991280687853042, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
       propertyPath: m_Name
       value: Battle

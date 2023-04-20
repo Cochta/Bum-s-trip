@@ -21,7 +21,7 @@ public class Map : MonoBehaviour
     public void GenerateMap()
     {
         List<PlayerData.GameStates> specialNodes = new List<PlayerData.GameStates>() { PlayerData.GameStates.ToTreasure, PlayerData.GameStates.ToEvent, PlayerData.GameStates.ToShop };
-        int nonAvaillableDeth = _rnd.Next(1, _maxDepth);
+        int nonAvaillableDepth = _rnd.Next(1, _maxDepth);
 
         // Add start node
         AddNode(PlayerData.GameStates.None, 0);
@@ -34,7 +34,7 @@ public class Map : MonoBehaviour
             for (int j = 0; j < nbNodes; j++)
             {
                 PlayerData.GameStates type = PlayerData.GameStates.ToBattle;
-                if (i != nonAvaillableDeth)
+                if (i != nonAvaillableDepth)
                 {
                     if (j == nonEnemyNode)
                     {

@@ -34,7 +34,6 @@ public abstract class Item : MonoBehaviour
     [SerializeField] private int _actionPoints = 0;
     [SerializeField] private string _name = null;
     [SerializeField] private string _description = null;
-    [SerializeField] private bool _hasAbility = false;
 
     public Rarity _rarity = Rarity.Common;
     public Parts _part = Parts.None;
@@ -44,16 +43,15 @@ public abstract class Item : MonoBehaviour
     public GameObject ability = null;
 
 
-    public int Health { get => _health; set => _health = value; }
-    public int Damage { get => _damage; set => _damage = value; }
-    public int Defense { get => _defense; set => _defense = value; }
-    public int Luck { get => _luck; set => _luck = value; }
-    public int MoveDistance { get => _moveDistance; set => _moveDistance = value; }
-    public int ActionPoints { get => _actionPoints; set => _actionPoints = value; }
+    [NonSerialized] public int Health;
+    [NonSerialized] public int Damage;
+    [NonSerialized] public int Defense;
+    [NonSerialized] public int Luck;
+    [NonSerialized] public int MoveDistance;
+    [NonSerialized] public int ActionPoints;
     public string Name { get => _name; set => _name = value; }
     public string Description { get => _description; set => _description = value; }
     public Sprite Sprite { get => sprite; set => sprite = value; }
-    public bool HasAbility { get => _hasAbility; set => _hasAbility = value; }
 
     public void SetStats()
     {

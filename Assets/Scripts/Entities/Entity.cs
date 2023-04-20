@@ -76,8 +76,14 @@ public abstract class Entity : MonoBehaviour
     }
     protected IEnumerator FollowPath(List<Tile> path)
     {
-        Debug.Log(path.Count);
-        path.RemoveAt(path.Count - 1);
+        if (path == null)
+        {
+            EndAction();
+            yield return null;
+        }
+        if (Player.tile.Position.x == path[path.Count - 1].Position.x && Player.tile.Position.y == path[path.Count - 1].Position.y)
+            path.RemoveAt(path.Count - 1);
+
         for (int i = 0; i < MoveDistance; i++)
         {
             if (i + 1 > path.Count - 1) break;
@@ -193,7 +199,10 @@ public abstract class Entity : MonoBehaviour
                     current = cameFrom[current];
                     path.Insert(0, current);
                 }
-
+                foreach (var p in path)
+                {
+                    p.HighLight(Color.magenta);
+                }
                 return path;
             }
 
@@ -216,7 +225,6 @@ public abstract class Entity : MonoBehaviour
                 fScore[neighbor] = gScore[neighbor] + Heuristic(neighbor, goal);
             }
         }
-
         return null;
     }
     private static float Heuristic(Tile a, Tile b)
@@ -277,19 +285,32 @@ public abstract class Entity : MonoBehaviour
         Vector2 startVec = start.Position;
         Vector2 dangerVec = danger.Position;
         Vector2 fleeDirection = startVec - dangerVec;
+        fleeDirection.Normalize();
 
         Tile targetTile = null;
         float maxDistance = 0;
 
         foreach (Tile tile in grid.Values)
         {
-            Vector2 tileVec = tile.Position;
-            float distance = Vector2.Dot(tileVec - dangerVec, fleeDirection);
-
-            if (distance > maxDistance)
+            bool walkable = true;
+            // Check if the tile is reachable
+            if (tile.Terrain.GetComponentInChildren<Terrain>() != null)
             {
-                maxDistance = distance;
-                targetTile = tile;
+                if (!tile.Terrain.GetComponentInChildren<Terrain>().IsWalkable)
+                {
+                    walkable = false;
+                }
+            }
+            if (tile.Entity.GetComponentInChildren<Entity>() == null && walkable)
+            {
+                Vector2 tileVec = tile.Position;
+                float distance = Vector2.Dot(tileVec - dangerVec, fleeDirection);
+
+                if (distance > maxDistance)
+                {
+                    maxDistance = distance;
+                    targetTile = tile;
+                }
             }
         }
         return AStarSearch(start, targetTile, grid);
@@ -334,8 +355,6 @@ public abstract class Entity : MonoBehaviour
                 var neighborDistance = currentDistance + 1;
 
                 if (neighborDistance > range) break;
-
-                //if (!IsPositionAvailable(neighborTile)) continue;
 
                 visited.Add(neighborTile);
                 distances[neighborTile] = neighborDistance;

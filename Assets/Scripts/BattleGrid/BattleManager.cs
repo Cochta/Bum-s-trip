@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +32,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private TerrainPool _terrainPool;
 
     private bool IsBattle = false;
+
+    private int _money = 0;
 
     private void Update()
     {
@@ -73,7 +74,6 @@ public class BattleManager : MonoBehaviour
 
     public void EndBattle() //normally private but for generator tests public
     {
-        PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToTreasure);
         foreach (var enemy in Enemies)
         {
             foreach (var entity in enemy.GetComponent<Entity>().SpawnedEntities)
@@ -94,6 +94,14 @@ public class BattleManager : MonoBehaviour
         IsBattle = false;
         gameObject.GetComponent<EntityDisplay>().Stats.SetActive(false);
         Pool.ClearMovepool();
+        if (PlayerData.Instance.State == PlayerData.GameStates.ToBoss)
+            PlayerData.Instance.GainMoney(Random.Range(10, 21));
+        else
+            PlayerData.Instance.GainMoney(Random.Range(_money / 3, _money + 1));
+        _money = 0;
+        PlayerData.Instance.UpdateData();
+
+        PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToTreasure);
     }
 
     public void SpawnPlayer()
@@ -110,13 +118,32 @@ public class BattleManager : MonoBehaviour
     }
     public void SpawnEnemies()
     {
-        System.Random rnd = new System.Random();
-        EnemyLayout layout = _enemyPool.PoolCave[rnd.Next(0, _enemyPool.PoolCave.Count())];
         Enemies = new List<GameObject>();
-        for (int i = 0; i < layout.Enemies.Count; i++)
+        EnemyLayout layout;
+        if (PlayerData.Instance.State == PlayerData.GameStates.ToBoss)
         {
-            Enemies.Add(Instantiate(layout.Enemies[i], _grid.GetTile(layout.Positions[i]).Entity.transform));
-            Enemies[i].GetComponent<Entity>().Player = Player;
+            layout = _enemyPool.Layouts[0].layouts[Random.Range(0, _enemyPool.Layouts.Count - 1)];
+        }
+        else
+        {
+            ListWrapper wrapper = _enemyPool.Layouts[Random.Range(0, _enemyPool.Layouts.Count - 1)];
+            layout = wrapper.layouts[Random.Range(0, _enemyPool.Layouts.Count - 1)];
+        }
+        foreach (var pos in layout.Positions)
+        {
+            List<GameObject> pool;
+            if (PlayerData.Instance.State == PlayerData.GameStates.ToBoss)
+            {
+                pool = new List<GameObject>(_enemyPool.PoolCaveBoss);
+                Enemies.Add(Instantiate(pool[Random.Range(0, pool.Count - 1)], _grid.GetTile(pos).Entity.transform));
+            }
+            else
+            {
+                pool = new List<GameObject>(_enemyPool.PoolCave);
+                Enemies.Add(Instantiate(pool[Random.Range(0, pool.Count - 1)], _grid.GetTile(pos).Entity.transform));
+            }
+            Enemies.Last().GetComponent<Entity>().Player = Player;
+            _money += 3;
         }
     }
     public void SpawnTerrain()
@@ -163,13 +190,11 @@ public class BattleManager : MonoBehaviour
             case GameStates.EnemiesTurn:
                 PlayerData.Instance.DisableAbilities();
                 Player.IsPlayerTurn = false;
-                StopCoroutine(EnemyTurnCoroutine());
-                StartCoroutine(EnemyTurnCoroutine());
+                StopCoroutine("EnemyTurnCoroutine");
+                StartCoroutine("EnemyTurnCoroutine");
                 break;
             case GameStates.None:
                 break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
     }
     private IEnumerator EnemyTurnCoroutine()

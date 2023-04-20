@@ -35,27 +35,4 @@ public class AttackMove : Ability
         }
         base.PerformAction(tile);
     }
-
-    public IEnumerator MoveToPositionThenReturn(Transform transform, Vector3 position, float timeToMove)
-    {
-        var currentPos = transform.position;
-        var t = 0f;
-        while (t < 1)
-        {
-            t += Time.deltaTime / (timeToMove / 2);
-            transform.position = Vector3.Lerp(currentPos, position, t);
-            yield return null;
-        }
-        t = 0f;
-        while (t < 1)
-        {
-            t += Time.deltaTime / (timeToMove / 2);
-            transform.position = Vector3.Lerp(position, currentPos, t);
-            yield return null;
-        }
-        if (PlayerData.Instance.ActionsRemaining <= 0)
-        {
-            _poolManager.Player.IsPlayerTurn = false;
-        }
-    }
 }

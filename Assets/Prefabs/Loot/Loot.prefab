@@ -347,7 +347,10 @@ MonoBehaviour:
   _displayStats: {fileID: 0}
   _itemPool: {fileID: 0}
   _stuff: {fileID: 0}
-  _itemHoldersList: []
+  _shopItemCostPrefab: {fileID: 0}
+  _backgroundSR: {fileID: 7484536726485076445}
+  _button: {fileID: 494486849}
+  SpecificItem: {fileID: 0}
 --- !u!1 &6619407669977733296
 GameObject:
   m_ObjectHideFlags: 0
