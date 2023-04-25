@@ -14,7 +14,7 @@ public class Map : MonoBehaviour
     public GameObject ArrowPrefab;
 
     private List<Node> _nodes = new List<Node>();
-    private List<MapArrow> _arrows;
+    private List<MapArrow> _arrows = new List<MapArrow>();
 
     private System.Random _rnd = new System.Random();
 
@@ -22,6 +22,23 @@ public class Map : MonoBehaviour
     {
         List<PlayerData.GameStates> specialNodes = new List<PlayerData.GameStates>() { PlayerData.GameStates.ToTreasure, PlayerData.GameStates.ToEvent, PlayerData.GameStates.ToShop };
         int nonAvaillableDepth = _rnd.Next(1, _maxDepth);
+
+        if (_nodes.Count > 0)
+        {
+            foreach (var node in _nodes)
+            {
+                Destroy(node.gameObject);
+            }
+        }
+        _nodes = new List<Node>();
+        if (_arrows.Count > 0)
+        {
+            foreach (var arrow in _arrows)
+            {
+                Destroy(arrow.gameObject);
+            }
+        }
+        _arrows = new List<MapArrow>();
 
         // Add start node
         AddNode(PlayerData.GameStates.None, 0);

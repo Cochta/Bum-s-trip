@@ -31,9 +31,10 @@ public class LootGenerator : MonoBehaviour
 
         // Calculate the number of items and item level based on the current state and node type
         bool isShop = PlayerData.Instance.Node.Type == PlayerData.GameStates.ToShop;
-        bool isBossLoot = PlayerData.Instance.Node.Type == PlayerData.GameStates.ToBossLoot;
         int nbItems = isShop ? 3 : (PlayerData.Instance.State == PlayerData.GameStates.ToBattle ? 1 : 3);
         int itemLevel = PlayerData.Instance.Level;
+        bool isBossLoot = PlayerData.Instance.State == PlayerData.GameStates.ToBossLoot;
+        Debug.Log(PlayerData.Instance.Node.Type);
         if (isBossLoot)
         {
             nbItems = 1;

@@ -95,13 +95,18 @@ public class BattleManager : MonoBehaviour
         gameObject.GetComponent<EntityDisplay>().Stats.SetActive(false);
         Pool.ClearMovepool();
         if (PlayerData.Instance.State == PlayerData.GameStates.ToBoss)
+        {
             PlayerData.Instance.GainMoney(Random.Range(10, 21));
+            PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToBossLoot);
+        }
         else
+        {
             PlayerData.Instance.GainMoney(Random.Range(_money / 3, _money + 1));
+            PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToTreasure);
+        }
         _money = 0;
         PlayerData.Instance.UpdateData();
 
-        PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToTreasure);
     }
 
     public void SpawnPlayer()
