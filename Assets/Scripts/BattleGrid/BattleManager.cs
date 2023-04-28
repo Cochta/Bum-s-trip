@@ -132,7 +132,7 @@ public class BattleManager : MonoBehaviour
         else
         {
             ListWrapper wrapper = _enemyPool.Layouts[Random.Range(0, _enemyPool.Layouts.Count)];
-            layout = wrapper.layouts[Random.Range(0, _enemyPool.Layouts.Count)];
+            layout = wrapper.layouts[Random.Range(0, _enemyPool.Layouts.Count - 1)];
         }
         foreach (var pos in layout.Positions)
         {

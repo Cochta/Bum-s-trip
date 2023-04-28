@@ -68,7 +68,7 @@ public class PlayerData : MonoBehaviour
         int oldHealth = MaxHealth;
 
         MaxHealth = 5;
-        Damage = 2;
+        Damage = 15;
         Defense = 0;
         Luck = 0;
         MoveDistance = 2;
