@@ -199,10 +199,6 @@ public abstract class Entity : MonoBehaviour
                     current = cameFrom[current];
                     path.Insert(0, current);
                 }
-                foreach (var p in path)
-                {
-                    p.HighLight(Color.magenta);
-                }
                 return path;
             }
 

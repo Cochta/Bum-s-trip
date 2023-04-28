@@ -59,7 +59,6 @@ public class PlayerData : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        Stuff.Weapon.SetStats();
         UpdateData();
         ChangeGameState(GameStates.EnterNewLevel);
         _battleManager.ChangeState(BattleManager.GameStates.Initialisation);

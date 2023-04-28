@@ -746,7 +746,7 @@ MonoBehaviour:
   _map: {fileID: 2015973990}
   Loot: {fileID: 1500286326}
   _event: {fileID: 897204181}
-  Level: 2
+  Level: 0
 --- !u!4 &808976701
 Transform:
   m_ObjectHideFlags: 0
@@ -2003,7 +2003,7 @@ PrefabInstance:
     - target: {fileID: 797416876095988043, guid: 39216952be360194abd8c1ef5aadda4a, type: 3}
       propertyPath: Weapon
       value: 
-      objectReference: {fileID: -2640352597294959040, guid: 2365d8e1e1643e7418e3437964953f99, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 797416876095988043, guid: 39216952be360194abd8c1ef5aadda4a, type: 3}
       propertyPath: Trinket
       value: 
@@ -2040,6 +2040,10 @@ PrefabInstance:
       propertyPath: AbilitiesPrefab.Array.data[1]
       value: 
       objectReference: {fileID: 1933485781962327365, guid: a72821b61bda445459c93ea714fe4fd5, type: 3}
+    - target: {fileID: 2797796562103893793, guid: 39216952be360194abd8c1ef5aadda4a, type: 3}
+      propertyPath: m_text
+      value: 'Abilities:'
+      objectReference: {fileID: 0}
     - target: {fileID: 5470934397479613771, guid: 39216952be360194abd8c1ef5aadda4a, type: 3}
       propertyPath: m_fontSize
       value: 1.2
@@ -2208,6 +2212,18 @@ PrefabInstance:
       propertyPath: _itemHoldersList.Array.data[0]
       value: 
       objectReference: {fileID: 6619025945772913919, guid: 2d12893235c707a4e975e4b40fb2098a, type: 3}
+    - target: {fileID: 3868226111421924851, guid: ec2917f3671463c4e8577471f39ca699, type: 3}
+      propertyPath: m_text
+      value: Leave
+      objectReference: {fileID: 0}
+    - target: {fileID: 3868226111421924851, guid: ec2917f3671463c4e8577471f39ca699, type: 3}
+      propertyPath: m_fontSize
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3868226111421924851, guid: ec2917f3671463c4e8577471f39ca699, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4781976002587213616, guid: ec2917f3671463c4e8577471f39ca699, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -2258,7 +2274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4781976002587213619, guid: ec2917f3671463c4e8577471f39ca699, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4422593047912935553, guid: ec2917f3671463c4e8577471f39ca699, type: 3}

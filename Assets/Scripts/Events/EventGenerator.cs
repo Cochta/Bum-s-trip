@@ -15,7 +15,7 @@ public class EventGenerator : MonoBehaviour
 
     public void GenerateEvent()
     {
-        _myEvent = _pool.PoolCave[Random.Range(0, _pool.PoolCave.Count - 1)];
+        _myEvent = _pool.PoolCave[Random.Range(0, _pool.PoolCave.Count)];
         _myEvent.BaseDisplay();
         WindowState(false);
 

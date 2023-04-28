@@ -59,7 +59,7 @@ public class MovePlayer : Ability
         {
             Targets.Add(targetTile - playerPos);
         }
-
+        Targets.Remove(Vector2.zero);
         base.OnMouseEnter();
     }
 

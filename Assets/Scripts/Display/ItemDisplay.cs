@@ -57,7 +57,6 @@ public class ItemDisplay : MonoBehaviour
         {
             Stats.SetActive(true);
             Stats.GetComponent<DisplayStats>().OnDisplayItem(_item);
-            //_description.text = _item._description;
         }
     }
 

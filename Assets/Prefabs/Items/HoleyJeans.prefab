@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5912815491032109974}
   - component: {fileID: 9076087168509645989}
   m_Layer: 0
-  m_Name: Gloves
+  m_Name: HoleyJeans
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,13 +46,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 0
   _damage: 0
-  _defense: 1
-  _luck: 0
+  _defense: -1
+  _luck: 1
   _moveDistance: 0
   _actionPoints: 0
-  _name: Gloves
+  _name: Holey Jeans
   _description: 
   _rarity: 1
-  _part: 4
-  sprite: {fileID: 21300000, guid: 84192cb3cf4ea2b44938ca8591655361, type: 3}
+  _part: 5
+  sprite: {fileID: 21300000, guid: 0dc4ab6922c9cac47ba03bcfafe7eaa9, type: 3}
   ability: {fileID: 0}

@@ -127,12 +127,12 @@ public class BattleManager : MonoBehaviour
         EnemyLayout layout;
         if (PlayerData.Instance.State == PlayerData.GameStates.ToBoss)
         {
-            layout = _enemyPool.Layouts[0].layouts[Random.Range(0, _enemyPool.Layouts.Count - 1)];
+            layout = _enemyPool.Layouts[0].layouts[Random.Range(0, _enemyPool.Layouts.Count)];
         }
         else
         {
-            ListWrapper wrapper = _enemyPool.Layouts[Random.Range(0, _enemyPool.Layouts.Count - 1)];
-            layout = wrapper.layouts[Random.Range(0, _enemyPool.Layouts.Count - 1)];
+            ListWrapper wrapper = _enemyPool.Layouts[Random.Range(0, _enemyPool.Layouts.Count)];
+            layout = wrapper.layouts[Random.Range(0, _enemyPool.Layouts.Count)];
         }
         foreach (var pos in layout.Positions)
         {
@@ -140,12 +140,12 @@ public class BattleManager : MonoBehaviour
             if (PlayerData.Instance.State == PlayerData.GameStates.ToBoss)
             {
                 pool = new List<GameObject>(_enemyPool.PoolCaveBoss);
-                Enemies.Add(Instantiate(pool[Random.Range(0, pool.Count - 1)], _grid.GetTile(pos).Entity.transform));
+                Enemies.Add(Instantiate(pool[Random.Range(0, pool.Count)], _grid.GetTile(pos).Entity.transform));
             }
             else
             {
                 pool = new List<GameObject>(_enemyPool.PoolCave);
-                Enemies.Add(Instantiate(pool[Random.Range(0, pool.Count - 1)], _grid.GetTile(pos).Entity.transform));
+                Enemies.Add(Instantiate(pool[Random.Range(0, pool.Count)], _grid.GetTile(pos).Entity.transform));
             }
             Enemies.Last().GetComponent<Entity>().Player = Player;
             _money += 3;

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5912815491032109974}
   - component: {fileID: 9076087168509645989}
   m_Layer: 0
-  m_Name: Gloves
+  m_Name: DreadLocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,15 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bfc9e5dde0924b4c860a855c6cc89a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 0
+  _health: -1
   _damage: 0
   _defense: 1
   _luck: 0
   _moveDistance: 0
   _actionPoints: 0
-  _name: Gloves
+  _name: DreadLocks
   _description: 
   _rarity: 1
-  _part: 4
-  sprite: {fileID: 21300000, guid: 84192cb3cf4ea2b44938ca8591655361, type: 3}
+  _part: 2
+  sprite: {fileID: 21300000, guid: 0ebd4ce0ecb4b4048a36d6e87757e66a, type: 3}
   ability: {fileID: 0}

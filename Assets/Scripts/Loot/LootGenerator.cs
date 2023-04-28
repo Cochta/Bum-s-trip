@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,6 @@ public class LootGenerator : MonoBehaviour
         int nbItems = isShop ? 3 : (PlayerData.Instance.State == PlayerData.GameStates.ToBattle ? 1 : 3);
         int itemLevel = PlayerData.Instance.Level;
         bool isBossLoot = PlayerData.Instance.State == PlayerData.GameStates.ToBossLoot;
-        Debug.Log(PlayerData.Instance.Node.Type);
         if (isBossLoot)
         {
             nbItems = 1;
@@ -70,7 +70,7 @@ public class LootGenerator : MonoBehaviour
             {
                 var itemList = new List<Item>(_itemPool.Items);
                 var randomItem = _rnd.Next(0, itemList.Count);
-                display._item = itemList[randomItem];
+                display._item = Instantiate(itemList[randomItem]);
                 itemList.RemoveAt(randomItem);
             }
 
