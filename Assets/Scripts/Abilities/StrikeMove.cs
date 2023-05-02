@@ -26,7 +26,7 @@ public class StrikeMove : Ability
         if (tile.Entity.GetComponentInChildren<Entity>() != null)
         {
             StartCoroutine(MoveToPositionThenReturn(_poolManager.Player.transform, tile.transform.position, 0.5f));
-            tile.Entity.GetComponentInChildren<Entity>().TakeDamage(PlayerData.Instance.Damage * 2);
+            PlayerData.Instance.Attack(tile.Entity.GetComponentInChildren<Entity>(), PlayerData.Instance.Damage * 2);
             PlayerData.Instance.ActionsRemaining -= 1;
             RemainingCooldown = _baseCooldown;
         }

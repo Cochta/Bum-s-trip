@@ -29,6 +29,7 @@ public class RandomEvent : MonoBehaviour
         DisplayText = _badEndText;
 
         QuitButtonDisplayText = _quitButtonBadText;
+        SoundHandeler.Instance.PlayBumBadEvent();
     }
 
     public virtual void GoodEnding()
@@ -36,5 +37,6 @@ public class RandomEvent : MonoBehaviour
         DisplayText = _goodEndText;
 
         QuitButtonDisplayText = _quitButtonGoodText;
+        SoundHandeler.Instance.PlayBumGoodEvent();
     }
 }

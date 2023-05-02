@@ -65,6 +65,7 @@ public class ItemDisplay : MonoBehaviour
         if (PlayerData.Instance.Coins >= Cost)
         {
             Stuff.AddItem(_item);
+            SoundHandeler.Instance.PlayBumGetItem();
             if (PlayerData.Instance.State == PlayerData.GameStates.ToBossLoot)
                 PlayerData.Instance.ChangeGameState(PlayerData.GameStates.EnterNewLevel);
             else

@@ -123,12 +123,17 @@ public class PlayerData : MonoBehaviour
     public void Attack(Entity entity, int Damage)
     {
         entity.TakeDamage(Damage);
+        SoundHandeler.Instance.PlayBumAttack();
         UpdateData();
     }
     public void TakeDamage(int Damage)
     {
         if (Damage > Defense)
+        {
             CurrentHealth -= Damage - Instance.Defense;
+            SoundHandeler.Instance.PlayBumBadEvent();
+        }
+
         UpdateData();
         if (Damage > Defense)
             StartCoroutine(_display.BounceHealth(Color.red));
@@ -138,6 +143,7 @@ public class PlayerData : MonoBehaviour
         CurrentHealth -= Damage;
         UpdateData();
         StartCoroutine(_display.BounceHealth(Color.red));
+        SoundHandeler.Instance.PlayBumBadEvent();
     }
     public void Heal(int health)
     {
@@ -146,6 +152,7 @@ public class PlayerData : MonoBehaviour
             CurrentHealth = MaxHealth;
         UpdateData();
         StartCoroutine(_display.BounceHealth(Color.green));
+        SoundHandeler.Instance.PlayBumBuff();
     }
     public void GainMoney(int coins)
     {
@@ -194,10 +201,12 @@ public class PlayerData : MonoBehaviour
         switch (_state)
         {
             case GameStates.EnterNewLevel:
+                SoundHandeler.Instance.PlayBumCrazy();
                 StartCoroutine(_loadingScreen.Load(1f));
                 _map.GenerateMap();
                 ChangeGameState(GameStates.ToMap);
                 Level++;
+
                 break;
             case GameStates.ToMap:
                 _map.gameObject.SetActive(true);

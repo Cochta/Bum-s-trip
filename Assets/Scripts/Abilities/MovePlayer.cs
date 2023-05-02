@@ -70,6 +70,7 @@ public class MovePlayer : Ability
         p.transform.parent = tile.Entity.transform;
         StartCoroutine(MoveToPosition(p.transform, tile.Entity.transform.position, 0.5f));
         p.tile = tile;
+        SoundHandeler.Instance.PlayBumMove();
 
         base.PerformAction(tile);
     }

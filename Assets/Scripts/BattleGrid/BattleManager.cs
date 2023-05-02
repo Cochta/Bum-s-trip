@@ -127,7 +127,7 @@ public class BattleManager : MonoBehaviour
         EnemyLayout layout;
         if (PlayerData.Instance.State == PlayerData.GameStates.ToBoss)
         {
-            layout = _enemyPool.Layouts[0].layouts[Random.Range(0, _enemyPool.Layouts.Count)];
+            layout = _enemyPool.Layouts[0].layouts[0];
         }
         else
         {

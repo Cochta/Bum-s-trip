@@ -30,7 +30,7 @@ public class AttackMove : Ability
         if (tile.Entity.GetComponentInChildren<Entity>() != null)
         {
             StartCoroutine(MoveToPositionThenReturn(_poolManager.Player.transform, tile.transform.position, 0.5f));
-            tile.Entity.GetComponentInChildren<Entity>().TakeDamage(PlayerData.Instance.Damage);
+            PlayerData.Instance.Attack(tile.Entity.GetComponentInChildren<Entity>(), PlayerData.Instance.Damage);
             PlayerData.Instance.ActionsRemaining -= 1;
         }
         base.PerformAction(tile);
