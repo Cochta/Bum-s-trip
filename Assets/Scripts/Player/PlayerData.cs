@@ -24,7 +24,6 @@ public class PlayerData : MonoBehaviour
     private GameStates _state;
     public GameStates State { get => _state; set => _state = value; }
 
-
     private Node _node;
     public Node Node { get => _node; set => _node = value; }
 
@@ -45,6 +44,7 @@ public class PlayerData : MonoBehaviour
     public List<Item> Items;
 
     [SerializeField] private PlayerDeath _playerDeath;
+    public PlayerVictory PlayerVictory;
     [SerializeField] private LoadingScreen _loadingScreen;
     [SerializeField] private PlayerDisplay _display;
     [SerializeField] private MovePoolManager _movePoolManager;
@@ -67,8 +67,8 @@ public class PlayerData : MonoBehaviour
     {
         int oldHealth = MaxHealth;
 
-        MaxHealth = 5;
-        Damage = 15;
+        MaxHealth = 10;
+        Damage = 3;
         Defense = 0;
         Luck = 0;
         MoveDistance = 2;
@@ -132,11 +132,9 @@ public class PlayerData : MonoBehaviour
         {
             CurrentHealth -= Damage - Instance.Defense;
             SoundHandeler.Instance.PlayBumBadEvent();
-        }
-
-        UpdateData();
-        if (Damage > Defense)
+            UpdateData();
             StartCoroutine(_display.BounceHealth(Color.red));
+        }
     }
     public void TakeDirectDamage(int Damage)
     {
@@ -202,7 +200,7 @@ public class PlayerData : MonoBehaviour
         {
             case GameStates.EnterNewLevel:
                 SoundHandeler.Instance.PlayBumCrazy();
-                StartCoroutine(_loadingScreen.Load(1f));
+                StartCoroutine(_loadingScreen.Load(2f));
                 _map.GenerateMap();
                 ChangeGameState(GameStates.ToMap);
                 Level++;

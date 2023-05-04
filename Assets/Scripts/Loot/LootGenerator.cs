@@ -31,13 +31,16 @@ public class LootGenerator : MonoBehaviour
         _itemHoldersList.Clear();
 
         // Calculate the number of items and item level based on the current state and node type
+
+        int nbItems = 1;
         bool isShop = PlayerData.Instance.Node.Type == PlayerData.GameStates.ToShop;
-        int nbItems = isShop ? 3 : (PlayerData.Instance.State == PlayerData.GameStates.ToBattle ? 1 : 3);
+        bool isTreasure = PlayerData.Instance.Node.Type == PlayerData.GameStates.ToTreasure;
+        if (isShop || isTreasure)
+            nbItems = 3;
         int itemLevel = PlayerData.Instance.Level;
         bool isBossLoot = PlayerData.Instance.State == PlayerData.GameStates.ToBossLoot;
         if (isBossLoot)
         {
-            nbItems = 1;
             itemLevel++;
         }
         if (SpecificItem != null)

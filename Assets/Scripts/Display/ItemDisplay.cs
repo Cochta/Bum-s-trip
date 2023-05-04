@@ -62,7 +62,7 @@ public class ItemDisplay : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (PlayerData.Instance.Coins >= Cost)
+        if (PlayerData.Instance.Coins >= Cost && IsLoot)
         {
             Stuff.AddItem(_item);
             SoundHandeler.Instance.PlayBumGetItem();

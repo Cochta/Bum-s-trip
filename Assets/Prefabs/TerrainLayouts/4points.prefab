@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6698093819571012464}
   - component: {fileID: -8373035708499206140}
   m_Layer: 0
-  m_Name: UpAndMiddle
+  m_Name: 4points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,5 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Positions:
-  - {x: 5, y: 4}
-  - {x: 5, y: 3}
+  - {x: 3, y: 2}
+  - {x: 3, y: 5}
+  - {x: 7, y: 2}
+  - {x: 7, y: 5}

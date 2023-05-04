@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ public class MovePoolManager : MonoBehaviour
 
     public void SetAbilities()
     {
+        GetComponent<TextMeshPro>().text = "Abilities:";
+
         AbilitiesPrefab = new List<GameObject>();
 
         Abilities = new List<Ability>();
@@ -62,5 +65,6 @@ public class MovePoolManager : MonoBehaviour
         {
             Destroy(prefab);
         }
+        GetComponent<TextMeshPro>().text = string.Empty;
     }
 }

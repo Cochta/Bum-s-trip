@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -34,6 +35,9 @@ public class BattleManager : MonoBehaviour
     private bool IsBattle = false;
 
     private int _money = 0;
+    [SerializeField] private GameObject _turnText;
+
+    [SerializeField] private GameObject _deadLocator;
 
     private void Update()
     {
@@ -74,6 +78,7 @@ public class BattleManager : MonoBehaviour
 
     public void EndBattle() //normally private but for generator tests public
     {
+        _turnText.SetActive(false);
         foreach (var enemy in Enemies)
         {
             foreach (var entity in enemy.GetComponent<Entity>().SpawnedEntities)
@@ -96,6 +101,10 @@ public class BattleManager : MonoBehaviour
         Pool.ClearMovepool();
         if (PlayerData.Instance.State == PlayerData.GameStates.ToBoss)
         {
+            if (PlayerData.Instance.Level == 4)
+            {
+                StartCoroutine(PlayerData.Instance.PlayerVictory.Win(3));
+            }
             PlayerData.Instance.GainMoney(Random.Range(10, 21));
             PlayerData.Instance.ChangeGameState(PlayerData.GameStates.ToBossLoot);
         }
@@ -150,20 +159,19 @@ public class BattleManager : MonoBehaviour
             Enemies.Last().GetComponent<Entity>().Player = Player;
             _money += 3;
         }
+        foreach (var Enemy in Enemies)
+        {
+            Enemy.GetComponent<Entity>().Setstats();
+        }
     }
     public void SpawnTerrain()
     {
         Terrains = new List<GameObject>();
         System.Random rnd = new System.Random();
-        TerrainLayout borderLayout = _terrainPool.Borders[rnd.Next(0, _terrainPool.Borders.Count())];
-        for (int i = 0; i < borderLayout.Positions.Count; i++)
+        TerrainLayout terrainLayout = _terrainPool.Terrains[rnd.Next(0, _terrainPool.Terrains.Count())];
+        for (int i = 0; i < terrainLayout.Positions.Count; i++)
         {
-            Terrains.Add(Instantiate(_rockPrefab, _grid.GetTile(borderLayout.Positions[i]).Terrain.transform));
-        }
-        TerrainLayout centerLayout = _terrainPool.Centers[rnd.Next(0, _terrainPool.Centers.Count())];
-        for (int i = 0; i < centerLayout.Positions.Count; i++)
-        {
-            Terrains.Add(Instantiate(_rockPrefab, _grid.GetTile(centerLayout.Positions[i]).Terrain.transform));
+            Terrains.Add(Instantiate(_rockPrefab, _grid.GetTile(terrainLayout.Positions[i]).Terrain.transform));
         }
     }
     public void ChangeState(GameStates newState)
@@ -179,6 +187,7 @@ public class BattleManager : MonoBehaviour
                 SpawnPlayer();
                 break;
             case GameStates.StartBattle:
+                _turnText.SetActive(true);
                 ResetPlayer();
                 SpawnEnemies();
                 SpawnTerrain();
@@ -186,6 +195,8 @@ public class BattleManager : MonoBehaviour
                 ChangeState(GameStates.PlayerTurn);
                 break;
             case GameStates.PlayerTurn:
+                DeleteEnemiesBody();
+                _turnText.GetComponentInChildren<TextMeshPro>().text = "Player turn";
                 PlayerData.Instance.ResetActions();
                 PlayerData.Instance.UpdateData();
                 PlayerData.Instance.DecrementCooldown();
@@ -193,6 +204,7 @@ public class BattleManager : MonoBehaviour
                 Player.IsPlayerTurn = true;
                 break;
             case GameStates.EnemiesTurn:
+                _turnText.GetComponentInChildren<TextMeshPro>().text = "Enemies turn";
                 PlayerData.Instance.DisableAbilities();
                 Player.IsPlayerTurn = false;
                 StopCoroutine("EnemyTurnCoroutine");
@@ -216,6 +228,18 @@ public class BattleManager : MonoBehaviour
             yield return new WaitUntil(() => !entity.IsTurn);
 
             yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    private void DeleteEnemiesBody()
+    {
+        foreach (var enemy in Enemies)
+        {
+            if (enemy.GetComponent<Entity>().IsDead)
+            {
+                enemy.transform.parent = _deadLocator.transform;
+                enemy.transform.position = _deadLocator.transform.position;
+            }
         }
     }
 }

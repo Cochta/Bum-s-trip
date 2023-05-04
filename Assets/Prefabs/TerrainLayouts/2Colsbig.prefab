@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6698093819571012464}
   - component: {fileID: -8373035708499206140}
   m_Layer: 0
-  m_Name: DownAndMiddle
+  m_Name: 2Colsbig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,5 +45,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Positions:
-  - {x: 5, y: 3}
-  - {x: 5, y: 2}
+  - {x: 2, y: 2}
+  - {x: 2, y: 3}
+  - {x: 2, y: 4}
+  - {x: 2, y: 5}
+  - {x: 8, y: 2}
+  - {x: 8, y: 3}
+  - {x: 8, y: 4}
+  - {x: 8, y: 5}
+  - {x: 1, y: 5}
+  - {x: 1, y: 4}
+  - {x: 1, y: 3}
+  - {x: 1, y: 2}
+  - {x: 9, y: 5}
+  - {x: 9, y: 4}
+  - {x: 9, y: 3}
+  - {x: 9, y: 2}

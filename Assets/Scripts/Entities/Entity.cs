@@ -47,6 +47,18 @@ public abstract class Entity : MonoBehaviour
         GetGrid();
         Tile = GetTile();
     }
+    public void Setstats()
+    {
+        for (int i = 1; i < PlayerData.Instance.Level; i++)
+        {
+            Damage += _damage;
+            Defense += _defense;
+            Luck += _luck;
+            MaxHealth += _maxHealth;
+        }
+
+        CurentHealth = MaxHealth;
+    }
     public virtual IEnumerator PerformAction()
     {
         _attackTargets = SetTargets(_attackRange);

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6698093819571012464}
   - component: {fileID: -8373035708499206140}
   m_Layer: 0
-  m_Name: Empty
+  m_Name: OneBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,4 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbffdcab4bba3f46953436ca86d78e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Positions: []
+  Positions:
+  - {x: 2, y: 2}
+  - {x: 3, y: 2}
+  - {x: 4, y: 2}
+  - {x: 5, y: 2}
+  - {x: 6, y: 2}
+  - {x: 7, y: 2}
+  - {x: 8, y: 2}

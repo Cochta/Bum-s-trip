@@ -6,6 +6,5 @@ using UnityEngine;
 
 public class TerrainPool : ScriptableObject
 {
-    public List<TerrainLayout> Borders = new List<TerrainLayout>();
-    public List<TerrainLayout> Centers = new List<TerrainLayout>();
+    public List<TerrainLayout> Terrains = new List<TerrainLayout>();
 }

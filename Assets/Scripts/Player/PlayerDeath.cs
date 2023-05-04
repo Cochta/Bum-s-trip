@@ -10,6 +10,7 @@ public class PlayerDeath : MonoBehaviour
 
     public IEnumerator Die(float time)
     {
+        yield return new WaitForSeconds(0.5f);
         gameObject.SetActive(true);
         foreach (var img in _deadImgs)
         {

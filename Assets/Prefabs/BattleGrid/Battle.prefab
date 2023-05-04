@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1874165954792203688
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4228848842484412969}
+  m_Layer: 0
+  m_Name: DeadLocator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4228848842484412969
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874165954792203688}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.62517804, y: -0.7114141, z: 8.233}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2686991280687853040}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2686991280687853042
 GameObject:
   m_ObjectHideFlags: 0
@@ -18,7 +49,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2686991280687853040
 Transform:
   m_ObjectHideFlags: 0
@@ -26,11 +57,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2686991280687853042}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.3, z: -8.265234}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4228848842484412969}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46,8 +78,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82590ec879722ff42b4507a368652f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 5
-  _height: 7
+  _width: 11
+  _height: 8
   _tilePrefab: {fileID: 4748424814330208773, guid: 4f7a98a38e18e6f499661539ce7ac8b1, type: 3}
 --- !u!114 &2686991280687853041
 MonoBehaviour:
@@ -62,12 +94,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 6074351760511051609, guid: d308f9712d6556940810413765501a86, type: 3}
-  EnemyLayout: {fileID: 2107309344247627312, guid: e5c11ec30d8058d4b9617ecdd95a5bd8, type: 3}
+  _rockPrefab: {fileID: 3544768906774285294, guid: 8e65a6c4ee4b6ab4db28aaf9d22c1233, type: 3}
   Enemies: []
   Player: {fileID: 0}
   GameState: 0
   _stuff: {fileID: 0}
   Pool: {fileID: 0}
+  _enemyPool: {fileID: 11400000, guid: ffbdcbca49f9eef44b1b285897c8cf7f, type: 2}
+  _terrainPool: {fileID: 11400000, guid: 8994024f53f38e245beb1d9a19ed385a, type: 2}
+  _turnText: {fileID: 0}
 --- !u!114 &2686991280687853046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,4 +116,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Display: {fileID: 0}
-  _stats: {fileID: 0}
+  Stats: {fileID: 0}
