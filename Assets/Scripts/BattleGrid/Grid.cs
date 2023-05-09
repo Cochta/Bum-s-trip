@@ -8,6 +8,8 @@ public class Grid : MonoBehaviour
 
     public Dictionary<Vector2, Tile> _tiles;
 
+    [SerializeField] private GridPool _pool;
+
     public void GenerateGrid()
     {
         _tiles = new Dictionary<Vector2, Tile>();
@@ -28,6 +30,21 @@ public class Grid : MonoBehaviour
         }
         transform.position = new Vector2(-5, -2.5f);
     }
+    //public void GenerateGrid()
+    //{
+    //    _tiles = new Dictionary<Vector2, Tile>();
+
+    //    GameObject grid = _pool.Grids[Random.Range(0, _pool.Grids.Count)];
+
+    //    int i = 0;
+    //    foreach (var tile in grid.GetComponentsInChildren<Tile>())
+    //    {
+    //        Instantiate(tile);
+    //        tile.transform.parent = transform;
+    //        _tiles[tile.Position] = tile;
+    //        Debug.Log(i);
+    //    }
+    //}
 
     public Tile GetTile(Vector2 pos)
     {

@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1874165954792203688}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.62517804, y: -0.7114141, z: 8.233}
+  m_LocalPosition: {x: 0, y: 14.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -81,6 +81,7 @@ MonoBehaviour:
   _width: 11
   _height: 8
   _tilePrefab: {fileID: 4748424814330208773, guid: 4f7a98a38e18e6f499661539ce7ac8b1, type: 3}
+  _grid: {fileID: 0}
 --- !u!114 &2686991280687853041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,6 +104,7 @@ MonoBehaviour:
   _enemyPool: {fileID: 11400000, guid: ffbdcbca49f9eef44b1b285897c8cf7f, type: 2}
   _terrainPool: {fileID: 11400000, guid: 8994024f53f38e245beb1d9a19ed385a, type: 2}
   _turnText: {fileID: 0}
+  _deadLocator: {fileID: 1874165954792203688}
 --- !u!114 &2686991280687853046
 MonoBehaviour:
   m_ObjectHideFlags: 0

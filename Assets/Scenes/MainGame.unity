@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &93214993 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1874165954792203688, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
-  m_PrefabInstance: {fileID: 1093699285}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &134240896
 GameObject:
   m_ObjectHideFlags: 0
@@ -1593,14 +1588,14 @@ PrefabInstance:
       propertyPath: _turnText
       value: 
       objectReference: {fileID: 1167446747}
-    - target: {fileID: 2686991280687853041, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
-      propertyPath: _deadLocator
-      value: 
-      objectReference: {fileID: 93214993}
     - target: {fileID: 2686991280687853042, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
       propertyPath: m_Name
       value: Battle
       objectReference: {fileID: 0}
+    - target: {fileID: 2686991280687853043, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
+      propertyPath: _pool
+      value: 
+      objectReference: {fileID: 11400000, guid: f77077108479b524599f5c5a1b8aec38, type: 2}
     - target: {fileID: 2686991280687853046, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
       propertyPath: Stats
       value: 
@@ -1609,18 +1604,6 @@ PrefabInstance:
       propertyPath: Display
       value: 
       objectReference: {fileID: 1132710684}
-    - target: {fileID: 4228848842484412969, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4228848842484412969, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 14.67
-      objectReference: {fileID: 0}
-    - target: {fileID: 4228848842484412969, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0737d0d9df9581b4884ed00625fc064c, type: 3}
 --- !u!1 &1132710683 stripped
