@@ -16,10 +16,20 @@ public class Tile : MonoBehaviour
     private Color _originColor;
     private Color _baseColor;
 
+    private BattleManager _bm;
+    private EntityDisplay _ed;
+
+    public BattleManager BM { set => _bm = value; }
+    public EntityDisplay ED { set => _ed = value; }
+
     public void Init(bool isOffset)
     {
         _col = GetComponent<BoxCollider2D>();
         _backgroundSR.color = isOffset ? _colorEven : _colorOdd;
+        _originColor = _backgroundSR.color;
+    }
+    public void Init()
+    {
         _originColor = _backgroundSR.color;
     }
 
@@ -31,8 +41,7 @@ public class Tile : MonoBehaviour
     private void OnMouseDown()
     {
         Ability selectedAbility = null;
-        BattleManager bm = transform.parent.GetComponent<BattleManager>();
-        foreach (var ability in bm.Pool.Abilities)
+        foreach (var ability in _bm.Pool.Abilities)
         {
             if (ability.IsSelected)
             {
@@ -42,7 +51,7 @@ public class Tile : MonoBehaviour
             ability.IsSelected = false;
             ability.IsOtherSelected = false;
         }
-        if (selectedAbility != null && selectedAbility.Targets.Contains(Position - bm.Player.tile.Position))
+        if (selectedAbility != null && selectedAbility.Targets.Contains(Position - _bm.Player.tile.Position))
         {
             selectedAbility.PerformAction(this);
         }
@@ -54,18 +63,17 @@ public class Tile : MonoBehaviour
     {
         _baseColor = _backgroundSR.color;
         _backgroundSR.color = _colorHighlight;
-        var display = transform.parent.GetComponent<EntityDisplay>();
         if (Entity.GetComponentInChildren<Entity>() != null)
         {
-            display.Stats.SetActive(true);
-            display.Display.OnDisplayEntity(Entity.GetComponentInChildren<Entity>());
+            _ed.Stats.SetActive(true);
+            _ed.Display.OnDisplayEntity(Entity.GetComponentInChildren<Entity>());
         }
 
     }
     private void OnMouseExit()
     {
         _backgroundSR.color = _baseColor;
-        transform.parent.GetComponent<EntityDisplay>().Stats.SetActive(false);
+        _ed.Stats.SetActive(false);
     }
 
     public void CanceHighlight()

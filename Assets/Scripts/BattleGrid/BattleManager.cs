@@ -183,14 +183,13 @@ public class BattleManager : MonoBehaviour
         {
             case GameStates.Initialisation:
                 _grid = GetComponent<Grid>();
-                _grid.GenerateGrid();
-                SpawnPlayer();
                 break;
             case GameStates.StartBattle:
+                _grid.GenerateGrid();
+                SpawnPlayer();
                 _turnText.SetActive(true);
-                ResetPlayer();
                 SpawnEnemies();
-                SpawnTerrain();
+                //SpawnTerrain();
                 IsBattle = true;
                 ChangeState(GameStates.PlayerTurn);
                 break;

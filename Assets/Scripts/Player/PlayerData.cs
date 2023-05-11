@@ -56,6 +56,8 @@ public class PlayerData : MonoBehaviour
 
     public int Level = 0;
 
+    private bool _isDead = false;
+
     private void Awake()
     {
         _instance = this;
@@ -112,8 +114,12 @@ public class PlayerData : MonoBehaviour
             }
         };
 
-        if (CurrentHealth <= 0)
+        if (CurrentHealth <= 0 && !_isDead)
+        {
+            _isDead = true;
             StartCoroutine(_playerDeath.Die(5));
+            SoundHandeler.Instance.StopMusic();
+        }
         _display.OnDisplayPlayer();
     }
     public void ResetActions()
@@ -199,8 +205,9 @@ public class PlayerData : MonoBehaviour
         switch (_state)
         {
             case GameStates.EnterNewLevel:
+                SoundHandeler.Instance.PlayNormalMusic();
                 SoundHandeler.Instance.PlayBumCrazy();
-                StartCoroutine(_loadingScreen.Load(2f));
+                StartCoroutine(_loadingScreen.Load(0f));
                 _map.GenerateMap();
                 ChangeGameState(GameStates.ToMap);
                 Level++;
@@ -228,6 +235,7 @@ public class PlayerData : MonoBehaviour
                 Loot.GenerateLoot();
                 break;
             case GameStates.ToBoss:
+                SoundHandeler.Instance.PlayBossMusic();
                 _battleManager.gameObject.SetActive(true);
                 _movePoolManager.SetAbilities();
                 _battleManager.ChangeState(BattleManager.GameStates.StartBattle);

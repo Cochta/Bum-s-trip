@@ -13,6 +13,9 @@ public class SoundHandeler : MonoBehaviour
     [SerializeField] private List<AudioClip> _bumScream;
     [SerializeField] private AudioClip _bumCrazy;
 
+    [SerializeField] private AudioClip _ambientMusic;
+    [SerializeField] private AudioClip _bossMusic;
+
     [SerializeField] private AudioSource _enemies;
     [SerializeField] private AudioSource _environement;
     [SerializeField] private AudioSource _bum;
@@ -20,6 +23,20 @@ public class SoundHandeler : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+    }
+    public void StopMusic()
+    {
+        _environement.Stop();
+    }
+    public void PlayNormalMusic()
+    {
+        _environement.clip = _ambientMusic;
+        _environement.Play();
+    }
+    public void PlayBossMusic()
+    {
+        _environement.clip = _bossMusic;
+        _environement.Play();
     }
     public void PlayBumGetItem()
     {
